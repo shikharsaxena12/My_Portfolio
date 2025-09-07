@@ -19,17 +19,29 @@ const HomeBackground = () => {
     ]
   }), []);
   
-  // Memoize particle positions to prevent recalculation
-  const particlePositions = useMemo(() => 
-    [...Array(20)].map(() => ({
+  // Memoize all random values to prevent recalculation
+  const animationConfig = useMemo(() => ({
+    particles: [...Array(20)].map(() => ({
       left: Math.random() * 100,
       top: Math.random() * 100,
       x: Math.random() * 200 - 100,
       y: Math.random() * 200 - 100,
       duration: 4 + Math.random() * 4,
       delay: Math.random() * 2
-    })), []
-  );
+    })),
+    shapes: [...Array(6)].map((_, i) => ({
+      left: 20 + (i * 15),
+      top: 10 + (i * 12),
+      duration: 6 + i,
+      delay: i * 0.5
+    })),
+    cards: [...Array(4)].map((_, i) => ({
+      left: 15 + (i * 20),
+      top: 20 + (i * 15),
+      duration: 5 + i,
+      delay: i * 0.8
+    }))
+  }), []);
 
   return (
     <div className="fixed inset-0 z-0 overflow-hidden">
@@ -46,13 +58,13 @@ const HomeBackground = () => {
       />
 
       {/* Floating Geometric Shapes */}
-      {[...Array(6)].map((_, i) => (
+      {animationConfig.shapes.map((shape, i) => (
         <motion.div
           key={i}
           className="absolute"
           style={{
-            left: `${20 + (i * 15)}%`,
-            top: `${10 + (i * 12)}%`,
+            left: `${shape.left}%`,
+            top: `${shape.top}%`,
           }}
           animate={{
             y: [0, -30, 0],
@@ -60,10 +72,10 @@ const HomeBackground = () => {
             scale: [1, 1.1, 1],
           }}
           transition={{
-            duration: 6 + i,
+            duration: shape.duration,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: i * 0.5
+            delay: shape.delay
           }}
         >
           <div className={`w-16 h-16 border-2 border-blue-300/40 dark:border-blue-400/30 ${i % 2 === 0 ? 'rounded-full' : 'rotate-45'} backdrop-blur-sm`} />
@@ -71,7 +83,7 @@ const HomeBackground = () => {
       ))}
 
       {/* Particle System */}
-      {particlePositions.map((particle, i) => (
+      {animationConfig.particles.map((particle, i) => (
         <motion.div
           key={`particle-${i}`}
           className="absolute w-1 h-1 bg-blue-400/60 dark:bg-blue-300/50 rounded-full"

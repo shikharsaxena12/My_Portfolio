@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { Github, Linkedin, Mail, ArrowRight, Sparkles, Twitter, Instagram, Youtube, MessageCircle, Moon, Sun } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -19,7 +19,7 @@ const Portfolio = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const FloatingParticle = ({ delay, duration, x, y }) => (
+  const FloatingParticle = React.memo(({ delay, duration, x, y }) => (
     <motion.div
       className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-20"
       style={{ left: `${x}%`, top: `${y}%` }}
@@ -35,6 +35,15 @@ const Portfolio = () => {
         ease: "easeInOut"
       }}
     />
+  ));
+
+  const particleConfig = useMemo(() => 
+    [...Array(15)].map((_, i) => ({
+      delay: i * 0.5,
+      duration: 3 + Math.random() * 2,
+      x: Math.random() * 100,
+      y: Math.random() * 100
+    })), []
   );
 
   return (
@@ -44,13 +53,13 @@ const Portfolio = () => {
         : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'
     }`}>
       {/* Floating Particles */}
-      {[...Array(15)].map((_, i) => (
+      {particleConfig.map((particle, i) => (
         <FloatingParticle
           key={i}
-          delay={i * 0.5}
-          duration={3 + Math.random() * 2}
-          x={Math.random() * 100}
-          y={Math.random() * 100}
+          delay={particle.delay}
+          duration={particle.duration}
+          x={particle.x}
+          y={particle.y}
         />
       ))}
       

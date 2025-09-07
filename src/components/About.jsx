@@ -15,9 +15,16 @@ const About = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const CARD_COUNT = 3;
+    const INTERVAL_DELAY = 3000;
+    
     const interval = setInterval(() => {
-      setActiveCard((prev) => (prev + 1) % 3);
-    }, 3000);
+      setActiveCard((prev) => {
+        const nextCard = (prev + 1) % CARD_COUNT;
+        return Number.isInteger(nextCard) && nextCard >= 0 && nextCard < CARD_COUNT ? nextCard : 0;
+      });
+    }, INTERVAL_DELAY);
+    
     return () => clearInterval(interval);
   }, []);
 
