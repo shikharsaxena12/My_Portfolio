@@ -80,17 +80,16 @@ const Certificates = () => {
       <HomeBackground />
       <Navbar />
       
-      <div className="relative z-10 container mx-auto px-6 pt-32 pb-20 h-full flex items-center">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 min-h-[80vh]">
-          
-          {/* Left Side - Vertical Moving Certificate Strips */}
-          <motion.div
-            className="flex items-center justify-center order-1 lg:order-1"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <div className="relative w-full max-w-md h-[600px] overflow-hidden">
+      <div className="relative z-10 h-full flex">
+        {/* Left Side - Full Height Moving Certificate Strips */}
+        <motion.div
+          className="w-1/2 lg:w-1/2 relative overflow-hidden"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <div className="relative w-full h-full flex justify-center items-center">
+            <div className="relative w-full max-w-md h-full overflow-hidden">
               {/* First Column */}
               <motion.div 
                 className="absolute left-0 flex flex-col gap-4"
@@ -103,10 +102,10 @@ const Certificates = () => {
                 onHoverStart={handleHoverStart}
                 onHoverEnd={handleHoverEnd}
               >
-                {[...certificates.slice(0, 3), ...certificates.slice(0, 3)].map((cert, index) => (
+                {[...certificates.slice(0, 3), ...certificates.slice(0, 3), ...certificates.slice(0, 3)].map((cert, index) => (
                   <motion.div
                     key={`col1-${index}`}
-                    className={`group relative rounded-xl overflow-hidden shadow-lg flex-shrink-0 w-44 h-56 flex flex-col cursor-pointer ${
+                    className={`group relative rounded-xl overflow-hidden shadow-lg flex-shrink-0 w-52 h-64 flex flex-col cursor-pointer ${
                       isDark ? 'bg-slate-800/90 border border-slate-700/50' : 'bg-white/95 border border-slate-200/60'
                     }`}
                     whileHover={{ scale: 1.05, x: 10 }}
@@ -150,10 +149,10 @@ const Certificates = () => {
                 onHoverStart={handleHoverStart}
                 onHoverEnd={handleHoverEnd}
               >
-                {[...certificates.slice(3, 6), ...certificates.slice(3, 6)].map((cert, index) => (
+                {[...certificates.slice(3, 6), ...certificates.slice(3, 6), ...certificates.slice(3, 6)].map((cert, index) => (
                   <motion.div
                     key={`col2-${index}`}
-                    className={`group relative rounded-xl overflow-hidden shadow-lg flex-shrink-0 w-44 h-56 flex flex-col cursor-pointer ${
+                    className={`group relative rounded-xl overflow-hidden shadow-lg flex-shrink-0 w-52 h-64 flex flex-col cursor-pointer ${
                       isDark ? 'bg-slate-800/90 border border-slate-700/50' : 'bg-white/95 border border-slate-200/60'
                     }`}
                     whileHover={{ scale: 1.05, x: -10 }}
@@ -185,11 +184,13 @@ const Certificates = () => {
                 ))}
               </motion.div>
             </div>
-          </motion.div>
+          </div>
+        </motion.div>
 
-          {/* Right Side - Written Content */}
+        {/* Right Side - Written Content */}
+        <div className="w-1/2 lg:w-1/2 flex items-center justify-center px-6 pt-20">
           <motion.div 
-            className="space-y-8 order-2 lg:order-2"
+            className="space-y-8 max-w-2xl relative z-20"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -285,8 +286,6 @@ const Certificates = () => {
               ))}
             </motion.div>
           </motion.div>
-
-
         </div>
       </div>
 
@@ -418,8 +417,6 @@ const Certificates = () => {
                   </div>
                 </div>
               </div>
-
-
             </div>
             </div>
           </motion.div>
