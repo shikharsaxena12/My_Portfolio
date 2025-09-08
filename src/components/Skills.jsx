@@ -2,11 +2,16 @@ import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
 import Navbar from './Navbar';
-import HomeBackground from './HomeBackground';
+import { HomeBackground } from '../portfolio_animation';
 
 const Skills = () => {
   const { isDark = false } = useTheme() || {};
   const [activeTab, setActiveTab] = useState('tech');
+
+  const labels = {
+    mySkills: 'My Skills',
+    whatIDo: 'What I Do'
+  };
 
   const techSkills = useMemo(() => [
     { name: 'React', level: 90 },
@@ -100,7 +105,7 @@ const Skills = () => {
           >
             <h1 className="text-5xl font-bold">
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                My Skills
+                {labels.mySkills}
               </span>
             </h1>
             
@@ -118,7 +123,7 @@ const Skills = () => {
             
             <div className="space-y-4">
               <h3 className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-gray-800'}`}>
-                What I Do
+                {labels.whatIDo}
               </h3>
               <ul className={`space-y-2 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                 <li>• Full Stack Web Development</li>

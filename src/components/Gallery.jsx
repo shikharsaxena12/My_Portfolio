@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import { Play, X, Image, Video } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import Navbar from './Navbar';
-import HomeBackground from './HomeBackground';
+import { HomeBackground } from '../portfolio_animation';
 
 const Gallery = () => {
   const { isDark = false } = useTheme() || {};
   const [filter, setFilter] = useState('image');
   const [selectedMedia, setSelectedMedia] = useState(null);
+
+  const labels = {
+    myGallery: 'My Gallery',
+    galleryDescription: 'A collection of my work, projects, and creative moments'
+  };
 
   const mediaItems = [
     { id: 1, type: 'image', src: '/api/placeholder/400/300', title: 'Project Screenshot 1' },
@@ -70,11 +75,11 @@ const Gallery = () => {
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold mb-4">
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              My Gallery
+              {labels.myGallery}
             </span>
           </h1>
           <p className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-            A collection of my work, projects, and creative moments
+            {labels.galleryDescription}
           </p>
         </div>
 

@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Award, Calendar, ExternalLink } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import Navbar from './Navbar';
-import HomeBackground from './HomeBackground';
+import { HomeBackground } from '../portfolio_animation';
 
 const Certificates = () => {
   const { isDark = false } = useTheme() || {};
 
-  const certificates = [
+  const labels = {
+    myCertificates: 'My Certificates',
+    certificatesDescription: 'Professional certifications and achievements'
+  };
+
+  const certificates = useMemo(() => [
     {
       id: 1,
       title: 'React Developer Certification',
@@ -57,7 +62,7 @@ const Certificates = () => {
       description: 'User experience design principles and practices',
       image: '/api/placeholder/300/200'
     }
-  ];
+  ], []);
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'}`}>
@@ -72,11 +77,11 @@ const Certificates = () => {
         >
           <h1 className="text-5xl font-bold mb-4">
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              My Certificates
+              {labels.myCertificates}
             </span>
           </h1>
           <p className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-            Professional certifications and achievements
+            {labels.certificatesDescription}
           </p>
         </motion.div>
 
@@ -104,7 +109,7 @@ const Certificates = () => {
                 {/* View Certificate Button */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <button 
-                    onClick={() => console.log(`Viewing certificate: ${cert.title}`)}
+                    onClick={() => console.log('Viewing certificate:', cert.title?.replace(/[\r\n]/g, ''))}
                     className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-white/30 transition-all"
                   >
                     <ExternalLink size={16} />

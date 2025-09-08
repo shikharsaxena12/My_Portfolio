@@ -4,12 +4,58 @@ import { Github, Linkedin, Mail, ArrowRight, Sparkles, Twitter, Instagram, Youtu
 import { Link } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import Navbar from './Navbar';
-import HomeBackground from './HomeBackground';
+import { HomeBackground } from '../portfolio_animation';
 
 const Portfolio = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { isDark = false, toggleTheme = () => {} } = useTheme() || {};
   const controls = useAnimation();
+
+  const labels = {
+    viewMyWork: 'View My Resume',
+    getInTouch: 'Get In Touch'
+  };
+
+  const socialLinks = useMemo(() => [
+    { 
+      icon: Github, 
+      href: '#', 
+      color: isDark ? 'hover:text-gray-200' : 'hover:text-gray-800', 
+      bg: isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-100' 
+    },
+    { 
+      icon: Linkedin, 
+      href: '#', 
+      color: 'hover:text-blue-500', 
+      bg: isDark ? 'hover:bg-blue-900/50' : 'hover:bg-blue-50' 
+    },
+    { 
+      icon: Twitter, 
+      href: '#', 
+      color: 'hover:text-sky-400', 
+      bg: isDark ? 'hover:bg-sky-900/50' : 'hover:bg-sky-50' 
+    },
+    { 
+      icon: Instagram, 
+      href: '#', 
+      color: 'hover:text-pink-500', 
+      bg: isDark ? 'hover:bg-pink-900/50' : 'hover:bg-pink-50' 
+    },
+    { 
+      icon: Mail, 
+      href: '#', 
+      color: 'hover:text-green-500', 
+      bg: isDark ? 'hover:bg-green-900/50' : 'hover:bg-green-50' 
+    }
+  ], [isDark]);
+
+  const getSocialLinkStyles = (social) => {
+    const baseStyles = 'group relative p-4 backdrop-blur-sm rounded-full transition-all duration-400 shadow-lg hover:shadow-xl';
+    const themeStyles = isDark 
+      ? 'bg-gray-800 border border-gray-700 text-gray-300' 
+      : 'bg-white/70 border border-white/60 text-gray-600';
+    return `${baseStyles} ${themeStyles} ${social.color} ${social.bg}`;
+  };
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -201,7 +247,7 @@ const Portfolio = () => {
                   transition={{ duration: 0.8, ease: "easeInOut" }}
                 />
                 <span className="relative z-10 flex items-center gap-2">
-                  View My Work
+                  {labels.viewMyWork}
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
               </motion.button>
@@ -217,7 +263,7 @@ const Portfolio = () => {
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", damping: 15, stiffness: 300 }}
                 >
-                  <span className="relative z-10">Get In Touch</span>
+                  <span className="relative z-10">{labels.getInTouch}</span>
                 {/* Hover background */}
                 <motion.div
                   className={`absolute inset-0 rounded-full ${
@@ -240,48 +286,13 @@ const Portfolio = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 1.2, duration: 0.6, ease: "easeOut" }}
             >
-              {[
-                { 
-                  icon: Github, 
-                  href: '#', 
-                  color: isDark ? 'hover:text-gray-200' : 'hover:text-gray-800', 
-                  bg: isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-100' 
-                },
-                { 
-                  icon: Linkedin, 
-                  href: '#', 
-                  color: 'hover:text-blue-500', 
-                  bg: isDark ? 'hover:bg-blue-900/50' : 'hover:bg-blue-50' 
-                },
-                { 
-                  icon: Twitter, 
-                  href: '#', 
-                  color: 'hover:text-sky-400', 
-                  bg: isDark ? 'hover:bg-sky-900/50' : 'hover:bg-sky-50' 
-                },
-                { 
-                  icon: Instagram, 
-                  href: '#', 
-                  color: 'hover:text-pink-500', 
-                  bg: isDark ? 'hover:bg-pink-900/50' : 'hover:bg-pink-50' 
-                },
-                { 
-                  icon: Mail, 
-                  href: '#', 
-                  color: 'hover:text-green-500', 
-                  bg: isDark ? 'hover:bg-green-900/50' : 'hover:bg-green-50' 
-                }
-              ].map((social, index) => {
+              {socialLinks.map((social, index) => {
                 const Icon = social.icon;
                 return (
                   <motion.a
                     key={index}
                     href={social.href}
-                    className={`group relative p-4 backdrop-blur-sm rounded-full transition-all duration-400 shadow-lg hover:shadow-xl ${
-                      isDark 
-                        ? 'bg-gray-800 border border-gray-700 text-gray-300' 
-                        : 'bg-white/70 border border-white/60 text-gray-600'
-                    } ${social.color} ${social.bg}`}
+                    className={getSocialLinkStyles(social)}
                     whileHover={{ 
                       scale: 1.15, 
                       y: -4,

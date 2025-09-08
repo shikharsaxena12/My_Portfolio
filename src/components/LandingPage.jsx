@@ -3,10 +3,16 @@ import { motion } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTheme } from '../contexts/ThemeContext';
-import PortfolioLandingPageAnimation from "./PortfolioLandingPageAnimation";
+import { PortfolioLandingPageAnimation } from "../portfolio_animation";
 
 const LandingPage = () => {
   const { isDark, toggleTheme } = useTheme();
+
+  const labels = {
+    subtitle: 'Innovative Developer & Designer',
+    exploreWork: 'EXPLORE WORK',
+    contactMe: 'CONTACT ME'
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-white dark:bg-slate-900">
@@ -42,7 +48,7 @@ const LandingPage = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
             >
-              Innovative Developer & Designer
+              {labels.subtitle}
             </motion.p>
           </motion.div>
 
@@ -56,14 +62,14 @@ const LandingPage = () => {
               to="/portfolio"
               className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl"
             >
-              EXPLORE WORK
+              {labels.exploreWork}
             </Link>
             
             <Link 
               to="/contact"
               className="border-2 border-gradient bg-gradient-to-r from-transparent to-transparent hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 border-gray-800 dark:border-white text-gray-800 dark:text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-200"
             >
-              CONTACT ME
+              {labels.contactMe}
             </Link>
           </motion.div>
         </div>

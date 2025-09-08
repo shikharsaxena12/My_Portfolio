@@ -9,15 +9,33 @@ const Navbar = () => {
   const { isDark, toggleTheme } = useTheme();
 
   const location = useLocation();
+
+  const getNavItemProps = (item) => {
+    const isActive = item.href.startsWith('/') ? location.pathname === item.href : false;
+    const Component = item.href.startsWith('/') ? Link : 'a';
+    const linkProps = item.href.startsWith('/') ? { to: item.href } : { href: item.href };
+    return { isActive, Component, linkProps };
+  };
+  
+  const labels = {
+    logo: 'Shikhar',
+    home: 'Home',
+    about: 'About',
+    skills: 'Skills',
+    projects: 'Projects',
+    certificates: 'Certificates',
+    gallery: 'Gallery',
+    contact: 'Contact'
+  };
   
   const navItems = [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Skills', href: '/skills' },
-    { label: 'Projects', href: '/projects' },
-    { label: 'Certificates', href: '/certificates' },
-    { label: 'Gallery', href: '/gallery' },
-    { label: 'Contact', href: '/contact' }
+    { label: labels.home, href: '/' },
+    { label: labels.about, href: '/about' },
+    { label: labels.skills, href: '/skills' },
+    { label: labels.projects, href: '/projects' },
+    { label: labels.certificates, href: '/certificates' },
+    { label: labels.gallery, href: '/gallery' },
+    { label: labels.contact, href: '/contact' }
   ];
 
   return (
@@ -35,16 +53,14 @@ const Navbar = () => {
               className="text-blue-500 dark:text-blue-400 text-xl font-bold cursor-pointer"
               whileHover={{ scale: 1.05 }}
             >
-              Shikhar
+              {labels.logo}
             </motion.div>
           </Link>
           
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item, index) => {
-              const isActive = item.href.startsWith('/') ? location.pathname === item.href : false;
-              const Component = item.href.startsWith('/') ? Link : 'a';
-              const linkProps = item.href.startsWith('/') ? { to: item.href } : { href: item.href };
+              const { isActive, Component, linkProps } = getNavItemProps(item);
               
               return (
                 <Component
@@ -101,9 +117,7 @@ const Navbar = () => {
           exit={{ opacity: 0, y: -20 }}
         >
           {navItems.map((item, index) => {
-            const isActive = item.href.startsWith('/') ? location.pathname === item.href : false;
-            const Component = item.href.startsWith('/') ? Link : 'a';
-            const linkProps = item.href.startsWith('/') ? { to: item.href } : { href: item.href };
+            const { isActive, Component, linkProps } = getNavItemProps(item);
             
             return (
               <Component

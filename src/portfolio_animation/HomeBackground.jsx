@@ -2,32 +2,42 @@ import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
 
+// Extract gradient definitions for better readability
+const createGradient = (positions, opacity) => {
+  const [pos1, pos2, pos3] = positions;
+  return [
+    `radial-gradient(circle at ${pos1}, rgba(59, 130, 246, ${opacity.blue}) 0%, transparent 50%)`,
+    `radial-gradient(circle at ${pos2}, rgba(147, 51, 234, ${opacity.purple}) 0%, transparent 50%)`,
+    `radial-gradient(circle at ${pos3}, rgba(236, 72, 153, ${opacity.pink}) 0%, transparent 50%)`
+  ].join(', ');
+};
+
+// Pre-compute gradient configurations for optimal performance
+const GRADIENT_CONFIG = {
+  dark: [
+    createGradient(['20% 50%', '80% 20%', '40% 80%'], { blue: 0.2, purple: 0.2, pink: 0.15 }),
+    createGradient(['80% 50%', '20% 80%', '60% 20%'], { blue: 0.2, purple: 0.2, pink: 0.15 }),
+    createGradient(['40% 20%', '60% 80%', '20% 50%'], { blue: 0.2, purple: 0.2, pink: 0.15 })
+  ],
+  light: [
+    createGradient(['20% 50%', '80% 20%', '40% 80%'], { blue: 0.3, purple: 0.3, pink: 0.2 }),
+    createGradient(['80% 50%', '20% 80%', '60% 20%'], { blue: 0.3, purple: 0.3, pink: 0.2 }),
+    createGradient(['40% 20%', '60% 80%', '20% 50%'], { blue: 0.3, purple: 0.3, pink: 0.2 })
+  ]
+};
+
 const HomeBackground = () => {
   const { isDark } = useTheme();
   
-  // Memoize gradient configurations to prevent recalculation
-  const gradientConfig = useMemo(() => ({
-    dark: [
-      'radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.2) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.2) 0%, transparent 50%), radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 50%)',
-      'radial-gradient(circle at 80% 50%, rgba(59, 130, 246, 0.2) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(147, 51, 234, 0.2) 0%, transparent 50%), radial-gradient(circle at 60% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%)',
-      'radial-gradient(circle at 40% 20%, rgba(59, 130, 246, 0.2) 0%, transparent 50%), radial-gradient(circle at 60% 80%, rgba(147, 51, 234, 0.2) 0%, transparent 50%), radial-gradient(circle at 20% 50%, rgba(236, 72, 153, 0.15) 0%, transparent 50%)'
-    ],
-    light: [
-      'radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 50%), radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.2) 0%, transparent 50%)',
-      'radial-gradient(circle at 80% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(147, 51, 234, 0.3) 0%, transparent 50%), radial-gradient(circle at 60% 20%, rgba(236, 72, 153, 0.2) 0%, transparent 50%)',
-      'radial-gradient(circle at 40% 20%, rgba(59, 130, 246, 0.3) 0%, transparent 50%), radial-gradient(circle at 60% 80%, rgba(147, 51, 234, 0.3) 0%, transparent 50%), radial-gradient(circle at 20% 50%, rgba(236, 72, 153, 0.2) 0%, transparent 50%)'
-    ]
-  }), []);
-  
   // Memoize all random values to prevent recalculation
   const animationConfig = useMemo(() => ({
-    particles: [...Array(20)].map(() => ({
-      left: Math.random() * 100,
-      top: Math.random() * 100,
-      x: Math.random() * 200 - 100,
-      y: Math.random() * 200 - 100,
-      duration: 4 + Math.random() * 4,
-      delay: Math.random() * 2
+    particles: [...Array(20)].map((_, i) => ({
+      left: (i * 7) % 100,
+      top: (i * 11) % 100,
+      x: ((i * 13) % 200) - 100,
+      y: ((i * 17) % 200) - 100,
+      duration: 4 + (i % 4),
+      delay: (i * 0.1) % 2
     })),
     shapes: [...Array(6)].map((_, i) => ({
       left: 20 + (i * 15),
@@ -52,7 +62,7 @@ const HomeBackground = () => {
       <motion.div
         className="absolute inset-0 opacity-60"
         animate={{
-          background: isDark ? gradientConfig.dark : gradientConfig.light
+          background: isDark ? GRADIENT_CONFIG.dark : GRADIENT_CONFIG.light
         }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -119,13 +129,13 @@ const HomeBackground = () => {
       </div>
 
       {/* Floating Cards */}
-      {[...Array(4)].map((_, i) => (
+      {animationConfig.cards.map((card, i) => (
         <motion.div
           key={`card-${i}`}
           className="absolute w-32 h-20 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-lg border border-white/30 dark:border-gray-600/30 shadow-lg"
           style={{
-            left: `${15 + (i * 20)}%`,
-            top: `${20 + (i * 15)}%`,
+            left: `${card.left}%`,
+            top: `${card.top}%`,
           }}
           animate={{
             y: [0, -20, 0],
@@ -133,10 +143,10 @@ const HomeBackground = () => {
             rotateX: [0, 5, 0],
           }}
           transition={{
-            duration: 5 + i,
+            duration: card.duration,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: i * 0.8
+            delay: card.delay
           }}
         />
       ))}

@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import Navbar from './Navbar';
-import HomeBackground from './HomeBackground';
+import { HomeBackground } from '../portfolio_animation';
 
 const Contact = () => {
   const { isDark = false } = useTheme() || {};
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+
+  const labels = {
+    contactMe: 'Contact Me',
+    projectDiscussion: "Let's discuss your next project",
+    downloadCV: 'Download CV',
+    sendMessage: 'Send Message'
+  };
+
+  const contactInfo = useMemo(() => [
+    { icon: Mail, title: 'Email', info: 'shikhar@example.com' },
+    { icon: Phone, title: 'Phone', info: '+1 (555) 123-4567' },
+    { icon: MapPin, title: 'Location', info: 'New York, NY' }
+  ], []);
 
   return (
     <div className={`h-screen overflow-hidden ${isDark ? 'bg-gray-900' : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'}`}>
@@ -22,11 +35,11 @@ const Contact = () => {
         >
           <h1 className="text-5xl font-bold mb-4">
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Contact Me
+              {labels.contactMe}
             </span>
           </h1>
           <p className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-            Let's discuss your next project
+            {labels.projectDiscussion}
           </p>
         </motion.div>
 
@@ -37,11 +50,7 @@ const Contact = () => {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
           >
-            {[
-              { icon: Mail, title: 'Email', info: 'shikhar@example.com' },
-              { icon: Phone, title: 'Phone', info: '+1 (555) 123-4567' },
-              { icon: MapPin, title: 'Location', info: 'New York, NY' }
-            ].map((contact, index) => {
+            {contactInfo.map((contact, index) => {
               const Icon = contact.icon;
               return (
                 <div key={index} className={`p-6 rounded-xl ${isDark ? 'bg-gray-800/50' : 'bg-white/50'} backdrop-blur-sm border ${isDark ? 'border-gray-700' : 'border-white/60'}`}>
@@ -58,7 +67,7 @@ const Contact = () => {
             
             {/* Download CV Button */}
             <button className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white p-4 rounded-xl font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2">
-              Download CV
+              {labels.downloadCV}
             </button>
           </motion.div>
 
@@ -88,7 +97,7 @@ const Contact = () => {
                   type="submit"
                   className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 rounded-lg font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2"
                 >
-                  Send Message
+                  {labels.sendMessage}
                   <Send size={16} />
                 </button>
               </div>

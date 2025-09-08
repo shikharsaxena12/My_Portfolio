@@ -4,7 +4,25 @@ import { ArrowLeft } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
-import HomeBackground from './HomeBackground';
+import { HomeBackground } from '../portfolio_animation';
+
+const FloatingParticle = React.memo(({ delay, duration, x, y }) => (
+  <motion.div
+    className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-20"
+    style={{ left: `${x}%`, top: `${y}%` }}
+    animate={{
+      y: [0, -100, 0],
+      opacity: [0, 1, 0],
+      scale: [0, 1, 0]
+    }}
+    transition={{
+      duration,
+      delay,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }}
+  />
+));
 
 const About = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -13,6 +31,16 @@ const About = () => {
   const [modalContent, setModalContent] = useState(null);
   const { isDark = false } = useTheme() || {};
   const navigate = useNavigate();
+
+  const labels = {
+    experienceDetails: 'Experience Details',
+    educationDetails: 'Education Details',
+    achievementDetails: 'Achievement Details',
+    recognizedPerformance: 'Recognized for outstanding performance',
+    githubContributions: '500+ GitHub contributions',
+    openSourceProjects: 'Contributed to 10+ open source projects',
+    techSpeaker: 'Speaker at tech conferences'
+  };
 
   useEffect(() => {
     const CARD_COUNT = 3;
@@ -41,23 +69,7 @@ const About = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const FloatingParticle = React.memo(({ delay, duration, x, y }) => (
-    <motion.div
-      className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-20"
-      style={{ left: `${x}%`, top: `${y}%` }}
-      animate={{
-        y: [0, -100, 0],
-        opacity: [0, 1, 0],
-        scale: [0, 1, 0]
-      }}
-      transition={{
-        duration,
-        delay,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }}
-    />
-  ));
+
 
   const stats = [
     { number: "50+", label: "Projects" },
@@ -117,22 +129,27 @@ const About = () => {
         : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'
     }`}>
       {/* Floating Particles */}
-      {useMemo(() => 
-        [...Array(15)].map((_, i) => {
-          const randomDuration = 3 + Math.random() * 2;
-          const randomX = Math.random() * 100;
-          const randomY = Math.random() * 100;
-          return (
-            <FloatingParticle
-              key={i}
-              delay={i * 0.5}
-              duration={randomDuration}
-              x={randomX}
-              y={randomY}
-            />
-          );
-        }), []
-      )}
+      {useMemo(() => {
+        const particles = [];
+        for (let i = 0; i < 15; i++) {
+          particles.push({
+            id: i,
+            delay: i * 0.5,
+            duration: 3 + (i * 0.1) % 2,
+            x: (i * 7) % 100,
+            y: (i * 11) % 100
+          });
+        }
+        return particles.map(particle => (
+          <FloatingParticle
+            key={particle.id}
+            delay={particle.delay}
+            duration={particle.duration}
+            x={particle.x}
+            y={particle.y}
+          />
+        ));
+      }, [])}
       
       {/* Interactive Cursor Glow */}
       <motion.div
@@ -421,7 +438,7 @@ const About = () => {
                   <h2 className={`text-3xl font-bold mb-6 ${
                     isDark ? 'text-white' : 'text-gray-800'
                   }`}>
-                    Experience Details
+                    {labels.experienceDetails}
                   </h2>
                   {experiences.map((exp, index) => (
                     <div key={index} className={`mb-6 p-6 rounded-xl ${
@@ -458,7 +475,7 @@ const About = () => {
                   <h2 className={`text-3xl font-bold mb-6 ${
                     isDark ? 'text-white' : 'text-gray-800'
                   }`}>
-                    Education Details
+                    {labels.educationDetails}
                   </h2>
                   {education.map((edu, index) => (
                     <div key={index} className={`mb-6 p-6 rounded-xl ${
@@ -495,7 +512,7 @@ const About = () => {
                   <h2 className={`text-3xl font-bold mb-6 ${
                     isDark ? 'text-white' : 'text-gray-800'
                   }`}>
-                    Achievement Details
+                    {labels.achievementDetails}
                   </h2>
                   {achievements.map((ach, index) => (
                     <div key={index} className={`mb-6 p-6 rounded-xl ${
@@ -517,10 +534,10 @@ const About = () => {
                       <ul className={`list-disc list-inside space-y-1 text-sm ${
                         isDark ? 'text-gray-300' : 'text-gray-600'
                       }`}>
-                        <li>Recognized for outstanding performance</li>
-                        <li>500+ GitHub contributions</li>
-                        <li>Contributed to 10+ open source projects</li>
-                        <li>Speaker at tech conferences</li>
+                        <li>{labels.recognizedPerformance}</li>
+                        <li>{labels.githubContributions}</li>
+                        <li>{labels.openSourceProjects}</li>
+                        <li>{labels.techSpeaker}</li>
                       </ul>
                     </div>
                   ))}
