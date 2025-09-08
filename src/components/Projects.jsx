@@ -102,11 +102,11 @@ const Projects = () => {
   };
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'}`}>
+    <div className={`h-screen overflow-hidden ${isDark ? 'bg-gray-900' : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'}`} style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
       <HomeBackground />
       <Navbar />
       
-      <div className="relative z-10 container mx-auto px-6 pt-32 pb-20">
+      <div className="relative z-10 container mx-auto px-6 pt-32 pb-20 h-full flex items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 min-h-[80vh]">
           {/* Left Half - Written Text */}
           <motion.div 
