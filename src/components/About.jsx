@@ -179,7 +179,7 @@ const About = () => {
           >
             {/* About Me Title */}
             <motion.h1 
-              className="text-5xl md:text-6xl font-bold mb-6"
+              className="font-playfair text-5xl md:text-6xl font-bold mb-6"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -191,7 +191,7 @@ const About = () => {
 
             {/* Subtitle */}
             <motion.h2 
-              className={`text-2xl md:text-3xl font-light mb-6 ${
+              className={`font-montserrat text-2xl md:text-3xl font-light mb-6 ${
                 isDark ? 'text-gray-200' : 'text-gray-700'
               }`}
               initial={{ opacity: 0, y: 20 }}
@@ -203,7 +203,7 @@ const About = () => {
 
             {/* Description */}
             <motion.p 
-              className={`text-lg leading-relaxed mb-8 ${
+              className={`font-opensans text-lg leading-relaxed mb-8 ${
                 isDark ? 'text-gray-300' : 'text-gray-600'
               }`}
               initial={{ opacity: 0, y: 20 }}
@@ -224,7 +224,7 @@ const About = () => {
               {stats.map((stat, index) => (
                 <motion.div
                   key={index}
-                  className={`text-center p-6 rounded-2xl backdrop-blur-sm border shadow-lg ${
+                  className={`font-inter text-center p-6 rounded-2xl backdrop-blur-sm border shadow-lg ${
                     isDark 
                       ? 'bg-gray-800/50 border-gray-700' 
                       : 'bg-white/60 border-white/60'
@@ -294,14 +294,14 @@ const About = () => {
             <div className="relative">
               {activeCard === 0 && (
                 <div
-                  className={`p-8 rounded-3xl backdrop-blur-sm border cursor-pointer ${
+                  className={`font-poppins p-8 rounded-3xl backdrop-blur-sm border cursor-pointer ${
                     isDark 
                       ? 'bg-gray-800/30 border-gray-700/50' 
                       : 'bg-white/20 border-white/30'
                   }`}
                   onClick={() => openModal(0)}
                 >
-                  <h2 className={`text-2xl font-bold mb-6 ${
+                  <h2 className={`font-raleway text-2xl font-bold mb-6 ${
                     isDark ? 'text-white' : 'text-gray-800'
                   }`}>
                     Experience
@@ -311,7 +311,7 @@ const About = () => {
                       <div key={index} className={`p-4 rounded-xl ${
                         isDark ? 'bg-gray-700/30' : 'bg-white/30'
                       }`}>
-                        <h3 className={`font-bold mb-1 ${
+                        <h3 className={`font-poppins font-bold mb-1 ${
                           isDark ? 'text-white' : 'text-gray-800'
                         }`}>
                           {exp.title}
@@ -332,7 +332,7 @@ const About = () => {
 
               {activeCard === 1 && (
                 <div
-                  className={`p-8 rounded-3xl backdrop-blur-sm border cursor-pointer ${
+                  className={`font-inter p-8 rounded-3xl backdrop-blur-sm border cursor-pointer ${
                     isDark 
                       ? 'bg-gray-800/30 border-gray-700/50' 
                       : 'bg-white/20 border-white/30'
@@ -370,7 +370,7 @@ const About = () => {
 
               {activeCard === 2 && (
                 <div
-                  className={`p-8 rounded-3xl backdrop-blur-sm border cursor-pointer ${
+                  className={`font-poppins p-8 rounded-3xl backdrop-blur-sm border cursor-pointer ${
                     isDark 
                       ? 'bg-gray-800/30 border-gray-700/50' 
                       : 'bg-white/20 border-white/30'
@@ -415,19 +415,19 @@ const About = () => {
       {modalOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-[9999]">
           <motion.div
-            className={`max-w-2xl w-full mx-4 p-8 rounded-3xl backdrop-blur-sm border ${
+            className={`max-w-3xl w-full mx-4 max-h-[90vh] rounded-3xl backdrop-blur-sm border overflow-hidden ${
               isDark 
-                ? 'bg-gray-800/90 border-gray-700/50' 
-                : 'bg-white/90 border-white/60'
+                ? 'bg-slate-900/95 border-slate-700/50' 
+                : 'bg-white/95 border-slate-200/60'
             }`}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            onClick={(e) => e.stopPropagation()}
           >
+            <div className="overflow-y-auto max-h-[90vh] p-8 scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent">
               <button 
                 onClick={() => setModalOpen(false)}
-                className={`float-right text-2xl ${
-                  isDark ? 'text-gray-300' : 'text-gray-600'
+                className={`float-right text-3xl font-light hover:rotate-90 transition-transform duration-300 ${
+                  isDark ? 'text-slate-300 hover:text-white' : 'text-slate-600 hover:text-slate-800'
                 }`}
               >
                 ×
@@ -543,6 +543,7 @@ const About = () => {
                   ))}
                 </div>
               )}
+            </div>
           </motion.div>
         </div>
       )}

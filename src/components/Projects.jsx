@@ -117,7 +117,7 @@ const Projects = () => {
           >
             {/* Projects Title */}
             <motion.h1 
-              className="text-5xl md:text-6xl font-bold mb-6"
+              className="font-playfair text-5xl md:text-6xl font-bold mb-6"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -129,7 +129,7 @@ const Projects = () => {
 
             {/* Subtitle */}
             <motion.h2 
-              className={`text-2xl md:text-3xl font-light mb-6 ${
+              className={`font-montserrat text-2xl md:text-3xl font-light mb-6 ${
                 isDark ? 'text-gray-200' : 'text-gray-700'
               }`}
               initial={{ opacity: 0, y: 20 }}
@@ -141,7 +141,7 @@ const Projects = () => {
 
             {/* Description */}
             <motion.p 
-              className={`text-lg leading-relaxed mb-6 ${
+              className={`font-opensans text-lg leading-relaxed mb-6 ${
                 isDark ? 'text-gray-300' : 'text-gray-600'
               }`}
               initial={{ opacity: 0, y: 20 }}
@@ -153,7 +153,7 @@ const Projects = () => {
 
             {/* Additional Content */}
             <motion.div 
-              className={`space-y-4 mb-8 text-base leading-relaxed ${
+              className={`font-opensans space-y-4 mb-8 text-base leading-relaxed ${
                 isDark ? 'text-gray-300' : 'text-gray-600'
               }`}
               initial={{ opacity: 0, y: 20 }}
@@ -240,7 +240,7 @@ const Projects = () => {
               
               <motion.div
                 key={currentProject}
-                className={`group absolute inset-0 rounded-3xl overflow-hidden backdrop-blur-xl border cursor-pointer ${
+                className={`font-poppins group absolute inset-0 rounded-3xl overflow-hidden backdrop-blur-xl border cursor-pointer ${
                   isDark 
                     ? 'bg-gradient-to-br from-slate-900/95 via-slate-800/90 to-slate-900/95 border-slate-700/50' 
                     : 'bg-gradient-to-br from-white/95 via-slate-50/90 to-white/95 border-slate-200/50'
@@ -398,7 +398,7 @@ const Projects = () => {
                   transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
                 >
                   <motion.h3 
-                    className={`text-2xl font-bold mb-4 ${
+                    className={`font-roboto text-2xl font-bold mb-4 ${
                       isDark ? 'text-white' : 'text-slate-800'
                     }`}
                     initial={{ y: 15, opacity: 0 }}
@@ -433,11 +433,7 @@ const Projects = () => {
                   </motion.div>
                   
                   <button 
-                    className={`relative overflow-hidden font-semibold px-6 py-3 rounded-xl flex items-center justify-center gap-3 transition-all duration-300 w-full group ${
-                      isDark
-                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30'
-                        : 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white shadow-lg shadow-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/25'
-                    }`}
+                    className="relative overflow-hidden font-semibold px-6 py-3 rounded-full flex items-center justify-center gap-3 transition-all duration-500 w-full group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-2xl"
                     onClick={(e) => {
                       e.stopPropagation();
                       openModal(projects[currentProject]);
@@ -455,12 +451,9 @@ const Projects = () => {
 
       {/* Project Detail Modal */}
       {modalOpen && selectedProject && (
-        <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-[9999]"
-          onClick={() => setModalOpen(false)}
-        >
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-[9999]">
           <motion.div
-            className={`max-w-4xl w-full mx-4 max-h-[90vh] rounded-3xl backdrop-blur-sm border overflow-hidden ${
+            className={`font-poppins max-w-4xl w-full mx-4 max-h-[90vh] rounded-3xl backdrop-blur-sm border overflow-hidden ${
               isDark 
                 ? 'bg-slate-900/95 border-slate-700/50' 
                 : 'bg-white/95 border-slate-200/60'
@@ -482,7 +475,7 @@ const Projects = () => {
             <div className="space-y-8">
               {/* Project Header */}
               <div>
-                <h2 className={`text-4xl font-bold mb-4 ${
+                <h2 className={`font-playfair text-4xl font-bold mb-4 ${
                   isDark ? 'text-white' : 'text-slate-800'
                 }`}>
                   {selectedProject.title}
@@ -526,12 +519,12 @@ const Projects = () => {
 
               {/* Project Description */}
               <div>
-                <h3 className={`text-xl font-semibold mb-3 ${
+                <h3 className={`font-montserrat text-xl font-semibold mb-3 ${
                   isDark ? 'text-slate-200' : 'text-slate-700'
                 }`}>
                   About This Project
                 </h3>
-                <p className={`text-lg leading-relaxed ${
+                <p className={`font-opensans text-lg leading-relaxed ${
                   isDark ? 'text-slate-300' : 'text-slate-600'
                 }`}>
                   {selectedProject.fullDesc}
@@ -540,7 +533,7 @@ const Projects = () => {
 
               {/* Technologies Used */}
               <div>
-                <h3 className={`text-xl font-semibold mb-4 ${
+                <h3 className={`font-montserrat text-xl font-semibold mb-4 ${
                   isDark ? 'text-slate-200' : 'text-slate-700'
                 }`}>
                   Technologies Used
@@ -563,7 +556,7 @@ const Projects = () => {
 
               {/* Key Features */}
               <div>
-                <h3 className={`text-xl font-semibold mb-4 ${
+                <h3 className={`font-montserrat text-xl font-semibold mb-4 ${
                   isDark ? 'text-slate-200' : 'text-slate-700'
                 }`}>
                   Key Features
@@ -593,11 +586,7 @@ const Projects = () => {
                   href={selectedProject.live}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex-1 text-center font-semibold px-6 py-3 rounded-xl transition-all duration-300 ${
-                    isDark
-                      ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg shadow-indigo-500/25'
-                      : 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white shadow-lg shadow-indigo-500/20'
-                  }`}
+                  className="flex-1 text-center font-semibold px-6 py-3 rounded-full transition-all duration-500 overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-2xl"
                 >
                   View Live Demo
                 </a>
@@ -605,7 +594,7 @@ const Projects = () => {
                   href={selectedProject.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex-1 text-center font-semibold px-6 py-3 rounded-xl border transition-all duration-300 ${
+                  className={`flex-1 text-center font-semibold px-6 py-3 rounded-full border transition-all duration-300 ${
                     isDark
                       ? 'border-slate-600 text-slate-300 hover:bg-slate-800/50 hover:border-slate-500'
                       : 'border-slate-300 text-slate-600 hover:bg-slate-50 hover:border-slate-400'

@@ -34,16 +34,16 @@ const LandingPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
           >
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-black leading-tight mb-8">
-              <span className="bg-gradient-to-r from-slate-800 to-gray-900 dark:from-white dark:to-gray-100 bg-clip-text text-transparent">Creative</span>
+            <h1 className="font-oswald text-6xl md:text-8xl lg:text-9xl font-black leading-tight mb-8">
+              <span className="bg-gradient-to-r from-slate-800 to-gray-900 dark:from-white dark:to-gray-100 bg-clip-text text-transparent">Shikhar</span>
               <br />
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-violet-600 dark:from-blue-400 dark:via-purple-400 dark:to-violet-400 bg-clip-text text-transparent">Portfolio</span>
+              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-violet-600 dark:from-blue-400 dark:via-purple-400 dark:to-violet-400 bg-clip-text text-transparent">Portfolio's</span>
               <br />
-              <span className="bg-gradient-to-r from-slate-800 to-gray-900 dark:from-white dark:to-gray-100 bg-clip-text text-transparent">Experience</span>
+ 
             </h1>
             
             <motion.p
-              className="text-xl md:text-2xl bg-gradient-to-r from-gray-600 to-slate-700 dark:from-slate-300 dark:to-slate-400 bg-clip-text text-transparent mb-12 font-light"
+              className="font-montserrat text-xl md:text-2xl bg-gradient-to-r from-gray-600 to-slate-700 dark:from-slate-300 dark:to-slate-400 bg-clip-text text-transparent mb-12 font-light"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}

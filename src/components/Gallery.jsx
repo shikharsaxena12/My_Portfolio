@@ -6,7 +6,6 @@ import { HomeBackground } from '../portfolio_animation';
 
 const Gallery = () => {
   const { isDark = false } = useTheme() || {};
-  const [filter, setFilter] = useState('image');
   const [selectedMedia, setSelectedMedia] = useState(null);
 
   const labels = {
@@ -25,11 +24,11 @@ const Gallery = () => {
     { id: 8, type: 'image', src: '/api/placeholder/400/300', title: 'UI Design' }
   ];
 
-  const filteredItems = mediaItems.filter(item => item.type === filter);
+
 
   const MediaCard = ({ item }) => (
     <div
-      className={`relative cursor-pointer rounded-2xl overflow-hidden ${isDark ? 'bg-gray-800' : 'bg-white'} shadow-lg hover:shadow-xl transition-shadow`}
+      className={`font-inter relative cursor-pointer rounded-2xl overflow-hidden ${isDark ? 'bg-gray-800' : 'bg-white'} shadow-lg hover:shadow-xl transition-shadow`}
       onClick={() => setSelectedMedia(item)}
     >
       <div className="aspect-video relative overflow-hidden">
@@ -73,54 +72,37 @@ const Gallery = () => {
       
       <div className="relative z-10 container mx-auto px-6 pt-32 pb-20">
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="font-playfair text-5xl md:text-6xl font-bold mb-6">
+            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
               {labels.myGallery}
             </span>
           </h1>
-          <p className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+          
+          <h2 className={`font-montserrat text-2xl md:text-3xl font-light mb-6 ${
+            isDark ? 'text-gray-200' : 'text-gray-700'
+          }`}>
+            Visual Portfolio & Creative Showcase
+          </h2>
+          
+          <p className={`font-opensans text-lg leading-relaxed ${
+            isDark ? 'text-gray-300' : 'text-gray-600'
+          }`}>
             {labels.galleryDescription}
           </p>
         </div>
 
-        <div className="flex justify-center mb-12">
-          <div className={`flex rounded-full p-1 ${isDark ? 'bg-gray-800' : 'bg-white'} shadow-lg`}>
-            {[
-              { key: 'image', label: 'Images', icon: Image },
-              { key: 'video', label: 'Videos', icon: Video }
-            ].map((filterOption) => {
-              const Icon = filterOption.icon;
-              return (
-                <button
-                  key={filterOption.key}
-                  onClick={() => setFilter(filterOption.key)}
-                  className={`px-6 py-2 rounded-full transition-all flex items-center gap-2 ${
-                    filter === filterOption.key
-                      ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
-                      : isDark ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-800'
-                  }`}
-                >
-                  <Icon size={16} />
-                  {filterOption.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredItems.map((item) => (
+          {mediaItems.map((item) => (
             <MediaCard key={item.id} item={item} />
           ))}
         </div>
 
         {selectedMedia && (
-          <div
-            className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4"
-            onClick={() => setSelectedMedia(null)}
-          >
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
             <div
-              className={`relative max-w-4xl w-full rounded-2xl overflow-hidden ${isDark ? 'bg-gray-800' : 'bg-white'}`}
+              className={`font-montserrat relative max-w-4xl w-full rounded-2xl overflow-hidden ${isDark ? 'bg-gray-800' : 'bg-white'}`}
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -136,11 +118,11 @@ const Gallery = () => {
                 </span>
               </div>
               
-              <div className="p-6">
-                <h2 className={`text-2xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+              <div className="p-6 overflow-y-auto max-h-[60vh] scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent">
+                <h2 className={`font-playfair text-2xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-800'}`}>
                   {selectedMedia.title}
                 </h2>
-                <p className={`${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p className={`font-opensans ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                   {selectedMedia.type === 'video' ? 'Video content' : 'Image content'}
                 </p>
               </div>

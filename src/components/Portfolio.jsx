@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { motion, useAnimation } from 'framer-motion';
-import { Github, Linkedin, Mail, ArrowRight, Sparkles, Twitter, Instagram, Youtube, MessageCircle, Moon, Sun } from 'lucide-react';
+import { ArrowRight, Sparkles, Moon, Sun } from 'lucide-react';
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaYoutube, FaDiscord } from 'react-icons/fa';
+import { MdEmail } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import Navbar from './Navbar';
@@ -18,44 +20,38 @@ const Portfolio = () => {
 
   const socialLinks = useMemo(() => [
     { 
-      icon: Github, 
+      icon: FaGithub, 
       href: '#', 
-      color: isDark ? 'hover:text-gray-200' : 'hover:text-gray-800', 
-      bg: isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-100' 
+      color: isDark ? '#f0f6fc' : '#24292f',
+      hoverColor: isDark ? '#c9d1d9' : '#0969da'
     },
     { 
-      icon: Linkedin, 
+      icon: FaLinkedin, 
       href: '#', 
-      color: 'hover:text-blue-500', 
-      bg: isDark ? 'hover:bg-blue-900/50' : 'hover:bg-blue-50' 
+      color: '#0A66C2',
+      hoverColor: '#004182'
     },
     { 
-      icon: Twitter, 
+      icon: FaTwitter, 
       href: '#', 
-      color: 'hover:text-sky-400', 
-      bg: isDark ? 'hover:bg-sky-900/50' : 'hover:bg-sky-50' 
+      color: '#1D9BF0',
+      hoverColor: '#1A8CD8'
     },
     { 
-      icon: Instagram, 
+      icon: FaInstagram, 
       href: '#', 
-      color: 'hover:text-pink-500', 
-      bg: isDark ? 'hover:bg-pink-900/50' : 'hover:bg-pink-50' 
+      color: '#E1306C',
+      hoverColor: '#C13584'
     },
     { 
-      icon: Mail, 
+      icon: MdEmail, 
       href: '#', 
-      color: 'hover:text-green-500', 
-      bg: isDark ? 'hover:bg-green-900/50' : 'hover:bg-green-50' 
+      color: '#EA4335',
+      hoverColor: '#D33B2C'
     }
   ], [isDark]);
 
-  const getSocialLinkStyles = (social) => {
-    const baseStyles = 'group relative p-4 backdrop-blur-sm rounded-full transition-all duration-400 shadow-lg hover:shadow-xl';
-    const themeStyles = isDark 
-      ? 'bg-gray-800 border border-gray-700 text-gray-300' 
-      : 'bg-white/70 border border-white/60 text-gray-600';
-    return `${baseStyles} ${themeStyles} ${social.color} ${social.bg}`;
-  };
+
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -109,19 +105,35 @@ const Portfolio = () => {
         />
       ))}
       
-      {/* Interactive Cursor Glow */}
+      {/* Interactive 3D Cursor Glow */}
       <motion.div
-        className={`fixed w-96 h-96 rounded-full blur-3xl pointer-events-none z-0 ${
-          isDark 
-            ? 'bg-gradient-to-r from-blue-500/10 to-purple-500/10' 
-            : 'bg-gradient-to-r from-blue-400/10 to-purple-400/10'
-        }`}
+        className="fixed w-96 h-96 pointer-events-none z-0"
+        style={{ perspective: '1000px' }}
         animate={{
           x: mousePosition.x - 192,
           y: mousePosition.y - 192,
         }}
         transition={{ type: "spring", damping: 40, stiffness: 300, mass: 0.5 }}
-      />
+      >
+        <motion.div
+          className={`w-full h-full rounded-full blur-3xl ${
+            isDark 
+              ? 'bg-gradient-to-r from-blue-500/10 to-purple-500/10' 
+              : 'bg-gradient-to-r from-blue-400/10 to-purple-400/10'
+          }`}
+          animate={{
+            rotateX: [0, 15, -15, 0],
+            rotateY: [0, -15, 15, 0],
+            scale: [1, 1.1, 0.9, 1],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          style={{ transformStyle: 'preserve-3d' }}
+        />
+      </motion.div>
       
       <HomeBackground />
       <Navbar />
@@ -166,7 +178,7 @@ const Portfolio = () => {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           >
             <motion.h1 
-              className="text-4xl md:text-6xl font-bold mb-6 relative"
+              className="font-playfair text-4xl md:text-6xl font-bold mb-6 relative"
               initial={{ opacity: 0, y: 30, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
@@ -197,27 +209,16 @@ const Portfolio = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
             >
-              <motion.p className={`text-xl md:text-2xl font-light relative z-10 ${
+              <motion.p className={`font-source text-xl md:text-2xl font-light relative z-10 ${
                 isDark ? 'text-gray-200' : 'text-gray-600'
               }`}>
                 Full Stack Developer & UI/UX Designer
               </motion.p>
-              {/* Animated background highlight */}
-              <motion.div
-                className={`absolute inset-0 rounded-lg -z-10 ${
-                  isDark 
-                    ? 'bg-gradient-to-r from-gray-800/50 to-gray-700/50' 
-                    : 'bg-gradient-to-r from-blue-100/50 to-purple-100/50'
-                }`}
-                initial={{ scaleX: 0, opacity: 0 }}
-                animate={{ scaleX: 1, opacity: 1 }}
-                transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
-                style={{ originX: 0 }}
-              />
+
             </motion.div>
             
             <motion.p 
-              className={`text-lg mb-8 leading-relaxed ${
+              className={`font-roboto text-lg mb-8 leading-relaxed ${
                 isDark ? 'text-gray-300' : 'text-gray-500'
               }`}
               initial={{ opacity: 0, y: 15 }}
@@ -235,7 +236,7 @@ const Portfolio = () => {
             >
               <motion.button 
                 className="group relative bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-full font-medium transition-all duration-500 overflow-hidden shadow-lg hover:shadow-2xl"
-                whileHover={{ scale: 1.05, y: -2, boxShadow: "0 25px 50px rgba(59, 130, 246, 0.4)" }}
+                whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", damping: 15, stiffness: 300 }}
               >
@@ -254,12 +255,12 @@ const Portfolio = () => {
               
               <Link to="/contact">
                 <motion.button 
-                  className={`group relative border-2 px-8 py-4 rounded-full font-medium transition-all duration-500 backdrop-blur-sm shadow-md hover:shadow-xl ${
+                  className={`group relative border-2 px-8 py-4 rounded-full font-medium transition-all duration-500 backdrop-blur-sm shadow-lg hover:shadow-2xl ${
                     isDark 
                       ? 'border-gray-600 hover:border-blue-400 text-gray-200 hover:text-blue-400 bg-gray-800 hover:bg-gray-700' 
                       : 'border-gray-300 hover:border-blue-500 text-gray-700 hover:text-blue-600 bg-white/60 hover:bg-white/90'
                   }`}
-                  whileHover={{ scale: 1.05, y: -2, boxShadow: "0 15px 35px rgba(0, 0, 0, 0.15)" }}
+                  whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", damping: 15, stiffness: 300 }}
                 >
@@ -292,7 +293,7 @@ const Portfolio = () => {
                   <motion.a
                     key={index}
                     href={social.href}
-                    className={getSocialLinkStyles(social)}
+                    className="group transition-all duration-300"
                     whileHover={{ 
                       scale: 1.15, 
                       y: -4,
@@ -303,14 +304,11 @@ const Portfolio = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ delay: 1.4 + index * 0.1, type: "spring", damping: 15, stiffness: 300 }}
                   >
-                    {/* Ripple effect */}
-                    <motion.div
-                      className="absolute inset-0 rounded-full bg-current opacity-0 group-hover:opacity-15"
-                      initial={{ scale: 0 }}
-                      whileHover={{ scale: 1 }}
-                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    <Icon 
+                      size={32} 
+                      className="relative z-10 transition-all duration-300 group-hover:scale-110" 
+                      style={{ color: social.color }}
                     />
-                    <Icon size={22} className="relative z-10 transition-transform duration-300 group-hover:scale-110" />
                   </motion.a>
                 );
               })}

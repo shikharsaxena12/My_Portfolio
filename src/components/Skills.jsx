@@ -32,7 +32,7 @@ const Skills = () => {
   ], []);
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'}`}>
+    <div className={`h-screen overflow-hidden ${isDark ? 'bg-gray-900' : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'}`}>
       <HomeBackground />
       <Navbar />
       
@@ -45,7 +45,7 @@ const Skills = () => {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
           >
-            <div className={`p-8 rounded-3xl ${isDark ? 'bg-gray-800/50' : 'bg-white/50'} backdrop-blur-sm border ${isDark ? 'border-gray-700' : 'border-white/60'}`}>
+            <div className={`font-inter p-8 rounded-3xl ${isDark ? 'bg-gray-800/50' : 'bg-white/50'} backdrop-blur-sm border ${isDark ? 'border-gray-700' : 'border-white/60'}`}>
               
               {/* Tabs */}
               <div className="flex mb-6">
@@ -75,7 +75,7 @@ const Skills = () => {
                 {(activeTab === 'tech' ? techSkills : softSkills).map((skill, index) => (
                   <div key={skill.name} className="space-y-2">
                     <div className="flex justify-between">
-                      <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                      <span className={`font-poppins font-medium ${isDark ? 'text-white' : 'text-gray-800'}`}>
                         {skill.name}
                       </span>
                       <span className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
@@ -103,13 +103,21 @@ const Skills = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <h1 className="text-5xl font-bold">
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="font-playfair text-5xl md:text-6xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                 {labels.mySkills}
               </span>
             </h1>
             
-            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <h2 className={`font-montserrat text-2xl md:text-3xl font-light mb-6 ${
+              isDark ? 'text-gray-200' : 'text-gray-700'
+            }`}>
+              Technical Expertise & Professional Skills
+            </h2>
+            
+            <p className={`font-opensans text-lg leading-relaxed mb-8 ${
+              isDark ? 'text-gray-300' : 'text-gray-600'
+            }`}>
               I specialize in modern web development technologies and frameworks. 
               My expertise spans across frontend and backend development, with a 
               strong focus on creating scalable and efficient applications.
@@ -130,7 +138,6 @@ const Skills = () => {
                 <li>• React & Modern JavaScript</li>
                 <li>• API Design & Development</li>
                 <li>• Database Design & Management</li>
-                <li>• UI/UX Implementation</li>
               </ul>
             </div>
           </motion.div>

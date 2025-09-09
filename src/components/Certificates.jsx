@@ -105,7 +105,7 @@ const Certificates = () => {
                 {[...certificates.slice(0, 3), ...certificates.slice(0, 3), ...certificates.slice(0, 3)].map((cert, index) => (
                   <motion.div
                     key={`col1-${index}`}
-                    className={`group relative rounded-xl overflow-hidden shadow-lg flex-shrink-0 w-52 h-64 flex flex-col cursor-pointer ${
+                    className={`font-inter group relative rounded-xl overflow-hidden shadow-lg flex-shrink-0 w-52 h-64 flex flex-col cursor-pointer ${
                       isDark ? 'bg-slate-800/90 border border-slate-700/50' : 'bg-white/95 border border-slate-200/60'
                     }`}
                     whileHover={{ scale: 1.05, x: 10 }}
@@ -152,7 +152,7 @@ const Certificates = () => {
                 {[...certificates.slice(3, 6), ...certificates.slice(3, 6), ...certificates.slice(3, 6)].map((cert, index) => (
                   <motion.div
                     key={`col2-${index}`}
-                    className={`group relative rounded-xl overflow-hidden shadow-lg flex-shrink-0 w-52 h-64 flex flex-col cursor-pointer ${
+                    className={`font-poppins group relative rounded-xl overflow-hidden shadow-lg flex-shrink-0 w-52 h-64 flex flex-col cursor-pointer ${
                       isDark ? 'bg-slate-800/90 border border-slate-700/50' : 'bg-white/95 border border-slate-200/60'
                     }`}
                     whileHover={{ scale: 1.05, x: -10 }}
@@ -197,7 +197,7 @@ const Certificates = () => {
           >
             {/* Certificates Title */}
             <motion.h1 
-              className="text-5xl md:text-6xl font-bold mb-6"
+              className="font-playfair text-5xl md:text-6xl font-bold mb-6"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -209,7 +209,7 @@ const Certificates = () => {
 
             {/* Subtitle */}
             <motion.h2 
-              className={`text-2xl md:text-3xl font-light mb-6 ${
+              className={`font-montserrat text-2xl md:text-3xl font-light mb-6 ${
                 isDark ? 'text-gray-200' : 'text-gray-700'
               }`}
               initial={{ opacity: 0, y: 20 }}
@@ -221,7 +221,7 @@ const Certificates = () => {
 
             {/* Description */}
             <motion.p 
-              className={`text-lg leading-relaxed mb-6 ${
+              className={`font-opensans text-lg leading-relaxed mb-6 ${
                 isDark ? 'text-gray-300' : 'text-gray-600'
               }`}
               initial={{ opacity: 0, y: 20 }}
@@ -233,7 +233,7 @@ const Certificates = () => {
 
             {/* Additional Content */}
             <motion.div 
-              className={`space-y-4 mb-8 text-base leading-relaxed ${
+              className={`font-opensans space-y-4 mb-8 text-base leading-relaxed ${
                 isDark ? 'text-gray-300' : 'text-gray-600'
               }`}
               initial={{ opacity: 0, y: 20 }}
@@ -291,12 +291,9 @@ const Certificates = () => {
 
       {/* Certificate Detail Modal */}
       {modalOpen && selectedCertificate && (
-        <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-[9999]"
-          onClick={() => setModalOpen(false)}
-        >
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-[9999]">
           <motion.div
-            className={`max-w-3xl w-full mx-4 max-h-[90vh] rounded-3xl backdrop-blur-sm border overflow-hidden ${
+            className={`font-playfair max-w-3xl w-full mx-4 max-h-[90vh] rounded-3xl backdrop-blur-sm border overflow-hidden ${
               isDark 
                 ? 'bg-slate-900/95 border-slate-700/50' 
                 : 'bg-white/95 border-slate-200/60'
@@ -318,7 +315,7 @@ const Certificates = () => {
             <div className="space-y-8">
               {/* Certificate Header */}
               <div>
-                <h2 className={`text-4xl font-bold mb-4 ${
+                <h2 className={`font-playfair text-4xl font-bold mb-4 ${
                   isDark ? 'text-white' : 'text-slate-800'
                 }`}>
                   {selectedCertificate.title}
@@ -355,12 +352,12 @@ const Certificates = () => {
 
               {/* Certificate Description */}
               <div>
-                <h3 className={`text-xl font-semibold mb-3 ${
+                <h3 className={`font-montserrat text-xl font-semibold mb-3 ${
                   isDark ? 'text-slate-200' : 'text-slate-700'
                 }`}>
                   About This Certificate
                 </h3>
-                <p className={`text-lg leading-relaxed ${
+                <p className={`font-opensans text-lg leading-relaxed ${
                   isDark ? 'text-slate-300' : 'text-slate-600'
                 }`}>
                   {selectedCertificate.description}
@@ -369,7 +366,7 @@ const Certificates = () => {
 
               {/* Certificate Details */}
               <div>
-                <h3 className={`text-xl font-semibold mb-4 ${
+                <h3 className={`font-montserrat text-xl font-semibold mb-4 ${
                   isDark ? 'text-slate-200' : 'text-slate-700'
                 }`}>
                   Certificate Details
