@@ -1,18 +1,21 @@
-import React, { Suspense, useState, useRef } from 'react';
+import React, { Suspense, useState, useRef, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
-import LandingPage from './components/LandingPage';
-import Portfolio from './components/Portfolio';
-import About from './components/About';
-import Skills from './components/Skills';
-import Projects from './components/Projects';
-import Contact from './components/Contact';
-import Gallery from './components/Gallery';
-import Certificates from './components/Certificates';
-import OwnerLogin from './components/OwnerLogin';
-import OwnerDashboard from './components/OwnerDashboard';
 import './index.css';
+
+// Lazy load components
+const LandingPage = lazy(() => import('./components/LandingPage'));
+const Portfolio = lazy(() => import('./components/Portfolio'));
+const About = lazy(() => import('./components/About'));
+const Skills = lazy(() => import('./components/Skills'));
+const Projects = lazy(() => import('./components/Projects'));
+const Contact = lazy(() => import('./components/Contact'));
+const Gallery = lazy(() => import('./components/Gallery'));
+const Certificates = lazy(() => import('./components/Certificates'));
+const Testimonials = lazy(() => import('./components/Testimonials'));
+const OwnerLogin = lazy(() => import('./components/OwnerLogin'));
+const OwnerDashboard = lazy(() => import('./components/OwnerDashboard'));
 
 const Logo = () => {
   const location = useLocation();
@@ -41,17 +44,52 @@ const Logo = () => {
   };
   
   return (
-    <motion.img 
-      src="/Elegant Cursive Script_ Shikhar.png"
-      alt="Shikhar Logo"
-      className="fixed top-4 left-4 h-32 w-auto z-50 cursor-pointer"
-      style={{ filter: isDark ? 'invert(1) brightness(2)' : 'none', transform: 'rotate(20deg)' }}
+    <motion.div
+      className="fixed top-0 left-4 h-32 w-auto z-50 cursor-pointer"
+      style={{ transform: 'rotate(20deg)' }}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6 }}
       whileHover={{ scale: 1.05 }}
       onClick={handleClick}
-    />
+    >
+      <img 
+        src="/Elegant Cursive Script_ Shikhar.png"
+        alt="Shikhar Logo"
+        className="h-32 w-auto"
+        style={{ 
+          filter: 'brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%)'
+        }}
+      />
+      <div 
+        className="absolute inset-0 h-32 w-auto bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600"
+        style={{ 
+          WebkitMask: 'url("/Elegant Cursive Script_ Shikhar.png") no-repeat center/contain',
+          mask: 'url("/Elegant Cursive Script_ Shikhar.png") no-repeat center/contain'
+        }}
+      />
+    </motion.div>
+  );
+};
+
+// Loading component
+const LoadingSpinner = () => {
+  const { isDark } = useTheme();
+  return (
+    <div className={`min-h-screen flex items-center justify-center ${
+      isDark ? 'bg-gray-900' : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'
+    }`}>
+      <div className="flex flex-col items-center space-y-4">
+        <div className="relative">
+          <div className="w-16 h-16 border-4 border-blue-200 rounded-full animate-spin">
+            <div className="absolute top-0 left-0 w-16 h-16 border-4 border-transparent border-t-blue-600 rounded-full animate-spin"></div>
+          </div>
+        </div>
+        <p className={`text-lg font-medium ${
+          isDark ? 'text-gray-300' : 'text-gray-600'
+        }`}>Loading...</p>
+      </div>
+    </div>
   );
 };
 
@@ -61,20 +99,22 @@ function App() {
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <div className="App">
           <Logo />
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/skills" element={<Skills />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/certificates" element={<Certificates />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/owner" element={<OwnerLogin />} />
-            <Route path="/owner/dashboard" element={<OwnerDashboard />} />
-
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <Suspense fallback={<LoadingSpinner />}>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/skills" element={<Skills />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/certificates" element={<Certificates />} />
+              <Route path="/gallery" element={<Gallery />} />
+              <Route path="/testimonials" element={<Testimonials />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/owner" element={<OwnerLogin />} />
+              <Route path="/owner/dashboard" element={<OwnerDashboard />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
         </div>
       </Router>
     </ThemeProvider>

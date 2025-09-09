@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { useTheme } from '../contexts/ThemeContext';
 
 const PortfolioLandingPageAnimation = () => {
+  const { isDark } = useTheme();
   const FloatingOrb = ({ size, color, delay, duration, x, y }) => (
     <motion.div
-      className={`absolute rounded-full ${color} blur-xl opacity-15 dark:opacity-60`}
+      className={`absolute rounded-full ${color} blur-xl opacity-40 dark:opacity-60`}
       style={{ 
         width: size, 
         height: size,
@@ -31,7 +33,7 @@ const PortfolioLandingPageAnimation = () => {
 
   return (
     <div className="fixed inset-0 z-0">
-      <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-black" />
+      <div className={`absolute inset-0 transition-all duration-1000 ${isDark ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-br from-amber-200 via-orange-300 to-rose-400'}`} />
       
       {/* 3D Floating Neural Network */}
       {useMemo(() => {
@@ -53,7 +55,7 @@ const PortfolioLandingPageAnimation = () => {
         return particles.map(p => (
           <motion.div
             key={p.id}
-            className="absolute w-2 h-2 bg-indigo-600 dark:bg-indigo-200 rounded-full shadow-lg dark:shadow-indigo-300/50"
+            className="absolute w-2 h-2 bg-white/90 rounded-full shadow-lg shadow-white/60"
             style={{
               left: `${p.left}%`,
               top: `${p.top}%`,
@@ -63,7 +65,7 @@ const PortfolioLandingPageAnimation = () => {
               y: [0, p.y1, p.y2, 0],
               z: [0, p.z1, p.z2, 0],
               scale: [1, 1.5, 0.8, 1],
-              opacity: [0.3, 0.8, 0.4, 0.3]
+              opacity: [0.6, 1, 0.7, 0.6]
             }}
             transition={{
               duration: p.duration,
@@ -77,7 +79,7 @@ const PortfolioLandingPageAnimation = () => {
       
       {/* 3D Geometric Shapes */}
       <motion.div
-        className="absolute w-32 h-32 border-2 border-indigo-400/40 dark:border-indigo-200/80"
+        className="absolute w-32 h-32 border-2 border-white/80"
         style={{ left: '10%', top: '20%', transform: 'rotateX(45deg) rotateY(45deg)' }}
         animate={{
           rotateX: [45, 135, 225, 315, 45],
@@ -88,7 +90,7 @@ const PortfolioLandingPageAnimation = () => {
       />
       
       <motion.div
-        className="absolute w-24 h-24 bg-gradient-to-r from-indigo-500/20 to-violet-500/20 dark:from-indigo-300/50 dark:to-violet-300/50 rounded-full"
+        className="absolute w-24 h-24 bg-gradient-to-r from-white/50 to-white/40 rounded-full"
         style={{ right: '15%', top: '30%', transform: 'rotateZ(0deg)' }}
         animate={{
           rotateZ: [0, 360],
@@ -100,7 +102,7 @@ const PortfolioLandingPageAnimation = () => {
       />
       
       {/* 3D Grid Pattern */}
-      <div className="absolute inset-0 opacity-10 dark:opacity-40">
+      <div className="absolute inset-0 opacity-30 dark:opacity-40">
         <svg className="w-full h-full">
           <defs>
             <pattern id="grid3d" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
@@ -108,14 +110,14 @@ const PortfolioLandingPageAnimation = () => {
               <circle cx="30" cy="30" r="2" fill="currentColor" opacity="0.7"/>
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#grid3d)" className="text-indigo-500 dark:text-indigo-400"/>
+          <rect width="100%" height="100%" fill="url(#grid3d)" className="text-white/60"/>
         </svg>
       </div>
       
       {/* Floating 3D Orbs */}
-      <FloatingOrb size="300px" color="bg-indigo-500 dark:bg-indigo-300" delay={0} duration={20} x={20} y={30} />
-      <FloatingOrb size="200px" color="bg-violet-500 dark:bg-violet-300" delay={5} duration={15} x={60} y={50} />
-      <FloatingOrb size="150px" color="bg-blue-500 dark:bg-blue-300" delay={10} duration={25} x={40} y={70} />
+      <FloatingOrb size="300px" color={isDark ? "bg-white/30" : "bg-gray-800/40"} delay={0} duration={20} x={20} y={30} />
+      <FloatingOrb size="200px" color={isDark ? "bg-white/25" : "bg-gray-800/35"} delay={5} duration={15} x={60} y={50} />
+      <FloatingOrb size="150px" color={isDark ? "bg-white/35" : "bg-gray-800/45"} delay={10} duration={25} x={40} y={70} />
     </div>
   );
 };

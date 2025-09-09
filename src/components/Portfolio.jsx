@@ -89,19 +89,26 @@ const Portfolio = () => {
   );
 
   return (
-    <div className={`min-h-screen relative overflow-hidden scroll-smooth transition-colors duration-500 ${
-      isDark 
-        ? 'bg-gray-900' 
-        : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'
-    }`}>
+    <div className={`min-h-screen relative overflow-hidden scroll-smooth transition-all duration-1000 ${isDark ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300'}`}>
       {/* Floating Particles */}
       {particleConfig.map((particle, i) => (
-        <FloatingParticle
+        <motion.div
           key={i}
-          delay={particle.delay}
-          duration={particle.duration}
-          x={particle.x}
-          y={particle.y}
+          className={`absolute w-2 h-2 rounded-full transition-all duration-700 ${
+            isDark ? 'bg-gradient-to-r from-blue-400 to-purple-400' : 'bg-gradient-to-r from-amber-400 to-orange-400'
+          } opacity-20`}
+          style={{ left: `${particle.x}%`, top: `${particle.y}%` }}
+          animate={{
+            y: [0, -100, 0],
+            opacity: [0, 1, 0],
+            scale: [0, 1, 0]
+          }}
+          transition={{
+            duration: particle.duration,
+            delay: particle.delay,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
         />
       ))}
       
@@ -116,10 +123,10 @@ const Portfolio = () => {
         transition={{ type: "spring", damping: 40, stiffness: 300, mass: 0.5 }}
       >
         <motion.div
-          className={`w-full h-full rounded-full blur-3xl ${
+          className={`w-full h-full rounded-full blur-3xl transition-all duration-700 ${
             isDark 
               ? 'bg-gradient-to-r from-blue-500/10 to-purple-500/10' 
-              : 'bg-gradient-to-r from-blue-400/10 to-purple-400/10'
+              : 'bg-gradient-to-r from-amber-400/15 to-orange-400/15'
           }`}
           animate={{
             rotateX: [0, 15, -15, 0],
@@ -147,25 +154,25 @@ const Portfolio = () => {
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <div className={`w-96 h-[28rem] rounded-3xl shadow-2xl backdrop-blur-sm flex items-center justify-center overflow-hidden hover:shadow-3xl transition-all duration-500 ${
+            <div className={`w-96 h-[28rem] rounded-3xl shadow-2xl backdrop-blur-sm flex items-center justify-center overflow-hidden hover:shadow-3xl transition-all duration-700 ${
               isDark 
                 ? 'bg-gray-800 border border-gray-700' 
-                : 'bg-gradient-to-br from-blue-50 via-white to-purple-50 border border-white/60'
+                : 'bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 border border-orange-200/60'
             }`}>
               {/* Gradient Orbs */}
-              <div className={`absolute top-0 left-0 w-32 h-32 rounded-full blur-xl ${
+              <div className={`absolute top-0 left-0 w-32 h-32 rounded-full blur-xl transition-all duration-700 ${
                 isDark 
                   ? 'bg-gradient-to-br from-blue-500/20 to-transparent' 
-                  : 'bg-gradient-to-br from-blue-400/20 to-transparent'
+                  : 'bg-gradient-to-br from-amber-400/30 to-transparent'
               }`} />
-              <div className={`absolute bottom-0 right-0 w-40 h-40 rounded-full blur-xl ${
+              <div className={`absolute bottom-0 right-0 w-40 h-40 rounded-full blur-xl transition-all duration-700 ${
                 isDark 
                   ? 'bg-gradient-to-tl from-purple-500/20 to-transparent' 
-                  : 'bg-gradient-to-tl from-purple-400/20 to-transparent'
+                  : 'bg-gradient-to-tl from-orange-400/30 to-transparent'
               }`} />
               
-              <div className={`text-lg font-medium z-10 ${
-                isDark ? 'text-gray-300' : 'text-gray-400'
+              <div className={`text-lg font-medium z-10 transition-all duration-700 ${
+                isDark ? 'text-gray-300' : 'text-gray-600'
               }`}>Your Photo Here</div>
             </div>
           </motion.div>
@@ -183,9 +190,11 @@ const Portfolio = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             >
-              <span className={isDark ? 'text-white' : 'text-gray-800'}>Hi, I'm </span>
+              <span className={`transition-all duration-700 ${isDark ? 'text-white' : 'text-gray-800'}`}>Hi, I'm </span>
               <motion.span 
-                className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent relative inline-block"
+                className={`bg-clip-text text-transparent relative inline-block transition-all duration-700 ${
+                  isDark ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600'
+                }`}
                 animate={{ 
                   backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
                 }}
@@ -195,7 +204,9 @@ const Portfolio = () => {
                 Shikhar
                 {/* Glowing underline */}
                 <motion.div
-                  className="absolute -bottom-2 left-0 h-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full shadow-lg"
+                  className={`absolute -bottom-2 left-0 h-1 rounded-full shadow-lg transition-all duration-700 ${
+                    isDark ? 'bg-gradient-to-r from-blue-600 to-purple-600' : 'bg-gradient-to-r from-amber-600 to-orange-600'
+                  }`}
                   initial={{ width: 0, opacity: 0 }}
                   animate={{ width: '100%', opacity: 1 }}
                   transition={{ duration: 1.2, delay: 1, ease: "easeOut" }}
@@ -209,8 +220,8 @@ const Portfolio = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
             >
-              <motion.p className={`font-source text-xl md:text-2xl font-light relative z-10 ${
-                isDark ? 'text-gray-200' : 'text-gray-600'
+              <motion.p className={`font-source text-xl md:text-2xl font-light relative z-10 transition-all duration-700 ${
+                isDark ? 'text-gray-200' : 'text-gray-700'
               }`}>
                 Full Stack Developer & UI/UX Designer
               </motion.p>
@@ -218,8 +229,8 @@ const Portfolio = () => {
             </motion.div>
             
             <motion.p 
-              className={`font-roboto text-lg mb-8 leading-relaxed ${
-                isDark ? 'text-gray-300' : 'text-gray-500'
+              className={`font-roboto text-lg mb-8 leading-relaxed transition-all duration-700 ${
+                isDark ? 'text-gray-300' : 'text-gray-600'
               }`}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -235,19 +246,48 @@ const Portfolio = () => {
               transition={{ delay: 1.0, duration: 0.6, ease: "easeOut" }}
             >
               <motion.button 
-                className="group relative bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-full font-medium transition-all duration-500 overflow-hidden shadow-lg hover:shadow-2xl"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", damping: 15, stiffness: 300 }}
+                className={`relative overflow-hidden font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-2 group backdrop-blur-xl border shadow-2xl transition-all duration-500 ${isDark ? 'text-white border-white/30' : 'text-gray-800 border-gray-800/30'}`}
+                style={{
+                  background: isDark ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(168, 85, 247, 0.8), rgba(236, 72, 153, 0.8))' : 'linear-gradient(135deg, rgba(251, 191, 36, 0.8), rgba(249, 115, 22, 0.8), rgba(244, 63, 94, 0.8))'
+                }}
+                whileHover={{ 
+                  scale: 1.02, 
+                  y: -2,
+                  boxShadow: '0 15px 30px rgba(99, 102, 241, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2)'
+                }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20
+                }}
               >
-                {/* Shimmer effect */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent"
+                  className="absolute inset-0"
+                  animate={{
+                    background: isDark ? [
+                      'linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(168, 85, 247, 0.9), rgba(236, 72, 153, 0.9))',
+                      'linear-gradient(225deg, rgba(168, 85, 247, 0.9), rgba(236, 72, 153, 0.9), rgba(99, 102, 241, 0.9))',
+                      'linear-gradient(315deg, rgba(236, 72, 153, 0.9), rgba(99, 102, 241, 0.9), rgba(168, 85, 247, 0.9))',
+                      'linear-gradient(45deg, rgba(99, 102, 241, 0.9), rgba(168, 85, 247, 0.9), rgba(236, 72, 153, 0.9))'
+                    ] : [
+                      'linear-gradient(135deg, rgba(251, 191, 36, 0.9), rgba(249, 115, 22, 0.9), rgba(244, 63, 94, 0.9))',
+                      'linear-gradient(225deg, rgba(249, 115, 22, 0.9), rgba(244, 63, 94, 0.9), rgba(251, 191, 36, 0.9))',
+                      'linear-gradient(315deg, rgba(244, 63, 94, 0.9), rgba(251, 191, 36, 0.9), rgba(249, 115, 22, 0.9))',
+                      'linear-gradient(45deg, rgba(251, 191, 36, 0.9), rgba(249, 115, 22, 0.9), rgba(244, 63, 94, 0.9))'
+                    ]
+                  }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear", repeatType: "loop" }}
+                />
+                
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
                   initial={{ x: '-100%' }}
                   whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
                 />
-                <span className="relative z-10 flex items-center gap-2">
+                
+                <span className={`relative z-10 flex items-center gap-2`}>
                   {labels.viewMyWork}
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
@@ -255,27 +295,48 @@ const Portfolio = () => {
               
               <Link to="/contact">
                 <motion.button 
-                  className={`group relative border-2 px-8 py-4 rounded-full font-medium transition-all duration-500 backdrop-blur-sm shadow-lg hover:shadow-2xl ${
-                    isDark 
-                      ? 'border-gray-600 hover:border-blue-400 text-gray-200 hover:text-blue-400 bg-gray-800 hover:bg-gray-700' 
-                      : 'border-gray-300 hover:border-blue-500 text-gray-700 hover:text-blue-600 bg-white/60 hover:bg-white/90'
-                  }`}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", damping: 15, stiffness: 300 }}
+                  className={`relative overflow-hidden font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-2 group backdrop-blur-xl border shadow-2xl transition-all duration-500 ${isDark ? 'text-white border-white/30' : 'text-gray-800 border-gray-800/30'}`}
+                  style={{
+                    background: isDark ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(168, 85, 247, 0.8), rgba(236, 72, 153, 0.8))' : 'linear-gradient(135deg, rgba(251, 191, 36, 0.8), rgba(249, 115, 22, 0.8), rgba(244, 63, 94, 0.8))'
+                  }}
+                  whileHover={{ 
+                    scale: 1.02, 
+                    y: -2,
+                    boxShadow: '0 15px 30px rgba(99, 102, 241, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2)'
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 20
+                  }}
                 >
-                  <span className="relative z-10">{labels.getInTouch}</span>
-                {/* Hover background */}
-                <motion.div
-                  className={`absolute inset-0 rounded-full ${
-                    isDark 
-                      ? 'bg-gradient-to-r from-gray-700/50 to-gray-600/50' 
-                      : 'bg-gradient-to-r from-blue-50 to-purple-50'
-                  }`}
-                  initial={{ scale: 0, opacity: 0 }}
-                  whileHover={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                />
+                  <motion.div
+                    className="absolute inset-0"
+                    animate={{
+                      background: isDark ? [
+                        'linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(168, 85, 247, 0.9), rgba(236, 72, 153, 0.9))',
+                        'linear-gradient(225deg, rgba(168, 85, 247, 0.9), rgba(236, 72, 153, 0.9), rgba(99, 102, 241, 0.9))',
+                        'linear-gradient(315deg, rgba(236, 72, 153, 0.9), rgba(99, 102, 241, 0.9), rgba(168, 85, 247, 0.9))',
+                        'linear-gradient(45deg, rgba(99, 102, 241, 0.9), rgba(168, 85, 247, 0.9), rgba(236, 72, 153, 0.9))'
+                      ] : [
+                        'linear-gradient(135deg, rgba(251, 191, 36, 0.9), rgba(249, 115, 22, 0.9), rgba(244, 63, 94, 0.9))',
+                        'linear-gradient(225deg, rgba(249, 115, 22, 0.9), rgba(244, 63, 94, 0.9), rgba(251, 191, 36, 0.9))',
+                        'linear-gradient(315deg, rgba(244, 63, 94, 0.9), rgba(251, 191, 36, 0.9), rgba(249, 115, 22, 0.9))',
+                        'linear-gradient(45deg, rgba(251, 191, 36, 0.9), rgba(249, 115, 22, 0.9), rgba(244, 63, 94, 0.9))'
+                      ]
+                    }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "linear", repeatType: "loop" }}
+                  />
+                  
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                    initial={{ x: '-100%' }}
+                    whileHover={{ x: '100%' }}
+                    transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                  />
+                  
+                  <span className={`relative z-10`}>{labels.getInTouch}</span>
                 </motion.button>
               </Link>
             </motion.div>

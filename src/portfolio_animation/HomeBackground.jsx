@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -12,55 +12,68 @@ const createGradient = (positions, opacity) => {
   ].join(', ');
 };
 
+const createLightGradient = (positions, opacity) => {
+  const [pos1, pos2, pos3] = positions;
+  return [
+    `radial-gradient(circle at ${pos1}, rgba(251, 191, 36, ${opacity.amber}) 0%, transparent 50%)`,
+    `radial-gradient(circle at ${pos2}, rgba(249, 115, 22, ${opacity.orange}) 0%, transparent 50%)`,
+    `radial-gradient(circle at ${pos3}, rgba(244, 63, 94, ${opacity.rose}) 0%, transparent 50%)`
+  ].join(', ');
+};
+
 // Pre-compute gradient configurations for optimal performance
 const GRADIENT_CONFIG = {
   dark: [
-    createGradient(['20% 50%', '80% 20%', '40% 80%'], { blue: 0.2, purple: 0.2, pink: 0.15 }),
-    createGradient(['80% 50%', '20% 80%', '60% 20%'], { blue: 0.2, purple: 0.2, pink: 0.15 }),
-    createGradient(['40% 20%', '60% 80%', '20% 50%'], { blue: 0.2, purple: 0.2, pink: 0.15 })
+    createGradient(['20% 50%', '80% 20%', '40% 80%'], { blue: 0.4, purple: 0.4, pink: 0.3 }),
+    createGradient(['80% 50%', '20% 80%', '60% 20%'], { blue: 0.4, purple: 0.4, pink: 0.3 }),
+    createGradient(['40% 20%', '60% 80%', '20% 50%'], { blue: 0.4, purple: 0.4, pink: 0.3 })
   ],
   light: [
-    createGradient(['20% 50%', '80% 20%', '40% 80%'], { blue: 0.3, purple: 0.3, pink: 0.2 }),
-    createGradient(['80% 50%', '20% 80%', '60% 20%'], { blue: 0.3, purple: 0.3, pink: 0.2 }),
-    createGradient(['40% 20%', '60% 80%', '20% 50%'], { blue: 0.3, purple: 0.3, pink: 0.2 })
+    createLightGradient(['20% 50%', '80% 20%', '40% 80%'], { amber: 0.8, orange: 0.7, rose: 0.6 }),
+    createLightGradient(['80% 50%', '20% 80%', '60% 20%'], { amber: 0.8, orange: 0.7, rose: 0.6 }),
+    createLightGradient(['40% 20%', '60% 80%', '20% 50%'], { amber: 0.8, orange: 0.7, rose: 0.6 })
   ]
 };
 
-const HomeBackground = () => {
+const HomeBackground = memo(() => {
   const { isDark } = useTheme();
   
-  // Memoize all random values to prevent recalculation
+  // Reduced animation elements for better performance
   const animationConfig = useMemo(() => ({
-    particles: [...Array(20)].map((_, i) => ({
-      left: (i * 7) % 100,
-      top: (i * 11) % 100,
-      x: ((i * 13) % 200) - 100,
-      y: ((i * 17) % 200) - 100,
-      duration: 4 + (i % 4),
-      delay: (i * 0.1) % 2
+    particles: [...Array(12)].map((_, i) => ({
+      left: (i * 8) % 100,
+      top: (i * 12) % 100,
+      x: ((i * 15) % 150) - 75,
+      y: ((i * 18) % 150) - 75,
+      duration: 5 + (i % 3),
+      delay: (i * 0.2) % 2
     })),
-    shapes: [...Array(6)].map((_, i) => ({
-      left: 20 + (i * 15),
-      top: 10 + (i * 12),
-      duration: 6 + i,
-      delay: i * 0.5
-    })),
-    cards: [...Array(4)].map((_, i) => ({
-      left: 15 + (i * 20),
-      top: 20 + (i * 15),
-      duration: 5 + i,
+    shapes: [...Array(4)].map((_, i) => ({
+      left: 25 + (i * 20),
+      top: 15 + (i * 20),
+      duration: 8 + i,
       delay: i * 0.8
+    })),
+    cards: [...Array(3)].map((_, i) => ({
+      left: 20 + (i * 25),
+      top: 25 + (i * 20),
+      duration: 6 + i,
+      delay: i * 1
     }))
   }), []);
 
   return (
     <div className="fixed inset-0 z-0 overflow-hidden">
       {/* Base Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-100/80 dark:from-slate-900 dark:via-slate-800/50 dark:to-gray-900/80" />
+      <div className={`absolute inset-0 transition-all duration-1000 ${
+        isDark 
+          ? 'bg-gradient-to-br from-slate-900 via-slate-800/50 to-gray-900/80' 
+          : 'bg-gradient-to-br from-amber-50 via-orange-50/70 to-rose-50/80'
+      }`} />
       
       {/* Animated Mesh Gradient */}
       <motion.div
-        className="absolute inset-0 opacity-60"
+        className="absolute inset-0 opacity-100"
         animate={{
           background: isDark ? GRADIENT_CONFIG.dark : GRADIENT_CONFIG.light
         }}
@@ -88,7 +101,7 @@ const HomeBackground = () => {
             delay: shape.delay
           }}
         >
-          <div className={`w-16 h-16 border-2 border-blue-300/40 dark:border-blue-400/30 ${i % 2 === 0 ? 'rounded-full' : 'rotate-45'} backdrop-blur-sm`} />
+          <div className={`w-20 h-20 border-3 transition-all duration-700 ${isDark ? 'border-blue-400/80' : 'border-amber-600'} ${i % 2 === 0 ? 'rounded-full' : 'rotate-45'} backdrop-blur-sm shadow-lg`} />
         </motion.div>
       ))}
 
@@ -96,7 +109,7 @@ const HomeBackground = () => {
       {animationConfig.particles.map((particle, i) => (
         <motion.div
           key={`particle-${i}`}
-          className="absolute w-1 h-1 bg-blue-400/60 dark:bg-blue-300/50 rounded-full"
+          className={`absolute w-3 h-3 rounded-full transition-all duration-700 shadow-lg ${isDark ? 'bg-blue-400 shadow-blue-400/50' : 'bg-amber-600 shadow-amber-600/50'}`}
           style={{
             left: `${particle.left}%`,
             top: `${particle.top}%`,
@@ -117,11 +130,11 @@ const HomeBackground = () => {
       ))}
 
       {/* Hexagonal Grid Pattern */}
-      <div className="absolute inset-0 opacity-20">
+      <div className={`absolute inset-0 transition-all duration-700 ${isDark ? 'opacity-40' : 'opacity-50'}`}>
         <svg className="w-full h-full">
           <defs>
             <pattern id="hexagons" x="0" y="0" width="100" height="87" patternUnits="userSpaceOnUse">
-              <polygon points="50,1 90,26 90,74 50,99 10,74 10,26" fill="none" stroke={isDark ? "rgb(96, 165, 250)" : "rgb(59, 130, 246)"} strokeWidth="1" opacity={isDark ? "0.2" : "0.3"}/>
+              <polygon points="50,1 90,26 90,74 50,99 10,74 10,26" fill="none" stroke={isDark ? "rgb(96, 165, 250)" : "rgb(217, 119, 6)"} strokeWidth="1" opacity={isDark ? "0.3" : "0.6"}/>
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#hexagons)" />
@@ -132,7 +145,7 @@ const HomeBackground = () => {
       {animationConfig.cards.map((card, i) => (
         <motion.div
           key={`card-${i}`}
-          className="absolute w-32 h-20 bg-white/20 dark:bg-gray-800/20 backdrop-blur-md rounded-lg border border-white/30 dark:border-gray-600/30 shadow-lg"
+          className={`absolute w-32 h-20 backdrop-blur-md rounded-lg shadow-lg transition-all duration-700 ${isDark ? 'bg-gray-800/20 border-gray-600/30' : 'bg-amber-100/40 border-amber-200/60'} border`}
           style={{
             left: `${card.left}%`,
             top: `${card.top}%`,
@@ -153,7 +166,7 @@ const HomeBackground = () => {
 
       {/* Glowing Orbs */}
       <motion.div
-        className="absolute w-64 h-64 bg-gradient-to-r from-blue-400/30 to-purple-400/30 dark:from-blue-500/20 dark:to-purple-500/20 rounded-full blur-3xl"
+        className={`absolute w-80 h-80 rounded-full blur-3xl transition-all duration-700 ${isDark ? 'bg-gradient-to-r from-blue-500/40 to-purple-500/40' : 'bg-gradient-to-r from-amber-500/60 to-orange-500/60'}`}
         style={{ left: '70%', top: '10%' }}
         animate={{
           scale: [1, 1.2, 1],
@@ -163,7 +176,7 @@ const HomeBackground = () => {
       />
       
       <motion.div
-        className="absolute w-48 h-48 bg-gradient-to-r from-indigo-400/30 to-pink-400/30 dark:from-indigo-500/20 dark:to-pink-500/20 rounded-full blur-3xl"
+        className={`absolute w-64 h-64 rounded-full blur-3xl transition-all duration-700 ${isDark ? 'bg-gradient-to-r from-indigo-500/40 to-pink-500/40' : 'bg-gradient-to-r from-orange-500/60 to-rose-500/60'}`}
         style={{ left: '10%', top: '60%' }}
         animate={{
           scale: [1, 1.3, 1],
@@ -173,6 +186,8 @@ const HomeBackground = () => {
       />
     </div>
   );
-};
+});
+
+HomeBackground.displayName = 'HomeBackground';
 
 export default HomeBackground;

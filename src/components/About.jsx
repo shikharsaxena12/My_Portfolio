@@ -6,24 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import { HomeBackground } from '../portfolio_animation';
 
-const FloatingParticle = React.memo(({ delay, duration, x, y }) => (
-  <motion.div
-    className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-20"
-    style={{ left: `${x}%`, top: `${y}%` }}
-    animate={{
-      y: [0, -100, 0],
-      opacity: [0, 1, 0],
-      scale: [0, 1, 0]
-    }}
-    transition={{
-      duration,
-      delay,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }}
-  />
-));
-
 const About = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [activeCard, setActiveCard] = useState(0);
@@ -69,8 +51,6 @@ const About = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-
-
   const stats = [
     { number: "50+", label: "Projects" },
     { number: "3+", label: "Years Exp" },
@@ -82,13 +62,13 @@ const About = () => {
       title: "Full Stack Developer",
       company: "Tech Corp",
       period: "2022-Present",
-      color: "text-blue-400"
+      color: isDark ? "text-blue-400" : "text-amber-600"
     },
     {
       title: "Frontend Developer", 
       company: "StartupXYZ",
       period: "2021-2022",
-      color: "text-blue-400"
+      color: isDark ? "text-blue-400" : "text-amber-600"
     }
   ];
 
@@ -97,13 +77,13 @@ const About = () => {
       title: "Computer Science",
       company: "University of Tech",
       period: "2018-2022",
-      color: "text-green-400"
+      color: isDark ? "text-green-400" : "text-orange-600"
     },
     {
       title: "Web Development Bootcamp",
       company: "CodeAcademy",
       period: "2021",
-      color: "text-green-400"
+      color: isDark ? "text-green-400" : "text-orange-600"
     }
   ];
 
@@ -112,22 +92,38 @@ const About = () => {
       title: "Best Developer Award",
       company: "Tech Corp",
       period: "2023",
-      color: "text-yellow-400"
+      color: isDark ? "text-yellow-400" : "text-rose-600"
     },
     {
       title: "Open Source Contributor",
       company: "GitHub",
       period: "2022-Present",
-      color: "text-yellow-400"
+      color: isDark ? "text-yellow-400" : "text-rose-600"
     }
   ];
 
+  const FloatingParticle = React.memo(({ delay, duration, x, y }) => (
+    <motion.div
+      className={`absolute w-2 h-2 rounded-full opacity-20 transition-all duration-700 ${
+        isDark ? 'bg-gradient-to-r from-blue-400 to-purple-400' : 'bg-gradient-to-r from-amber-400 to-orange-400'
+      }`}
+      style={{ left: `${x}%`, top: `${y}%` }}
+      animate={{
+        y: [0, -100, 0],
+        opacity: [0, 1, 0],
+        scale: [0, 1, 0]
+      }}
+      transition={{
+        duration,
+        delay,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }}
+    />
+  ));
+
   return (
-    <div className={`min-h-screen relative overflow-hidden scroll-smooth transition-colors duration-500 ${
-      isDark 
-        ? 'bg-gray-900' 
-        : 'bg-gradient-to-br from-slate-50 via-white to-blue-50'
-    }`}>
+    <div className={`min-h-screen relative overflow-hidden scroll-smooth transition-all duration-1000 ${isDark ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300'}`}>
       {/* Floating Particles */}
       {useMemo(() => {
         const particles = [];
@@ -149,14 +145,14 @@ const About = () => {
             y={particle.y}
           />
         ));
-      }, [])}
+      }, [isDark])}
       
       {/* Interactive Cursor Glow */}
       <motion.div
-        className={`fixed w-96 h-96 rounded-full blur-3xl pointer-events-none z-0 ${
+        className={`fixed w-96 h-96 rounded-full blur-3xl pointer-events-none z-0 transition-all duration-700 ${
           isDark 
             ? 'bg-gradient-to-r from-blue-500/10 to-purple-500/10' 
-            : 'bg-gradient-to-r from-blue-400/10 to-purple-400/10'
+            : 'bg-gradient-to-r from-amber-400/15 to-orange-400/15'
         }`}
         animate={{
           x: mousePosition.x - 192,
@@ -184,14 +180,16 @@ const About = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span className={`bg-clip-text text-transparent transition-all duration-700 ${
+                isDark ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600'
+              }`}>
                 About Me
               </span>
             </motion.h1>
 
             {/* Subtitle */}
             <motion.h2 
-              className={`font-montserrat text-2xl md:text-3xl font-light mb-6 ${
+              className={`font-montserrat text-2xl md:text-3xl font-light mb-6 transition-all duration-700 ${
                 isDark ? 'text-gray-200' : 'text-gray-700'
               }`}
               initial={{ opacity: 0, y: 20 }}
@@ -203,7 +201,7 @@ const About = () => {
 
             {/* Description */}
             <motion.p 
-              className={`font-opensans text-lg leading-relaxed mb-8 ${
+              className={`font-opensans text-lg leading-relaxed mb-8 transition-all duration-700 ${
                 isDark ? 'text-gray-300' : 'text-gray-600'
               }`}
               initial={{ opacity: 0, y: 20 }}
@@ -224,19 +222,38 @@ const About = () => {
               {stats.map((stat, index) => (
                 <motion.div
                   key={index}
-                  className={`font-inter text-center p-6 rounded-2xl backdrop-blur-sm border shadow-lg ${
+                  className={`font-inter text-center p-6 rounded-2xl backdrop-blur-xl border shadow-lg relative overflow-hidden transition-all duration-700 ${
                     isDark 
-                      ? 'bg-gray-800/50 border-gray-700' 
-                      : 'bg-white/60 border-white/60'
+                      ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
+                      : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
                   }`}
                   whileHover={{ scale: 1.05, y: -5 }}
                   transition={{ type: "spring", damping: 15, stiffness: 300 }}
                 >
-                  <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                  <motion.div
+                    className="absolute inset-0 opacity-60"
+                    animate={{
+                      background: isDark ? [
+                        'linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))',
+                        'linear-gradient(225deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3))',
+                        'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))',
+                        'linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))'
+                      ] : [
+                        'linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))',
+                        'linear-gradient(225deg, rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4))',
+                        'linear-gradient(315deg, rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))',
+                        'linear-gradient(45deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))'
+                      ]
+                    }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <div className={`text-3xl md:text-4xl font-bold mb-2 relative z-10 transition-all duration-700 ${
+                    isDark ? 'text-white' : 'text-gray-800'
+                  }`}>
                     {stat.number}
                   </div>
-                  <div className={`text-sm font-medium ${
-                    isDark ? 'text-gray-300' : 'text-gray-600'
+                  <div className={`text-sm font-medium relative z-10 transition-all duration-700 ${
+                    isDark ? 'text-gray-200' : 'text-gray-700'
                   }`}>
                     {stat.label}
                   </div>
@@ -247,19 +264,56 @@ const About = () => {
             {/* Back to Home Button */}
             <motion.button
               onClick={() => navigate('/')}
-              className="group relative bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-full font-medium transition-all duration-500 overflow-hidden shadow-lg hover:shadow-2xl"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
+              className={`relative overflow-hidden font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-2 group backdrop-blur-xl border shadow-2xl transition-all duration-500 ${
+                isDark ? 'text-white border-white/30' : 'text-gray-800 border-gray-800/30'
+              }`}
+              style={{
+                background: isDark 
+                  ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(168, 85, 247, 0.8), rgba(236, 72, 153, 0.8))' 
+                  : 'linear-gradient(135deg, rgba(251, 191, 36, 0.8), rgba(249, 115, 22, 0.8), rgba(244, 63, 94, 0.8))'
+              }}
+              whileHover={{ 
+                scale: 1.02, 
+                y: -2,
+                boxShadow: isDark 
+                  ? '0 15px 30px rgba(99, 102, 241, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2)'
+                  : '0 15px 30px rgba(251, 191, 36, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.2)'
+              }}
+              whileTap={{ scale: 0.98 }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.0 }}
+              transition={{ 
+                delay: 1.0,
+                type: "spring",
+                stiffness: 300,
+                damping: 20
+              }}
             >
+              {/* Button gradient animation */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent"
+                className="absolute inset-0"
+                animate={{
+                  background: isDark ? [
+                    'linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(168, 85, 247, 0.9), rgba(236, 72, 153, 0.9))',
+                    'linear-gradient(225deg, rgba(168, 85, 247, 0.9), rgba(236, 72, 153, 0.9), rgba(99, 102, 241, 0.9))',
+                    'linear-gradient(315deg, rgba(236, 72, 153, 0.9), rgba(99, 102, 241, 0.9), rgba(168, 85, 247, 0.9))'
+                  ] : [
+                    'linear-gradient(135deg, rgba(251, 191, 36, 0.9), rgba(249, 115, 22, 0.9), rgba(244, 63, 94, 0.9))',
+                    'linear-gradient(225deg, rgba(249, 115, 22, 0.9), rgba(244, 63, 94, 0.9), rgba(251, 191, 36, 0.9))',
+                    'linear-gradient(315deg, rgba(244, 63, 94, 0.9), rgba(251, 191, 36, 0.9), rgba(249, 115, 22, 0.9))'
+                  ]
+                }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              />
+              
+              {/* Shimmer effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
                 initial={{ x: '-100%' }}
                 whileHover={{ x: '100%' }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
               />
+              
               <span className="relative z-10 flex items-center gap-2">
                 <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform duration-300" />
                 Back to Home
@@ -274,44 +328,45 @@ const About = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            {/* Dots Navigation */}
-            <div className="flex justify-center mb-8">
-              <div className="flex space-x-3">
-                {[0, 1, 2].map((index) => (
-                  <div
-                    key={index}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      activeCard === index 
-                        ? 'bg-blue-500' 
-                        : isDark ? 'bg-gray-600' : 'bg-gray-300'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-
             {/* Card Container */}
             <div className="relative">
               {activeCard === 0 && (
                 <div
-                  className={`font-poppins p-8 rounded-3xl backdrop-blur-sm border cursor-pointer ${
+                  className={`font-poppins relative p-8 rounded-3xl backdrop-blur-xl border cursor-pointer overflow-hidden transition-all duration-700 ${
                     isDark 
-                      ? 'bg-gray-800/30 border-gray-700/50' 
-                      : 'bg-white/20 border-white/30'
+                      ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
+                      : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
                   }`}
                   onClick={() => openModal(0)}
                 >
-                  <h2 className={`font-raleway text-2xl font-bold mb-6 ${
+                  <motion.div
+                    className="absolute inset-0 opacity-60"
+                    animate={{
+                      background: isDark ? [
+                        'linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))',
+                        'linear-gradient(225deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3))',
+                        'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))',
+                        'linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))'
+                      ] : [
+                        'linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))',
+                        'linear-gradient(225deg, rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4))',
+                        'linear-gradient(315deg, rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))',
+                        'linear-gradient(45deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))'
+                      ]
+                    }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <h2 className={`font-raleway text-2xl font-bold mb-6 relative z-10 transition-all duration-700 ${
                     isDark ? 'text-white' : 'text-gray-800'
                   }`}>
                     Experience
                   </h2>
-                  <div className="space-y-4">
+                  <div className="space-y-4 relative z-10">
                     {experiences.map((exp, index) => (
-                      <div key={index} className={`p-4 rounded-xl ${
-                        isDark ? 'bg-gray-700/30' : 'bg-white/30'
+                      <div key={index} className={`p-4 rounded-xl transition-all duration-700 ${
+                        isDark ? 'bg-gray-700/30' : 'bg-white/40'
                       }`}>
-                        <h3 className={`font-poppins font-bold mb-1 ${
+                        <h3 className={`font-poppins font-bold mb-1 transition-all duration-700 ${
                           isDark ? 'text-white' : 'text-gray-800'
                         }`}>
                           {exp.title}
@@ -319,7 +374,7 @@ const About = () => {
                         <p className={`text-sm ${exp.color}`}>
                           {exp.company}
                         </p>
-                        <p className={`text-xs ${
+                        <p className={`text-xs transition-all duration-700 ${
                           isDark ? 'text-gray-400' : 'text-gray-500'
                         }`}>
                           {exp.period}
@@ -332,24 +387,41 @@ const About = () => {
 
               {activeCard === 1 && (
                 <div
-                  className={`font-inter p-8 rounded-3xl backdrop-blur-sm border cursor-pointer ${
+                  className={`font-inter relative p-8 rounded-3xl backdrop-blur-xl border cursor-pointer overflow-hidden transition-all duration-700 ${
                     isDark 
-                      ? 'bg-gray-800/30 border-gray-700/50' 
-                      : 'bg-white/20 border-white/30'
+                      ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
+                      : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
                   }`}
                   onClick={() => openModal(1)}
                 >
-                  <h2 className={`text-2xl font-bold mb-6 ${
+                  <motion.div
+                    className="absolute inset-0 opacity-60"
+                    animate={{
+                      background: isDark ? [
+                        'linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))',
+                        'linear-gradient(225deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3))',
+                        'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))',
+                        'linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))'
+                      ] : [
+                        'linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))',
+                        'linear-gradient(225deg, rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4))',
+                        'linear-gradient(315deg, rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))',
+                        'linear-gradient(45deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))'
+                      ]
+                    }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <h2 className={`text-2xl font-bold mb-6 relative z-10 transition-all duration-700 ${
                     isDark ? 'text-white' : 'text-gray-800'
                   }`}>
                     Education
                   </h2>
-                  <div className="space-y-4">
+                  <div className="space-y-4 relative z-10">
                     {education.map((edu, index) => (
-                      <div key={index} className={`p-4 rounded-xl ${
-                        isDark ? 'bg-gray-700/30' : 'bg-white/30'
+                      <div key={index} className={`p-4 rounded-xl transition-all duration-700 ${
+                        isDark ? 'bg-gray-700/30' : 'bg-white/40'
                       }`}>
-                        <h3 className={`font-bold mb-1 ${
+                        <h3 className={`font-bold mb-1 transition-all duration-700 ${
                           isDark ? 'text-white' : 'text-gray-800'
                         }`}>
                           {edu.title}
@@ -357,7 +429,7 @@ const About = () => {
                         <p className={`text-sm ${edu.color}`}>
                           {edu.company}
                         </p>
-                        <p className={`text-xs ${
+                        <p className={`text-xs transition-all duration-700 ${
                           isDark ? 'text-gray-400' : 'text-gray-500'
                         }`}>
                           {edu.period}
@@ -370,24 +442,41 @@ const About = () => {
 
               {activeCard === 2 && (
                 <div
-                  className={`font-poppins p-8 rounded-3xl backdrop-blur-sm border cursor-pointer ${
+                  className={`font-poppins relative p-8 rounded-3xl backdrop-blur-xl border cursor-pointer overflow-hidden transition-all duration-700 ${
                     isDark 
-                      ? 'bg-gray-800/30 border-gray-700/50' 
-                      : 'bg-white/20 border-white/30'
+                      ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
+                      : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
                   }`}
                   onClick={() => openModal(2)}
                 >
-                  <h2 className={`text-2xl font-bold mb-6 ${
+                  <motion.div
+                    className="absolute inset-0 opacity-60"
+                    animate={{
+                      background: isDark ? [
+                        'linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))',
+                        'linear-gradient(225deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3))',
+                        'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))',
+                        'linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))'
+                      ] : [
+                        'linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))',
+                        'linear-gradient(225deg, rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4))',
+                        'linear-gradient(315deg, rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))',
+                        'linear-gradient(45deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))'
+                      ]
+                    }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <h2 className={`text-2xl font-bold mb-6 relative z-10 transition-all duration-700 ${
                     isDark ? 'text-white' : 'text-gray-800'
                   }`}>
                     Achievements
                   </h2>
-                  <div className="space-y-4">
+                  <div className="space-y-4 relative z-10">
                     {achievements.map((ach, index) => (
-                      <div key={index} className={`p-4 rounded-xl ${
-                        isDark ? 'bg-gray-700/30' : 'bg-white/30'
+                      <div key={index} className={`p-4 rounded-xl transition-all duration-700 ${
+                        isDark ? 'bg-gray-700/30' : 'bg-white/40'
                       }`}>
-                        <h3 className={`font-bold mb-1 ${
+                        <h3 className={`font-bold mb-1 transition-all duration-700 ${
                           isDark ? 'text-white' : 'text-gray-800'
                         }`}>
                           {ach.title}
@@ -395,7 +484,7 @@ const About = () => {
                         <p className={`text-sm ${ach.color}`}>
                           {ach.company}
                         </p>
-                        <p className={`text-xs ${
+                        <p className={`text-xs transition-all duration-700 ${
                           isDark ? 'text-gray-400' : 'text-gray-500'
                         }`}>
                           {ach.period}
@@ -415,7 +504,7 @@ const About = () => {
       {modalOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-[9999]">
           <motion.div
-            className={`max-w-3xl w-full mx-4 max-h-[90vh] rounded-3xl backdrop-blur-sm border overflow-hidden ${
+            className={`max-w-3xl w-full mx-4 max-h-[90vh] rounded-3xl backdrop-blur-sm border overflow-hidden transition-all duration-700 ${
               isDark 
                 ? 'bg-slate-900/95 border-slate-700/50' 
                 : 'bg-white/95 border-slate-200/60'
@@ -435,16 +524,16 @@ const About = () => {
               
               {modalContent === 0 && (
                 <div>
-                  <h2 className={`text-3xl font-bold mb-6 ${
+                  <h2 className={`text-3xl font-bold mb-6 transition-all duration-700 ${
                     isDark ? 'text-white' : 'text-gray-800'
                   }`}>
                     {labels.experienceDetails}
                   </h2>
                   {experiences.map((exp, index) => (
-                    <div key={index} className={`mb-6 p-6 rounded-xl ${
-                      isDark ? 'bg-gray-700/30' : 'bg-white/30'
+                    <div key={index} className={`mb-6 p-6 rounded-xl transition-all duration-700 ${
+                      isDark ? 'bg-gray-700/30' : 'bg-white/40'
                     }`}>
-                      <h3 className={`text-xl font-bold mb-2 ${
+                      <h3 className={`text-xl font-bold mb-2 transition-all duration-700 ${
                         isDark ? 'text-white' : 'text-gray-800'
                       }`}>
                         {exp.title}
@@ -452,12 +541,12 @@ const About = () => {
                       <p className={`text-lg ${exp.color} mb-2`}>
                         {exp.company}
                       </p>
-                      <p className={`text-sm mb-4 ${
+                      <p className={`text-sm mb-4 transition-all duration-700 ${
                         isDark ? 'text-gray-400' : 'text-gray-500'
                       }`}>
                         {exp.period}
                       </p>
-                      <ul className={`list-disc list-inside space-y-1 text-sm ${
+                      <ul className={`list-disc list-inside space-y-1 text-sm transition-all duration-700 ${
                         isDark ? 'text-gray-300' : 'text-gray-600'
                       }`}>
                         <li>Led development of 5+ major projects</li>
@@ -472,16 +561,16 @@ const About = () => {
               
               {modalContent === 1 && (
                 <div>
-                  <h2 className={`text-3xl font-bold mb-6 ${
+                  <h2 className={`text-3xl font-bold mb-6 transition-all duration-700 ${
                     isDark ? 'text-white' : 'text-gray-800'
                   }`}>
                     {labels.educationDetails}
                   </h2>
                   {education.map((edu, index) => (
-                    <div key={index} className={`mb-6 p-6 rounded-xl ${
-                      isDark ? 'bg-gray-700/30' : 'bg-white/30'
+                    <div key={index} className={`mb-6 p-6 rounded-xl transition-all duration-700 ${
+                      isDark ? 'bg-gray-700/30' : 'bg-white/40'
                     }`}>
-                      <h3 className={`text-xl font-bold mb-2 ${
+                      <h3 className={`text-xl font-bold mb-2 transition-all duration-700 ${
                         isDark ? 'text-white' : 'text-gray-800'
                       }`}>
                         {edu.title}
@@ -489,12 +578,12 @@ const About = () => {
                       <p className={`text-lg ${edu.color} mb-2`}>
                         {edu.company}
                       </p>
-                      <p className={`text-sm mb-4 ${
+                      <p className={`text-sm mb-4 transition-all duration-700 ${
                         isDark ? 'text-gray-400' : 'text-gray-500'
                       }`}>
                         {edu.period}
                       </p>
-                      <ul className={`list-disc list-inside space-y-1 text-sm ${
+                      <ul className={`list-disc list-inside space-y-1 text-sm transition-all duration-700 ${
                         isDark ? 'text-gray-300' : 'text-gray-600'
                       }`}>
                         <li>GPA: 3.8/4.0</li>
@@ -509,16 +598,16 @@ const About = () => {
               
               {modalContent === 2 && (
                 <div>
-                  <h2 className={`text-3xl font-bold mb-6 ${
+                  <h2 className={`text-3xl font-bold mb-6 transition-all duration-700 ${
                     isDark ? 'text-white' : 'text-gray-800'
                   }`}>
                     {labels.achievementDetails}
                   </h2>
                   {achievements.map((ach, index) => (
-                    <div key={index} className={`mb-6 p-6 rounded-xl ${
-                      isDark ? 'bg-gray-700/30' : 'bg-white/30'
+                    <div key={index} className={`mb-6 p-6 rounded-xl transition-all duration-700 ${
+                      isDark ? 'bg-gray-700/30' : 'bg-white/40'
                     }`}>
-                      <h3 className={`text-xl font-bold mb-2 ${
+                      <h3 className={`text-xl font-bold mb-2 transition-all duration-700 ${
                         isDark ? 'text-white' : 'text-gray-800'
                       }`}>
                         {ach.title}
@@ -526,12 +615,12 @@ const About = () => {
                       <p className={`text-lg ${ach.color} mb-2`}>
                         {ach.company}
                       </p>
-                      <p className={`text-sm mb-4 ${
+                      <p className={`text-sm mb-4 transition-all duration-700 ${
                         isDark ? 'text-gray-400' : 'text-gray-500'
                       }`}>
                         {ach.period}
                       </p>
-                      <ul className={`list-disc list-inside space-y-1 text-sm ${
+                      <ul className={`list-disc list-inside space-y-1 text-sm transition-all duration-700 ${
                         isDark ? 'text-gray-300' : 'text-gray-600'
                       }`}>
                         <li>{labels.recognizedPerformance}</li>

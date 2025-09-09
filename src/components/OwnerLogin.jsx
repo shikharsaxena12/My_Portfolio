@@ -61,9 +61,14 @@ const OwnerLogin = () => {
           
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
+            className="relative overflow-hidden font-semibold px-6 py-3 rounded-full flex items-center justify-center gap-3 w-full group backdrop-blur-xl border border-white/30 text-white shadow-2xl transition-all duration-500"
+            style={{
+              background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(168, 85, 247, 0.8), rgba(236, 72, 153, 0.8))'
+            }}
           >
-            Login
+            <span className={`relative z-10 ${
+              isDark ? 'text-white' : 'text-gray-800'
+            }`}>Login</span>
           </button>
         </form>
       </motion.div>
