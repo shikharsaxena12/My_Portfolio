@@ -59,8 +59,8 @@ const HomeBackground = memo(() => {
       {/* Base Gradient */}
       <div className={`absolute inset-0 transition-all duration-1000 ${
         isDark 
-          ? 'bg-gradient-to-br from-slate-900 via-slate-800/50 to-gray-900/80' 
-          : 'bg-gradient-to-br from-amber-50 via-orange-50/70 to-rose-50/80'
+          ? 'bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900' 
+          : 'bg-gradient-to-br from-amber-300 via-orange-400 to-rose-400'
       }`} />
       
       {/* Animated Mesh Gradient */}

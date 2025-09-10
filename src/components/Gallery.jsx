@@ -402,24 +402,44 @@ const Gallery = () => {
         {selectedMedia && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
             <div
-              className={`font-montserrat relative max-w-4xl w-full rounded-2xl overflow-hidden transition-all duration-700 ${
-                isDark ? 'bg-gray-800' : 'bg-white'
+              className={`font-montserrat relative max-w-4xl w-full rounded-2xl overflow-hidden backdrop-blur-xl border transition-all duration-700 ${
+                isDark 
+                  ? 'bg-gradient-to-br from-blue-900/40 via-purple-900/40 to-pink-900/40 border-blue-400/30' 
+                  : 'bg-gradient-to-br from-amber-100/80 via-orange-100/80 to-rose-100/80 border-amber-300/50'
               }`}
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Animated glassmorphism overlay */}
+              <motion.div
+                className="absolute inset-0 opacity-60 z-0"
+                animate={{
+                  background: isDark ? [
+                    'linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))',
+                    'linear-gradient(225deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3))',
+                    'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))',
+                    'linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))'
+                  ] : [
+                    'linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))',
+                    'linear-gradient(225deg, rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4))',
+                    'linear-gradient(315deg, rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))',
+                    'linear-gradient(45deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))'
+                  ]
+                }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              />
               <button
                 onClick={() => setSelectedMedia(null)}
-                className={`absolute top-4 right-4 z-10 p-2 rounded-full transition-all duration-700 ${
+                className={`absolute top-4 right-4 z-20 p-2 rounded-full backdrop-blur-xl border transition-all duration-700 ${
                   isDark 
-                    ? 'bg-black/50 text-white hover:bg-black/70' 
-                    : 'bg-white/50 text-amber-800 hover:bg-white/70'
+                    ? 'bg-black/50 text-white hover:bg-black/70 border-white/20' 
+                    : 'bg-white/50 text-amber-800 hover:bg-white/70 border-amber-300/30'
                 }`}
               >
                 <X size={20} />
               </button>
               
-              <div className={`aspect-video flex items-center justify-center transition-all duration-700 ${
-                isDark ? 'bg-gray-900' : 'bg-amber-100'
+              <div className={`relative aspect-video flex items-center justify-center transition-all duration-700 z-10 ${
+                isDark ? 'bg-gray-900/50' : 'bg-amber-100/50'
               }`}>
                 <span className={`text-lg transition-colors duration-700 ${
                   isDark ? 'text-white' : 'text-amber-800'
@@ -428,7 +448,7 @@ const Gallery = () => {
                 </span>
               </div>
               
-              <div className="p-6">
+              <div className="relative p-6 z-10">
                 <h2 className={`font-playfair text-2xl font-bold mb-2 transition-colors duration-700 ${
                   isDark ? 'text-white' : 'text-amber-800'
                 }`}>

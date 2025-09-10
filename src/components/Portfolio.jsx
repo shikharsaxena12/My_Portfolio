@@ -192,14 +192,27 @@ const Portfolio = () => {
             >
               <span className={`transition-all duration-700 ${isDark ? 'text-white' : 'text-gray-800'}`}>Hi, I'm </span>
               <motion.span 
-                className={`bg-clip-text text-transparent relative inline-block transition-all duration-700 ${
-                  isDark ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600'
+                className={`relative inline-block transition-all duration-700 ${
+                  isDark 
+                    ? 'text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]' 
+                    : 'text-gray-900 drop-shadow-[0_0_20px_rgba(0,0,0,0.8)]'
                 }`}
                 animate={{ 
-                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+                  textShadow: isDark 
+                    ? [
+                        '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(59,130,246,0.6)',
+                        '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(147,51,234,0.6)',
+                        '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(236,72,153,0.6)',
+                        '0 0 20px rgba(255,255,255,0.8), 0 0 40px rgba(59,130,246,0.6)'
+                      ]
+                    : [
+                        '0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(245,158,11,0.8)',
+                        '0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(249,115,22,0.8)',
+                        '0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(244,63,94,0.8)',
+                        '0 0 20px rgba(0,0,0,0.8), 0 0 40px rgba(245,158,11,0.8)'
+                      ]
                 }}
                 transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                style={{ backgroundSize: '200% 200%' }}
               >
                 Shikhar
                 {/* Glowing underline */}

@@ -365,7 +365,7 @@ const Contact = () => {
                   return (
                     <motion.div 
                       key={index} 
-                      className={`group relative p-4 rounded-xl backdrop-blur-xl border cursor-pointer overflow-hidden transition-all duration-700 ${
+                      className={`group relative p-3 rounded-full backdrop-blur-xl border cursor-pointer overflow-hidden transition-all duration-700 ${
                         isDark 
                           ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
                           : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
@@ -399,17 +399,17 @@ const Contact = () => {
                         }}
                         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                       />
-                      <div className="flex items-center gap-4 relative z-10">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-700 ${
+                      <div className="flex items-center gap-3 relative z-10">
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-700 ${
                           isDark ? 'bg-gradient-to-r from-blue-500 to-purple-500' : 'bg-gradient-to-r from-amber-500 to-orange-500'
                         }`}>
-                          <Icon className="text-white" size={18} />
+                          <Icon className="text-white" size={16} />
                         </div>
                         <div>
-                          <h3 className={`font-medium transition-all duration-700 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                          <h3 className={`font-medium text-sm transition-all duration-700 ${isDark ? 'text-white' : 'text-gray-800'}`}>
                             {contact.title}
                           </h3>
-                          <p className={`text-sm transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                          <p className={`text-xs transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
                             {contact.info}
                           </p>
                         </div>

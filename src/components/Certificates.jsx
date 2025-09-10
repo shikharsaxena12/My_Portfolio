@@ -352,16 +352,34 @@ const Certificates = () => {
       {modalOpen && selectedCertificate && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-[9999]">
           <motion.div
-            className={`font-playfair max-w-3xl w-full mx-4 max-h-[90vh] rounded-3xl backdrop-blur-sm border overflow-hidden transition-all duration-700 ${
+            className={`font-playfair max-w-3xl w-full mx-4 max-h-[90vh] rounded-3xl backdrop-blur-xl border overflow-hidden transition-all duration-700 relative ${
               isDark 
-                ? 'bg-slate-900/95 border-slate-700/50' 
-                : 'bg-white/95 border-slate-200/60'
+                ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
+                : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
             }`}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="overflow-y-auto max-h-[90vh] p-8 scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent">
+            {/* Animated glassmorphism overlay */}
+            <motion.div
+              className="absolute inset-0 opacity-60"
+              animate={{
+                background: isDark ? [
+                  'linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))',
+                  'linear-gradient(225deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3))',
+                  'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))',
+                  'linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))'
+                ] : [
+                  'linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))',
+                  'linear-gradient(225deg, rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4))',
+                  'linear-gradient(315deg, rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))',
+                  'linear-gradient(45deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))'
+                ]
+              }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <div className="overflow-y-auto max-h-[90vh] p-8 scrollbar-thin scrollbar-thumb-slate-400 scrollbar-track-transparent relative z-10">
             <button 
               onClick={() => setModalOpen(false)}
               className={`float-right text-3xl font-light hover:rotate-90 transition-transform duration-300 ${

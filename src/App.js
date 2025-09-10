@@ -58,14 +58,9 @@ const Logo = () => {
         alt="Shikhar Logo"
         className="h-32 w-auto"
         style={{ 
-          filter: 'brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%)'
-        }}
-      />
-      <div 
-        className="absolute inset-0 h-32 w-auto bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600"
-        style={{ 
-          WebkitMask: 'url("/Elegant Cursive Script_ Shikhar.png") no-repeat center/contain',
-          mask: 'url("/Elegant Cursive Script_ Shikhar.png") no-repeat center/contain'
+          filter: isDark 
+            ? 'brightness(0) saturate(100%) invert(1)'
+            : 'brightness(0) saturate(100%)'
         }}
       />
     </motion.div>

@@ -1,319 +1,362 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, Quote, ChevronLeft, ChevronRight, Users, Award, MessageCircle } from 'lucide-react';
+import { Star, Send, User } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import Navbar from './Navbar';
 import { HomeBackground } from '../portfolio_animation';
 
 const Testimonials = () => {
   const { isDark = false } = useTheme() || {};
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const testimonials = useMemo(() => [
+  const [testimonials, setTestimonials] = useState([
     {
+      id: 1,
       name: 'Sarah Johnson',
       role: 'Product Manager',
-      company: 'TechCorp Inc.',
+      company: 'TechCorp',
       rating: 5,
-      text: 'Shikhar delivered exceptional work on our web application. His attention to detail and technical expertise made our project a huge success. The final product exceeded all our expectations.',
-      image: '/api/placeholder/100/100'
+      text: 'Exceptional work! Shikhar delivered beyond expectations.',
+      date: new Date().toLocaleDateString()
     },
     {
-      name: 'Michael Chen',
+      id: 2,
+      name: 'Mike Chen',
       role: 'CTO',
       company: 'StartupXYZ',
       rating: 5,
-      text: 'Working with Shikhar was a game-changer for our startup. He built a scalable platform that exceeded our expectations and delivered everything on time.',
-      image: '/api/placeholder/100/100'
+      text: 'Outstanding developer with great communication skills.',
+      date: new Date().toLocaleDateString()
     },
     {
-      name: 'Emily Rodriguez',
-      role: 'Design Director',
-      company: 'Creative Agency',
+      id: 3,
+      name: 'Emily Davis',
+      role: 'Designer',
+      company: 'Creative Co',
       rating: 5,
-      text: 'Shikhar perfectly translated our designs into a beautiful, responsive website. His code quality is outstanding and the performance is incredible.',
-      image: '/api/placeholder/100/100'
-    },
-    {
-      name: 'David Thompson',
-      role: 'Founder',
-      company: 'E-commerce Solutions',
-      rating: 5,
-      text: 'The e-commerce platform Shikhar built for us increased our sales by 300%. His expertise in modern web technologies is truly impressive.',
-      image: '/api/placeholder/100/100'
+      text: 'Perfect implementation of our design vision.',
+      date: new Date().toLocaleDateString()
     }
-  ], []);
+  ]);
+  
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [formData, setFormData] = useState({
+    name: '',
+    role: '',
+    company: '',
+    rating: 5,
+    text: ''
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    }, 4000);
     return () => clearInterval(interval);
   }, [testimonials.length]);
 
-  const nextTestimonial = () => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const prevTestimonial = () => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.name && formData.text) {
+      const newTestimonial = {
+        id: Date.now(),
+        ...formData,
+        date: new Date().toLocaleDateString()
+      };
+      setTestimonials(prev => [...prev, newTestimonial]);
+      setFormData({ name: '', role: '', company: '', rating: 5, text: '' });
+    }
   };
 
   return (
-    <div className={`min-h-screen relative overflow-hidden transition-all duration-1000 ${
-      isDark 
-        ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600' 
-        : 'bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300'
+    <div className={`h-screen overflow-hidden transition-all duration-1000 ${
+      isDark ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300'
     }`}>
       <HomeBackground />
       <Navbar />
       
-      <div className="relative z-10 container mx-auto px-6 pt-32 pb-20">
-        {/* Header */}
-        <motion.div 
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.h1 
-            className="font-playfair text-5xl md:text-6xl font-bold mb-6"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <span className={`bg-clip-text text-transparent transition-all duration-700 ${
+      <div className="relative z-10 h-full flex">
+        {/* Left Half - Static Testimonial Card */}
+        <div className="w-1/2 flex items-center justify-center p-8">
+          <div className="w-full max-w-md">
+            <div className={`p-8 rounded-2xl backdrop-blur-xl border shadow-2xl transition-all duration-700 ${
               isDark 
-                ? 'bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400' 
-                : 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600'
+                ? 'bg-gradient-to-br from-blue-900/40 via-purple-900/40 to-pink-900/40 border-blue-400/30' 
+                : 'bg-gradient-to-br from-amber-100/80 via-orange-100/80 to-rose-100/80 border-amber-300/50'
             }`}>
-              Client Testimonials
-            </span>
-          </motion.h1>
-          
-          <motion.p 
-            className={`font-opensans text-xl leading-relaxed max-w-2xl mx-auto transition-colors duration-700 ${
-              isDark ? 'text-blue-200' : 'text-amber-700'
-            }`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            What clients say about working with me
-          </motion.p>
-        </motion.div>
-
-        {/* Main Testimonial Display */}
-        <div className="max-w-5xl mx-auto mb-16">
-          <div className="relative">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentIndex}
-                className={`relative p-8 md:p-12 rounded-3xl backdrop-blur-xl border shadow-2xl transition-all duration-700 ${
-                  isDark 
-                    ? 'bg-gradient-to-br from-blue-900/30 via-purple-900/30 to-pink-900/30 border-blue-400/20' 
-                    : 'bg-gradient-to-br from-amber-100/60 via-orange-100/60 to-rose-100/60 border-amber-300/30'
-                }`}
-                initial={{ opacity: 0, x: 100, rotateY: 15 }}
-                animate={{ opacity: 1, x: 0, rotateY: 0 }}
-                exit={{ opacity: 0, x: -100, rotateY: -15 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-              >
-                {/* Animated Background Pattern */}
-                <motion.div
-                  className="absolute inset-0 opacity-10"
-                  animate={{
-                    background: isDark ? [
-                      'radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%)',
-                      'radial-gradient(circle at 80% 50%, rgba(147, 51, 234, 0.3) 0%, transparent 50%)',
-                      'radial-gradient(circle at 50% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 50%)',
-                      'radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%)'
-                    ] : [
-                      'radial-gradient(circle at 20% 50%, rgba(245, 158, 11, 0.4) 0%, transparent 50%)',
-                      'radial-gradient(circle at 80% 50%, rgba(249, 115, 22, 0.4) 0%, transparent 50%)',
-                      'radial-gradient(circle at 50% 80%, rgba(244, 63, 94, 0.4) 0%, transparent 50%)',
-                      'radial-gradient(circle at 20% 50%, rgba(245, 158, 11, 0.4) 0%, transparent 50%)'
-                    ]
-                  }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                />
-
-                {/* Quote Icon */}
+              {/* Rating */}
+              <AnimatePresence mode="wait">
                 <motion.div 
-                  className={`absolute top-8 left-8 transition-colors duration-700 ${
-                    isDark ? 'text-blue-400/40' : 'text-amber-600/40'
-                  }`}
-                  animate={{ rotate: [0, 5, -5, 0] }}
-                  transition={{ duration: 4, repeat: Infinity }}
+                  key={`rating-${testimonials[currentIndex]?.id}`}
+                  className="flex gap-1 mb-4"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.15 }}
                 >
-                  <Quote size={60} />
+                  {[...Array(testimonials[currentIndex]?.rating || 5)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 fill-current text-yellow-400" />
+                  ))}
                 </motion.div>
+              </AnimatePresence>
 
-                {/* Content */}
-                <div className="relative z-10 text-center pt-8">
-                  {/* Rating */}
-                  <div className="flex justify-center gap-2 mb-8">
-                    {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, scale: 0, rotate: -180 }}
-                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                        transition={{ delay: i * 0.1, duration: 0.5 }}
-                      >
-                        <Star className={`w-6 h-6 fill-current transition-colors duration-700 ${
-                          isDark ? 'text-yellow-400' : 'text-yellow-500'
-                        }`} />
-                      </motion.div>
-                    ))}
+              {/* Text */}
+              <AnimatePresence mode="wait">
+                <motion.p 
+                  key={`text-${testimonials[currentIndex]?.id}`}
+                  className={`text-lg mb-6 leading-relaxed transition-colors duration-700 ${
+                    isDark ? 'text-blue-100' : 'text-amber-900'
+                  }`}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 30 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  "{testimonials[currentIndex]?.text}"
+                </motion.p>
+              </AnimatePresence>
+
+              {/* Author */}
+              <AnimatePresence mode="wait">
+                <motion.div 
+                  key={`author-${testimonials[currentIndex]?.id}`}
+                  className="flex items-center gap-4"
+                  initial={{ opacity: 0, x: -25 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 25 }}
+                  transition={{ duration: 0.15, delay: 0.05 }}
+                >
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold transition-all duration-700 ${
+                    isDark 
+                      ? 'bg-gradient-to-br from-blue-500/60 to-purple-500/60 text-blue-100' 
+                      : 'bg-gradient-to-br from-amber-300/80 to-orange-300/80 text-amber-900'
+                  }`}>
+                    {testimonials[currentIndex]?.name?.charAt(0)}
                   </div>
+                  <div>
+                    <h4 className={`font-bold transition-colors duration-700 ${
+                      isDark ? 'text-blue-100' : 'text-amber-900'
+                    }`}>
+                      {testimonials[currentIndex]?.name}
+                    </h4>
+                    <p className={`text-sm transition-colors duration-700 ${
+                      isDark ? 'text-blue-300' : 'text-amber-700'
+                    }`}>
+                      {testimonials[currentIndex]?.role} at {testimonials[currentIndex]?.company}
+                    </p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
-                  {/* Testimonial Text */}
-                  <motion.p 
-                    className={`font-opensans text-xl md:text-2xl leading-relaxed mb-10 max-w-4xl mx-auto transition-colors duration-700 ${
-                      isDark ? 'text-blue-100' : 'text-amber-800'
-                    }`}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.6 }}
-                  >
-                    "{testimonials[currentIndex].text}"
-                  </motion.p>
 
-                  {/* Client Info */}
-                  <motion.div 
-                    className="flex flex-col md:flex-row items-center justify-center gap-6"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5, duration: 0.6 }}
-                  >
-                    <motion.div 
-                      className={`w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold transition-all duration-700 ${
-                        isDark 
-                          ? 'bg-gradient-to-br from-blue-600/60 to-purple-600/60 text-blue-100' 
-                          : 'bg-gradient-to-br from-amber-200/80 to-orange-200/80 text-amber-800'
-                      }`}
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ type: "spring", damping: 15, stiffness: 300 }}
-                    >
-                      {testimonials[currentIndex].name.split(' ').map(n => n[0]).join('')}
-                    </motion.div>
-                    <div className="text-center md:text-left">
-                      <h4 className={`font-montserrat text-2xl font-bold mb-2 transition-colors duration-700 ${
-                        isDark ? 'text-blue-100' : 'text-amber-800'
-                      }`}>
-                        {testimonials[currentIndex].name}
-                      </h4>
-                      <p className={`text-lg font-medium transition-colors duration-700 ${
-                        isDark ? 'text-blue-300' : 'text-amber-600'
-                      }`}>
-                        {testimonials[currentIndex].role}
-                      </p>
-                      <p className={`text-base transition-colors duration-700 ${
-                        isDark ? 'text-purple-300' : 'text-orange-600'
-                      }`}>
-                        {testimonials[currentIndex].company}
-                      </p>
-                    </div>
-                  </motion.div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Navigation Buttons */}
-            <button
-              onClick={prevTestimonial}
-              className={`absolute left-4 top-1/2 -translate-y-1/2 p-4 rounded-full backdrop-blur-xl border transition-all duration-300 ${
-                isDark 
-                  ? 'bg-slate-800/60 border-slate-600/50 text-blue-300 hover:bg-slate-700/60 hover:scale-110' 
-                  : 'bg-amber-100/60 border-amber-300/50 text-amber-700 hover:bg-amber-200/60 hover:scale-110'
-              }`}
-            >
-              <ChevronLeft size={28} />
-            </button>
-            
-            <button
-              onClick={nextTestimonial}
-              className={`absolute right-4 top-1/2 -translate-y-1/2 p-4 rounded-full backdrop-blur-xl border transition-all duration-300 ${
-                isDark 
-                  ? 'bg-slate-800/60 border-slate-600/50 text-blue-300 hover:bg-slate-700/60 hover:scale-110' 
-                  : 'bg-amber-100/60 border-amber-300/50 text-amber-700 hover:bg-amber-200/60 hover:scale-110'
-              }`}
-            >
-              <ChevronRight size={28} />
-            </button>
-          </div>
-
-          {/* Indicators */}
-          <div className="flex justify-center gap-3 mt-8">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`transition-all duration-300 ${
-                  index === currentIndex
-                    ? isDark 
-                      ? 'w-12 h-4 bg-blue-400 rounded-full' 
-                      : 'w-12 h-4 bg-amber-600 rounded-full'
-                    : isDark 
-                      ? 'w-4 h-4 bg-slate-600 rounded-full hover:bg-slate-500' 
-                      : 'w-4 h-4 bg-amber-300 rounded-full hover:bg-amber-400'
-                }`}
-              />
-            ))}
           </div>
         </div>
 
-        {/* Stats Section */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
-          {[
-            { icon: Users, number: '50+', label: 'Happy Clients', desc: 'Satisfied customers worldwide' },
-            { icon: Award, number: '100%', label: 'Success Rate', desc: 'Projects delivered on time' },
-            { icon: MessageCircle, number: '5.0', label: 'Average Rating', desc: 'Based on client feedback' }
-          ].map((stat, index) => {
-            const Icon = stat.icon;
-            return (
+        {/* Right Half - Content & Form */}
+        <div className="w-1/2 flex flex-col justify-center p-8">
+          <div className="max-w-lg">
+            {/* Header */}
+            <motion.h1 
+              className="font-playfair text-4xl md:text-5xl font-bold mb-6 pt-16"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <span className={`bg-clip-text text-transparent transition-all duration-700 ${
+                isDark 
+                  ? 'bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300' 
+                  : 'bg-gradient-to-r from-amber-700 via-orange-700 to-rose-700'
+              }`}>
+                Testimonials
+              </span>
+            </motion.h1>
+
+            <motion.p 
+              className={`font-opensans text-lg mb-8 leading-relaxed transition-colors duration-700 ${
+                isDark ? 'text-blue-100' : 'text-amber-800'
+              }`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+               Valuable feedback from professionals I’ve collaborated with. Would you like to share your thoughts? Your experience matters.
+            </motion.p>
+
+            {/* Add Testimonial Form */}
+            <motion.form 
+              onSubmit={handleSubmit}
+              className={`font-poppins group relative w-full rounded-3xl overflow-hidden backdrop-blur-xl border p-8 transition-all duration-700 ${
+                isDark 
+                  ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
+                  : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
+              }`}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              {/* Animated glassmorphism overlay */}
               <motion.div
-                key={index}
-                className={`text-center p-8 rounded-3xl backdrop-blur-xl border shadow-lg transition-all duration-700 ${
-                  isDark 
-                    ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-blue-400/20' 
-                    : 'bg-gradient-to-br from-amber-200/40 via-orange-200/40 to-rose-200/40 border-amber-300/30'
-                }`}
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ type: "spring", damping: 15, stiffness: 300 }}
-              >
-                <motion.div
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity }}
+                className="absolute inset-0 opacity-60"
+                animate={{
+                  background: isDark ? [
+                    'linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))',
+                    'linear-gradient(225deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3))',
+                    'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))',
+                    'linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))'
+                  ] : [
+                    'linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))',
+                    'linear-gradient(225deg, rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4))',
+                    'linear-gradient(315deg, rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))',
+                    'linear-gradient(45deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))'
+                  ]
+                }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              />
+
+              <div className="mb-6 relative z-10 flex justify-between items-start">
+                <div>
+                  <h3 className={`font-roboto text-xl font-bold mb-2 transition-all duration-700 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                    Share Your Experience
+                  </h3>
+                  <p className={`font-opensans text-xs transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                    Tell us about your experience
+                  </p>
+                </div>
+                
+                <motion.button
+                  type="submit"
+                  className={`relative overflow-hidden font-semibold px-4 py-2 rounded-full flex items-center justify-center gap-2 group backdrop-blur-xl border shadow-lg relative z-10 transition-all duration-500 text-sm pointer-events-auto ${isDark ? 'text-white border-white/30' : 'text-gray-800 border-gray-800/30'}`}
+                  style={{
+                    background: isDark 
+                      ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(168, 85, 247, 0.8), rgba(236, 72, 153, 0.8))' 
+                      : 'linear-gradient(135deg, rgba(251, 191, 36, 0.8), rgba(249, 115, 22, 0.8), rgba(244, 63, 94, 0.8))'
+                  }}
+                  whileHover={{ 
+                    scale: 1.02, 
+                    y: -2,
+                    boxShadow: isDark 
+                      ? '0 10px 20px rgba(99, 102, 241, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2)'
+                      : '0 10px 20px rgba(251, 191, 36, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.2)'
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 20
+                  }}
                 >
-                  <Icon className={`w-12 h-12 mx-auto mb-4 transition-colors duration-700 ${
-                    isDark ? 'text-blue-400' : 'text-amber-600'
-                  }`} />
-                </motion.div>
-                <div className={`text-4xl font-bold mb-2 transition-colors duration-700 ${
-                  isDark ? 'text-blue-100' : 'text-amber-800'
-                }`}>
-                  {stat.number}
-                </div>
-                <div className={`text-lg font-semibold mb-2 transition-colors duration-700 ${
-                  isDark ? 'text-blue-200' : 'text-amber-700'
-                }`}>
-                  {stat.label}
-                </div>
-                <div className={`text-sm transition-colors duration-700 ${
-                  isDark ? 'text-blue-300' : 'text-amber-600'
-                }`}>
-                  {stat.desc}
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+                  <motion.div
+                    className="absolute inset-0"
+                    animate={{
+                      background: isDark ? [
+                        'linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(168, 85, 247, 0.9), rgba(236, 72, 153, 0.9))',
+                        'linear-gradient(225deg, rgba(168, 85, 247, 0.9), rgba(236, 72, 153, 0.9), rgba(99, 102, 241, 0.9))',
+                        'linear-gradient(315deg, rgba(236, 72, 153, 0.9), rgba(99, 102, 241, 0.9), rgba(168, 85, 247, 0.9))',
+                        'linear-gradient(45deg, rgba(99, 102, 241, 0.9), rgba(168, 85, 247, 0.9), rgba(236, 72, 153, 0.9))'
+                      ] : [
+                        'linear-gradient(135deg, rgba(251, 191, 36, 0.9), rgba(249, 115, 22, 0.9), rgba(244, 63, 94, 0.9))',
+                        'linear-gradient(225deg, rgba(249, 115, 22, 0.9), rgba(244, 63, 94, 0.9), rgba(251, 191, 36, 0.9))',
+                        'linear-gradient(315deg, rgba(244, 63, 94, 0.9), rgba(251, 191, 36, 0.9), rgba(249, 115, 22, 0.9))',
+                        'linear-gradient(45deg, rgba(251, 191, 36, 0.9), rgba(249, 115, 22, 0.9), rgba(244, 63, 94, 0.9))'
+                      ]
+                    }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "linear", repeatType: "loop" }}
+                  />
+                  
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                    initial={{ x: '-100%' }}
+                    whileHover={{ x: '100%' }}
+                    transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                  />
+
+                  <span className="font-opensans relative z-10">Submit</span>
+                  <Send size={14} className="group-hover:translate-x-1 transition-transform duration-300" />
+                </motion.button>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 mb-3 relative z-10">
+                <motion.input
+                  type="text"
+                  placeholder="Your Name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  className={`font-opensans w-full p-3 rounded-lg border transition-all duration-700 backdrop-blur-sm text-sm ${
+                    isDark 
+                      ? 'bg-slate-800/50 border-slate-600 text-white placeholder-gray-400' 
+                      : 'bg-white/70 border-amber-200 text-gray-800 placeholder-gray-500'
+                  } focus:outline-none ${
+                    isDark ? 'focus:border-blue-500' : 'focus:border-amber-500'
+                  }`}
+                  whileFocus={{ scale: 1.02 }}
+                  required
+                />
+                <motion.input
+                  type="text"
+                  placeholder="Your Role"
+                  value={formData.role}
+                  onChange={(e) => setFormData({...formData, role: e.target.value})}
+                  className={`font-opensans w-full p-3 rounded-lg border transition-all duration-700 backdrop-blur-sm text-sm ${
+                    isDark 
+                      ? 'bg-slate-800/50 border-slate-600 text-white placeholder-gray-400' 
+                      : 'bg-white/70 border-amber-200 text-gray-800 placeholder-gray-500'
+                  } focus:outline-none ${
+                    isDark ? 'focus:border-blue-500' : 'focus:border-amber-500'
+                  }`}
+                  whileFocus={{ scale: 1.02 }}
+                />
+              </div>
+
+              <motion.input
+                type="text"
+                placeholder="Company"
+                value={formData.company}
+                onChange={(e) => setFormData({...formData, company: e.target.value})}
+                className={`font-opensans w-full p-3 rounded-lg border transition-all duration-700 backdrop-blur-sm mb-3 text-sm relative z-10 ${
+                  isDark 
+                    ? 'bg-slate-800/50 border-slate-600 text-white placeholder-gray-400' 
+                    : 'bg-white/70 border-amber-200 text-gray-800 placeholder-gray-500'
+                } focus:outline-none ${
+                  isDark ? 'focus:border-blue-500' : 'focus:border-amber-500'
+                }`}
+                whileFocus={{ scale: 1.02 }}
+              />
+
+              <div className="flex items-center gap-2 mb-3 relative z-10">
+                <span className={`text-sm transition-colors duration-700 ${
+                  isDark ? 'text-gray-300' : 'text-gray-600'
+                }`}>Rating:</span>
+                {[1,2,3,4,5].map((star) => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => setFormData({...formData, rating: star})}
+                    className={`${star <= formData.rating ? 'text-yellow-400' : isDark ? 'text-slate-600' : 'text-gray-400'}`}
+                  >
+                    <Star className="w-5 h-5 fill-current" />
+                  </button>
+                ))}
+              </div>
+
+              <motion.textarea
+                rows={3}
+                placeholder="Share your experience..."
+                value={formData.text}
+                onChange={(e) => setFormData({...formData, text: e.target.value})}
+                className={`font-opensans w-full p-3 rounded-lg border transition-all duration-700 resize-none backdrop-blur-sm mb-4 text-sm relative z-10 ${
+                  isDark 
+                    ? 'bg-slate-800/50 border-slate-600 text-white placeholder-gray-400' 
+                    : 'bg-white/70 border-amber-200 text-gray-800 placeholder-gray-500'
+                } focus:outline-none ${
+                  isDark ? 'focus:border-blue-500' : 'focus:border-amber-500'
+                }`}
+                whileFocus={{ scale: 1.02 }}
+                required
+              />
+
+
+            </motion.form>
+          </div>
+        </div>
       </div>
     </div>
   );
