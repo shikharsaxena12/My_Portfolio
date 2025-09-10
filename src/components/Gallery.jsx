@@ -334,8 +334,8 @@ const Gallery = () => {
   return (
     <div className={`min-h-screen overflow-hidden transition-all duration-1000 ${
       isDark 
-        ? 'bg-gradient-to-br from-gray-900 via-slate-900 to-black' 
-        : 'bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50'
+        ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600' 
+        : 'bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300'
     }`}>
       <HomeBackground />
       <Navbar />

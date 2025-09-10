@@ -24,14 +24,14 @@ const createLightGradient = (positions, opacity) => {
 // Pre-compute gradient configurations for optimal performance
 const GRADIENT_CONFIG = {
   dark: [
-    createGradient(['20% 50%', '80% 20%', '40% 80%'], { blue: 0.4, purple: 0.4, pink: 0.3 }),
-    createGradient(['80% 50%', '20% 80%', '60% 20%'], { blue: 0.4, purple: 0.4, pink: 0.3 }),
-    createGradient(['40% 20%', '60% 80%', '20% 50%'], { blue: 0.4, purple: 0.4, pink: 0.3 })
+    createGradient(['20% 50%', '80% 20%', '40% 80%'], { blue: 0.8, purple: 0.8, pink: 0.7 }),
+    createGradient(['80% 50%', '20% 80%', '60% 20%'], { blue: 0.8, purple: 0.8, pink: 0.7 }),
+    createGradient(['40% 20%', '60% 80%', '20% 50%'], { blue: 0.8, purple: 0.8, pink: 0.7 })
   ],
   light: [
-    createLightGradient(['20% 50%', '80% 20%', '40% 80%'], { amber: 0.8, orange: 0.7, rose: 0.6 }),
-    createLightGradient(['80% 50%', '20% 80%', '60% 20%'], { amber: 0.8, orange: 0.7, rose: 0.6 }),
-    createLightGradient(['40% 20%', '60% 80%', '20% 50%'], { amber: 0.8, orange: 0.7, rose: 0.6 })
+    createLightGradient(['20% 50%', '80% 20%', '40% 80%'], { amber: 1.0, orange: 0.9, rose: 0.8 }),
+    createLightGradient(['80% 50%', '20% 80%', '60% 20%'], { amber: 1.0, orange: 0.9, rose: 0.8 }),
+    createLightGradient(['40% 20%', '60% 80%', '20% 50%'], { amber: 1.0, orange: 0.9, rose: 0.8 })
   ]
 };
 
@@ -40,14 +40,6 @@ const HomeBackground = memo(() => {
   
   // Reduced animation elements for better performance
   const animationConfig = useMemo(() => ({
-    particles: [...Array(12)].map((_, i) => ({
-      left: (i * 8) % 100,
-      top: (i * 12) % 100,
-      x: ((i * 15) % 150) - 75,
-      y: ((i * 18) % 150) - 75,
-      duration: 5 + (i % 3),
-      delay: (i * 0.2) % 2
-    })),
     shapes: [...Array(4)].map((_, i) => ({
       left: 25 + (i * 20),
       top: 15 + (i * 20),
@@ -105,29 +97,7 @@ const HomeBackground = memo(() => {
         </motion.div>
       ))}
 
-      {/* Particle System */}
-      {animationConfig.particles.map((particle, i) => (
-        <motion.div
-          key={`particle-${i}`}
-          className={`absolute w-3 h-3 rounded-full transition-all duration-700 shadow-lg ${isDark ? 'bg-blue-400 shadow-blue-400/50' : 'bg-amber-600 shadow-amber-600/50'}`}
-          style={{
-            left: `${particle.left}%`,
-            top: `${particle.top}%`,
-          }}
-          animate={{
-            x: [0, particle.x],
-            y: [0, particle.y],
-            opacity: [0, 1, 0],
-            scale: [0, 1, 0],
-          }}
-          transition={{
-            duration: particle.duration,
-            repeat: Infinity,
-            delay: particle.delay,
-            ease: "easeInOut"
-          }}
-        />
-      ))}
+
 
       {/* Hexagonal Grid Pattern */}
       <div className={`absolute inset-0 transition-all duration-700 ${isDark ? 'opacity-40' : 'opacity-50'}`}>
@@ -166,21 +136,21 @@ const HomeBackground = memo(() => {
 
       {/* Glowing Orbs */}
       <motion.div
-        className={`absolute w-80 h-80 rounded-full blur-3xl transition-all duration-700 ${isDark ? 'bg-gradient-to-r from-blue-500/40 to-purple-500/40' : 'bg-gradient-to-r from-amber-500/60 to-orange-500/60'}`}
+        className={`absolute w-80 h-80 rounded-full blur-3xl transition-all duration-700 ${isDark ? 'bg-gradient-to-r from-blue-500/70 to-purple-500/70' : 'bg-gradient-to-r from-amber-500/80 to-orange-500/80'}`}
         style={{ left: '70%', top: '10%' }}
         animate={{
           scale: [1, 1.2, 1],
-          opacity: [0.3, 0.6, 0.3],
+          opacity: [0.5, 0.8, 0.5],
         }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       />
       
       <motion.div
-        className={`absolute w-64 h-64 rounded-full blur-3xl transition-all duration-700 ${isDark ? 'bg-gradient-to-r from-indigo-500/40 to-pink-500/40' : 'bg-gradient-to-r from-orange-500/60 to-rose-500/60'}`}
+        className={`absolute w-64 h-64 rounded-full blur-3xl transition-all duration-700 ${isDark ? 'bg-gradient-to-r from-indigo-500/70 to-pink-500/70' : 'bg-gradient-to-r from-orange-500/80 to-rose-500/80'}`}
         style={{ left: '10%', top: '60%' }}
         animate={{
           scale: [1, 1.3, 1],
-          opacity: [0.2, 0.5, 0.2],
+          opacity: [0.4, 0.7, 0.4],
         }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
       />

@@ -1,90 +1,55 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Star, Quote, ChevronLeft, ChevronRight, Users, Award, MessageCircle } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import Navbar from './Navbar';
 import { HomeBackground } from '../portfolio_animation';
 
-const FloatingParticle = React.memo(({ delay, duration, x, y }) => (
-  <motion.div
-    className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-20"
-    style={{ left: `${x}%`, top: `${y}%` }}
-    animate={{
-      y: [0, -100, 0],
-      opacity: [0, 1, 0],
-      scale: [0, 1, 0]
-    }}
-    transition={{
-      duration,
-      delay,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }}
-  />
-));
-
 const Testimonials = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { isDark = false } = useTheme() || {};
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const testimonials = [
+  const testimonials = useMemo(() => [
     {
-      id: 1,
-      name: "Sarah Johnson",
-      role: "Product Manager",
-      company: "TechCorp Inc.",
-      image: "/api/placeholder/80/80",
+      name: 'Sarah Johnson',
+      role: 'Product Manager',
+      company: 'TechCorp Inc.',
       rating: 5,
-      text: "Shikhar delivered exceptional work on our web application. His attention to detail and technical expertise exceeded our expectations. The project was completed on time and within budget."
+      text: 'Shikhar delivered exceptional work on our web application. His attention to detail and technical expertise made our project a huge success. The final product exceeded all our expectations.',
+      image: '/api/placeholder/100/100'
     },
     {
-      id: 2,
-      name: "Michael Chen",
-      role: "CTO",
-      company: "StartupXYZ",
-      image: "/api/placeholder/80/80",
+      name: 'Michael Chen',
+      role: 'CTO',
+      company: 'StartupXYZ',
       rating: 5,
-      text: "Working with Shikhar was a game-changer for our startup. His full-stack development skills and innovative solutions helped us launch our MVP successfully."
+      text: 'Working with Shikhar was a game-changer for our startup. He built a scalable platform that exceeded our expectations and delivered everything on time.',
+      image: '/api/placeholder/100/100'
     },
     {
-      id: 3,
-      name: "Emily Rodriguez",
-      role: "Design Director",
-      company: "Creative Agency",
-      image: "/api/placeholder/80/80",
+      name: 'Emily Rodriguez',
+      role: 'Design Director',
+      company: 'Creative Agency',
       rating: 5,
-      text: "Shikhar's ability to translate complex designs into pixel-perfect, responsive websites is remarkable. His code quality and performance optimizations are top-notch."
+      text: 'Shikhar perfectly translated our designs into a beautiful, responsive website. His code quality is outstanding and the performance is incredible.',
+      image: '/api/placeholder/100/100'
     },
     {
-      id: 4,
-      name: "David Thompson",
-      role: "Founder",
-      company: "E-commerce Solutions",
-      image: "/api/placeholder/80/80",
+      name: 'David Thompson',
+      role: 'Founder',
+      company: 'E-commerce Solutions',
       rating: 5,
-      text: "The e-commerce platform Shikhar built for us increased our conversion rate by 40%. His expertise in both frontend and backend development is impressive."
-    },
-    {
-      id: 5,
-      name: "Lisa Wang",
-      role: "Marketing Manager",
-      company: "Digital Marketing Pro",
-      image: "/api/placeholder/80/80",
-      rating: 5,
-      text: "Shikhar created a stunning portfolio website that perfectly represents our brand. The animations and user experience are absolutely phenomenal."
+      text: 'The e-commerce platform Shikhar built for us increased our sales by 300%. His expertise in modern web technologies is truly impressive.',
+      image: '/api/placeholder/100/100'
     }
-  ];
+  ], []);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
 
   const nextTestimonial = () => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
@@ -94,55 +59,12 @@ const Testimonials = () => {
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
-  const renderStars = (rating) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <Star
-        key={i}
-        size={16}
-        className={`${i < rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
-      />
-    ));
-  };
-
   return (
-    <div className={`min-h-screen relative overflow-hidden scroll-smooth transition-all duration-1000 ${isDark ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300'}`}>
-      {/* Floating Particles */}
-      {useMemo(() => {
-        const particles = [];
-        for (let i = 0; i < 15; i++) {
-          particles.push({
-            id: i,
-            delay: i * 0.5,
-            duration: 3 + (i * 0.1) % 2,
-            x: (i * 7) % 100,
-            y: (i * 11) % 100
-          });
-        }
-        return particles.map(particle => (
-          <FloatingParticle
-            key={particle.id}
-            delay={particle.delay}
-            duration={particle.duration}
-            x={particle.x}
-            y={particle.y}
-          />
-        ));
-      }, [])}
-      
-      {/* Interactive Cursor Glow */}
-      <motion.div
-        className={`fixed w-96 h-96 rounded-full blur-3xl pointer-events-none z-0 ${
-          isDark 
-            ? 'bg-gradient-to-r from-blue-500/10 to-purple-500/10' 
-            : 'bg-gradient-to-r from-blue-400/10 to-purple-400/10'
-        }`}
-        animate={{
-          x: mousePosition.x - 192,
-          y: mousePosition.y - 192,
-        }}
-        transition={{ type: "spring", damping: 40, stiffness: 300, mass: 0.5 }}
-      />
-      
+    <div className={`min-h-screen relative overflow-hidden transition-all duration-1000 ${
+      isDark 
+        ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600' 
+        : 'bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300'
+    }`}>
       <HomeBackground />
       <Navbar />
       
@@ -152,7 +74,7 @@ const Testimonials = () => {
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.8 }}
         >
           <motion.h1 
             className="font-playfair text-5xl md:text-6xl font-bold mb-6"
@@ -161,15 +83,17 @@ const Testimonials = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <span className={`bg-clip-text text-transparent transition-all duration-700 ${
-              isDark ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600'
+              isDark 
+                ? 'bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400' 
+                : 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600'
             }`}>
-              Testimonials
+              Client Testimonials
             </span>
           </motion.h1>
           
           <motion.p 
-            className={`font-opensans text-lg leading-relaxed max-w-2xl mx-auto ${
-              isDark ? 'text-gray-300' : 'text-gray-600'
+            className={`font-opensans text-xl leading-relaxed max-w-2xl mx-auto transition-colors duration-700 ${
+              isDark ? 'text-blue-200' : 'text-amber-700'
             }`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -179,177 +103,216 @@ const Testimonials = () => {
           </motion.p>
         </motion.div>
 
-        {/* Main Testimonial Card */}
-        <motion.div 
-          className="max-w-4xl mx-auto mb-12"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
+        {/* Main Testimonial Display */}
+        <div className="max-w-5xl mx-auto mb-16">
           <div className="relative">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentIndex}
-                className="relative p-8 md:p-12 rounded-3xl backdrop-blur-xl border bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20 overflow-hidden"
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.5 }}
+                className={`relative p-8 md:p-12 rounded-3xl backdrop-blur-xl border shadow-2xl transition-all duration-700 ${
+                  isDark 
+                    ? 'bg-gradient-to-br from-blue-900/30 via-purple-900/30 to-pink-900/30 border-blue-400/20' 
+                    : 'bg-gradient-to-br from-amber-100/60 via-orange-100/60 to-rose-100/60 border-amber-300/30'
+                }`}
+                initial={{ opacity: 0, x: 100, rotateY: 15 }}
+                animate={{ opacity: 1, x: 0, rotateY: 0 }}
+                exit={{ opacity: 0, x: -100, rotateY: -15 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
               >
+                {/* Animated Background Pattern */}
                 <motion.div
-                  className="absolute inset-0 opacity-60"
+                  className="absolute inset-0 opacity-10"
                   animate={{
-                    background: [
-                      'linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))',
-                      'linear-gradient(225deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3))',
-                      'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))',
-                      'linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))'
+                    background: isDark ? [
+                      'radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%)',
+                      'radial-gradient(circle at 80% 50%, rgba(147, 51, 234, 0.3) 0%, transparent 50%)',
+                      'radial-gradient(circle at 50% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 50%)',
+                      'radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%)'
+                    ] : [
+                      'radial-gradient(circle at 20% 50%, rgba(245, 158, 11, 0.4) 0%, transparent 50%)',
+                      'radial-gradient(circle at 80% 50%, rgba(249, 115, 22, 0.4) 0%, transparent 50%)',
+                      'radial-gradient(circle at 50% 80%, rgba(244, 63, 94, 0.4) 0%, transparent 50%)',
+                      'radial-gradient(circle at 20% 50%, rgba(245, 158, 11, 0.4) 0%, transparent 50%)'
                     ]
                   }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                 />
-                
+
                 {/* Quote Icon */}
-                <div className="relative z-10 flex justify-center mb-6">
-                  <Quote size={48} className="text-blue-400 opacity-50" />
-                </div>
-                
-                {/* Testimonial Text */}
-                <blockquote className={`relative z-10 text-lg md:text-xl font-medium text-center mb-8 leading-relaxed px-4 ${
-                  isDark ? 'text-white' : 'text-gray-800'
-                }`}>
-                  "{testimonials[currentIndex].text}"
-                </blockquote>
-                
-                {/* Client Info */}
-                <div className="relative z-10 flex flex-col items-center justify-center gap-4">
-                  <div className="flex flex-col md:flex-row items-center gap-4">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 flex items-center justify-center text-white font-bold text-xl">
-                      {testimonials[currentIndex].name.charAt(0)}
-                    </div>
-                    <div className="text-center">
-                      <h3 className={`font-bold text-lg ${
-                        isDark ? 'text-white' : 'text-gray-800'
+                <motion.div 
+                  className={`absolute top-8 left-8 transition-colors duration-700 ${
+                    isDark ? 'text-blue-400/40' : 'text-amber-600/40'
+                  }`}
+                  animate={{ rotate: [0, 5, -5, 0] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                >
+                  <Quote size={60} />
+                </motion.div>
+
+                {/* Content */}
+                <div className="relative z-10 text-center pt-8">
+                  {/* Rating */}
+                  <div className="flex justify-center gap-2 mb-8">
+                    {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, scale: 0, rotate: -180 }}
+                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                        transition={{ delay: i * 0.1, duration: 0.5 }}
+                      >
+                        <Star className={`w-6 h-6 fill-current transition-colors duration-700 ${
+                          isDark ? 'text-yellow-400' : 'text-yellow-500'
+                        }`} />
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* Testimonial Text */}
+                  <motion.p 
+                    className={`font-opensans text-xl md:text-2xl leading-relaxed mb-10 max-w-4xl mx-auto transition-colors duration-700 ${
+                      isDark ? 'text-blue-100' : 'text-amber-800'
+                    }`}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.6 }}
+                  >
+                    "{testimonials[currentIndex].text}"
+                  </motion.p>
+
+                  {/* Client Info */}
+                  <motion.div 
+                    className="flex flex-col md:flex-row items-center justify-center gap-6"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.6 }}
+                  >
+                    <motion.div 
+                      className={`w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold transition-all duration-700 ${
+                        isDark 
+                          ? 'bg-gradient-to-br from-blue-600/60 to-purple-600/60 text-blue-100' 
+                          : 'bg-gradient-to-br from-amber-200/80 to-orange-200/80 text-amber-800'
+                      }`}
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ type: "spring", damping: 15, stiffness: 300 }}
+                    >
+                      {testimonials[currentIndex].name.split(' ').map(n => n[0]).join('')}
+                    </motion.div>
+                    <div className="text-center md:text-left">
+                      <h4 className={`font-montserrat text-2xl font-bold mb-2 transition-colors duration-700 ${
+                        isDark ? 'text-blue-100' : 'text-amber-800'
                       }`}>
                         {testimonials[currentIndex].name}
-                      </h3>
-                      <p className={`text-sm ${
-                        isDark ? 'text-gray-300' : 'text-gray-600'
+                      </h4>
+                      <p className={`text-lg font-medium transition-colors duration-700 ${
+                        isDark ? 'text-blue-300' : 'text-amber-600'
                       }`}>
                         {testimonials[currentIndex].role}
                       </p>
-                      <p className="text-sm text-blue-400">
+                      <p className={`text-base transition-colors duration-700 ${
+                        isDark ? 'text-purple-300' : 'text-orange-600'
+                      }`}>
                         {testimonials[currentIndex].company}
                       </p>
                     </div>
-                  </div>
-                  
-                  {/* Rating */}
-                  <div className="flex items-center gap-1">
-                    {renderStars(testimonials[currentIndex].rating)}
-                  </div>
+                  </motion.div>
                 </div>
               </motion.div>
             </AnimatePresence>
-            
+
             {/* Navigation Buttons */}
             <button
               onClick={prevTestimonial}
-              className={`absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 p-2 md:p-3 rounded-full backdrop-blur-xl border transition-all duration-300 z-20 ${
+              className={`absolute left-4 top-1/2 -translate-y-1/2 p-4 rounded-full backdrop-blur-xl border transition-all duration-300 ${
                 isDark 
-                  ? 'bg-gray-800/80 border-gray-700/50 text-white hover:bg-gray-700/80' 
-                  : 'bg-white/80 border-white/50 text-gray-800 hover:bg-white/90'
+                  ? 'bg-slate-800/60 border-slate-600/50 text-blue-300 hover:bg-slate-700/60 hover:scale-110' 
+                  : 'bg-amber-100/60 border-amber-300/50 text-amber-700 hover:bg-amber-200/60 hover:scale-110'
               }`}
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft size={28} />
             </button>
             
             <button
               onClick={nextTestimonial}
-              className={`absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 p-2 md:p-3 rounded-full backdrop-blur-xl border transition-all duration-300 z-20 ${
+              className={`absolute right-4 top-1/2 -translate-y-1/2 p-4 rounded-full backdrop-blur-xl border transition-all duration-300 ${
                 isDark 
-                  ? 'bg-gray-800/80 border-gray-700/50 text-white hover:bg-gray-700/80' 
-                  : 'bg-white/80 border-white/50 text-gray-800 hover:bg-white/90'
+                  ? 'bg-slate-800/60 border-slate-600/50 text-blue-300 hover:bg-slate-700/60 hover:scale-110' 
+                  : 'bg-amber-100/60 border-amber-300/50 text-amber-700 hover:bg-amber-200/60 hover:scale-110'
               }`}
             >
-              <ChevronRight size={20} />
+              <ChevronRight size={28} />
             </button>
           </div>
-        </motion.div>
 
-        {/* Testimonial Indicators */}
+          {/* Indicators */}
+          <div className="flex justify-center gap-3 mt-8">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={`transition-all duration-300 ${
+                  index === currentIndex
+                    ? isDark 
+                      ? 'w-12 h-4 bg-blue-400 rounded-full' 
+                      : 'w-12 h-4 bg-amber-600 rounded-full'
+                    : isDark 
+                      ? 'w-4 h-4 bg-slate-600 rounded-full hover:bg-slate-500' 
+                      : 'w-4 h-4 bg-amber-300 rounded-full hover:bg-amber-400'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Stats Section */}
         <motion.div 
-          className="flex justify-center gap-3 mb-12"
-          initial={{ opacity: 0, y: 20 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                currentIndex === index 
-                  ? 'bg-blue-500 scale-125' 
-                  : isDark ? 'bg-gray-600 hover:bg-gray-500' : 'bg-gray-300 hover:bg-gray-400'
-              }`}
-            />
-          ))}
-        </motion.div>
-
-        {/* All Testimonials Grid */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.0 }}
-        >
-          {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={testimonial.id}
-              className={`p-6 rounded-2xl backdrop-blur-xl border cursor-pointer transition-all duration-300 ${
-                isDark 
-                  ? 'bg-gray-800/30 border-gray-700/50 hover:bg-gray-700/30' 
-                  : 'bg-white/30 border-white/50 hover:bg-white/50'
-              } ${currentIndex === index ? 'ring-2 ring-blue-400' : ''}`}
-              whileHover={{ scale: 1.02, y: -5 }}
-              onClick={() => setCurrentIndex(index)}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 1.2 + index * 0.1 }}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 flex items-center justify-center text-white font-bold">
-                  {testimonial.name.charAt(0)}
+          {[
+            { icon: Users, number: '50+', label: 'Happy Clients', desc: 'Satisfied customers worldwide' },
+            { icon: Award, number: '100%', label: 'Success Rate', desc: 'Projects delivered on time' },
+            { icon: MessageCircle, number: '5.0', label: 'Average Rating', desc: 'Based on client feedback' }
+          ].map((stat, index) => {
+            const Icon = stat.icon;
+            return (
+              <motion.div
+                key={index}
+                className={`text-center p-8 rounded-3xl backdrop-blur-xl border shadow-lg transition-all duration-700 ${
+                  isDark 
+                    ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-blue-400/20' 
+                    : 'bg-gradient-to-br from-amber-200/40 via-orange-200/40 to-rose-200/40 border-amber-300/30'
+                }`}
+                whileHover={{ scale: 1.05, y: -10 }}
+                transition={{ type: "spring", damping: 15, stiffness: 300 }}
+              >
+                <motion.div
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                >
+                  <Icon className={`w-12 h-12 mx-auto mb-4 transition-colors duration-700 ${
+                    isDark ? 'text-blue-400' : 'text-amber-600'
+                  }`} />
+                </motion.div>
+                <div className={`text-4xl font-bold mb-2 transition-colors duration-700 ${
+                  isDark ? 'text-blue-100' : 'text-amber-800'
+                }`}>
+                  {stat.number}
                 </div>
-                <div>
-                  <h3 className={`font-bold ${
-                    isDark ? 'text-white' : 'text-gray-800'
-                  }`}>
-                    {testimonial.name}
-                  </h3>
-                  <p className={`text-sm ${
-                    isDark ? 'text-gray-400' : 'text-gray-600'
-                  }`}>
-                    {testimonial.role}
-                  </p>
+                <div className={`text-lg font-semibold mb-2 transition-colors duration-700 ${
+                  isDark ? 'text-blue-200' : 'text-amber-700'
+                }`}>
+                  {stat.label}
                 </div>
-              </div>
-              
-              <div className="flex items-center gap-1 mb-3">
-                {renderStars(testimonial.rating)}
-              </div>
-              
-              <p className={`text-sm leading-relaxed ${
-                isDark ? 'text-gray-300' : 'text-gray-600'
-              }`}>
-                {testimonial.text.length > 120 
-                  ? `${testimonial.text.substring(0, 120)}...` 
-                  : testimonial.text
-                }
-              </p>
-            </motion.div>
-          ))}
+                <div className={`text-sm transition-colors duration-700 ${
+                  isDark ? 'text-blue-300' : 'text-amber-600'
+                }`}>
+                  {stat.desc}
+                </div>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </div>

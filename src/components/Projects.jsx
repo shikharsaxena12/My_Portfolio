@@ -12,6 +12,7 @@ const Projects = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
 
+
   const labels = {
     myProjects: 'My Projects',
     projectsDescription: 'A collection of my recent work and experiments',
@@ -96,17 +97,17 @@ const Projects = () => {
     }
   }, [projects.length, isHovered]);
 
+
+
+
+
   const openModal = (project) => {
     setSelectedProject(project);
     setModalOpen(true);
   };
 
   return (
-    <div className={`h-screen overflow-hidden transition-all duration-1000 ${
-      isDark 
-        ? 'bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900' 
-        : 'bg-gradient-to-br from-amber-50 via-orange-100 to-rose-200'
-    }`} style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
+    <div className={`h-screen overflow-hidden transition-all duration-1000 ${isDark ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300'}`} style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
       <HomeBackground />
       <Navbar />
       
@@ -243,31 +244,6 @@ const Projects = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="relative w-96 h-[550px]" style={{ perspective: '1000px' }}>
-              {/* Floating Particles around card */}
-              {[...Array(8)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className={`absolute w-2 h-2 rounded-full transition-all duration-700 ${
-                    isDark 
-                      ? 'bg-gradient-to-r from-blue-400 to-purple-400' 
-                      : 'bg-gradient-to-r from-amber-400 to-orange-400'
-                  }`}
-                  style={{
-                    left: `${20 + (i * 10)}%`,
-                    top: `${10 + (i * 12)}%`,
-                  }}
-                  animate={{
-                    y: [0, -20, 0],
-                    opacity: [0.3, 1, 0.3],
-                    scale: [0.5, 1, 0.5],
-                  }}
-                  transition={{
-                    duration: 2 + (i * 0.2),
-                    repeat: Infinity,
-                    delay: i * 0.3,
-                  }}
-                />
-              ))}
               
               <AnimatePresence mode="wait">
                 <motion.div
