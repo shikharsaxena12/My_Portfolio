@@ -11,7 +11,10 @@ const OwnerLogin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (credentials.username === 'shikharsaxena66625@gmail.com' && credentials.password === 'code@6388') {
+    const ownerEmail = process.env.REACT_APP_OWNER_EMAIL;
+    const ownerPassword = process.env.REACT_APP_OWNER_PASSWORD;
+    
+    if (credentials.username === ownerEmail && credentials.password === ownerPassword) {
       navigate('/owner/dashboard');
     } else {
       alert('Invalid credentials');
@@ -31,9 +34,9 @@ const OwnerLogin = () => {
             onClick={() => navigate('/portfolio')}
             className={`absolute -top-2 -right-2 p-2 rounded-full ${isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-100'} transition-colors`}
           >
-            <X size={20} className={isDark ? 'text-gray-400' : 'text-gray-600'} />
+            <X size={20} className={isDark ? 'text-gray-400' : 'text-black'} />
           </button>
-          <h2 className={`text-3xl font-bold text-center mb-8 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+          <h2 className={`text-3xl font-bold text-center mb-8 ${isDark ? 'text-white' : 'text-black'}`}>
             Owner Login
           </h2>
         </div>
@@ -45,7 +48,7 @@ const OwnerLogin = () => {
               placeholder="Email"
               value={credentials.username}
               onChange={(e) => setCredentials({...credentials, username: e.target.value})}
-              className={`w-full px-4 py-3 rounded-lg border ${isDark ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-300 text-gray-800'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`w-full px-4 py-3 rounded-lg border ${isDark ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-300 text-black'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
           </div>
           
@@ -55,7 +58,7 @@ const OwnerLogin = () => {
               placeholder="Password"
               value={credentials.password}
               onChange={(e) => setCredentials({...credentials, password: e.target.value})}
-              className={`w-full px-4 py-3 rounded-lg border ${isDark ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-300 text-gray-800'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`w-full px-4 py-3 rounded-lg border ${isDark ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-300 text-black'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
           </div>
           
@@ -67,7 +70,7 @@ const OwnerLogin = () => {
             }}
           >
             <span className={`relative z-10 ${
-              isDark ? 'text-white' : 'text-gray-800'
+              isDark ? 'text-white' : 'text-black'
             }`}>Login</span>
           </button>
         </form>

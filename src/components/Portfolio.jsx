@@ -172,7 +172,7 @@ const Portfolio = () => {
               }`} />
               
               <div className={`text-lg font-medium z-10 transition-all duration-700 ${
-                isDark ? 'text-gray-300' : 'text-gray-600'
+                isDark ? 'text-gray-300' : 'text-black'
               }`}>Your Photo Here</div>
             </div>
           </motion.div>
@@ -190,7 +190,7 @@ const Portfolio = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             >
-              <span className={`transition-all duration-700 ${isDark ? 'text-white' : 'text-gray-800'}`}>Hi, I'm </span>
+              <span className={`transition-all duration-700 ${isDark ? 'text-white' : 'text-black'}`}>Hi, I'm </span>
               <motion.span 
                 className={`relative inline-block transition-all duration-700 ${
                   isDark 
@@ -234,7 +234,7 @@ const Portfolio = () => {
               transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
             >
               <motion.p className={`font-source text-xl md:text-2xl font-light relative z-10 transition-all duration-700 ${
-                isDark ? 'text-gray-200' : 'text-gray-700'
+                isDark ? 'text-gray-200' : 'text-black'
               }`}>
                 Full Stack Developer & UI/UX Designer
               </motion.p>
@@ -243,7 +243,7 @@ const Portfolio = () => {
             
             <motion.p 
               className={`font-roboto text-lg mb-8 leading-relaxed transition-all duration-700 ${
-                isDark ? 'text-gray-300' : 'text-gray-600'
+                isDark ? 'text-gray-300' : 'text-black'
               }`}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -259,7 +259,7 @@ const Portfolio = () => {
               transition={{ delay: 1.0, duration: 0.6, ease: "easeOut" }}
             >
               <motion.button 
-                className={`relative overflow-hidden font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-2 group backdrop-blur-xl border shadow-2xl transition-all duration-500 ${isDark ? 'text-white border-white/30' : 'text-gray-800 border-gray-800/30'}`}
+                className={`relative overflow-hidden font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-2 group backdrop-blur-xl border shadow-2xl transition-all duration-500 ${isDark ? 'text-white border-white/30' : 'text-black border-gray-800/30'}`}
                 style={{
                   background: isDark ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(168, 85, 247, 0.8), rgba(236, 72, 153, 0.8))' : 'linear-gradient(135deg, rgba(251, 191, 36, 0.8), rgba(249, 115, 22, 0.8), rgba(244, 63, 94, 0.8))'
                 }}
@@ -308,7 +308,7 @@ const Portfolio = () => {
               
               <Link to="/contact">
                 <motion.button 
-                  className={`relative overflow-hidden font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-2 group backdrop-blur-xl border shadow-2xl transition-all duration-500 ${isDark ? 'text-white border-white/30' : 'text-gray-800 border-gray-800/30'}`}
+                  className={`relative overflow-hidden font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-2 group backdrop-blur-xl border shadow-2xl transition-all duration-500 ${isDark ? 'text-white border-white/30' : 'text-black border-gray-800/30'}`}
                   style={{
                     background: isDark ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(168, 85, 247, 0.8), rgba(236, 72, 153, 0.8))' : 'linear-gradient(135deg, rgba(251, 191, 36, 0.8), rgba(249, 115, 22, 0.8), rgba(244, 63, 94, 0.8))'
                   }}

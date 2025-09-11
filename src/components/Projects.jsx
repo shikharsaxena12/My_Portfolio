@@ -139,7 +139,7 @@ const Projects = () => {
             {/* Subtitle */}
             <motion.h2 
               className={`font-montserrat text-2xl md:text-3xl font-light mb-6 transition-colors duration-700 ${
-                isDark ? 'text-blue-100' : 'text-amber-800'
+                isDark ? 'text-blue-100' : 'text-black'
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -151,7 +151,7 @@ const Projects = () => {
             {/* Description */}
             <motion.p 
               className={`font-opensans text-lg leading-relaxed mb-6 transition-colors duration-700 ${
-                isDark ? 'text-blue-200' : 'text-amber-700'
+                isDark ? 'text-blue-200' : 'text-black'
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -163,7 +163,7 @@ const Projects = () => {
             {/* Additional Content */}
             <motion.div 
               className={`font-opensans space-y-4 mb-8 text-base leading-relaxed transition-colors duration-700 ${
-                isDark ? 'text-blue-200' : 'text-amber-700'
+                isDark ? 'text-blue-200' : 'text-black'
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -222,12 +222,12 @@ const Projects = () => {
                     transition={{ duration: 8, repeat: Infinity, ease: "linear", repeatType: "loop" }}
                   />
                   <div className={`text-3xl md:text-4xl font-bold mb-2 relative z-10 transition-colors duration-700 ${
-                    isDark ? 'text-blue-100' : 'text-amber-800'
+                    isDark ? 'text-blue-100' : 'text-black'
                   }`}>
                     {stat.number}
                   </div>
                   <div className={`text-sm font-medium relative z-10 transition-colors duration-700 ${
-                    isDark ? 'text-blue-200' : 'text-amber-700'
+                    isDark ? 'text-blue-200' : 'text-black'
                   }`}>
                     {stat.label}
                   </div>
@@ -383,7 +383,7 @@ const Projects = () => {
                     
                     <motion.div 
                       className={`text-xl font-semibold z-10 transition-colors duration-700 ${
-                        isDark ? 'text-slate-300' : 'text-amber-700'
+                        isDark ? 'text-slate-300' : 'text-black'
                       }`}
                       animate={{ 
                         scale: [1, 1.01, 1],
@@ -417,7 +417,7 @@ const Projects = () => {
                 >
                   <motion.h3 
                     className={`font-roboto text-2xl font-bold mb-4 transition-colors duration-700 ${
-                      isDark ? 'text-blue-100' : 'text-amber-800'
+                      isDark ? 'text-blue-100' : 'text-black'
                     }`}
                     initial={{ y: 15, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -428,7 +428,7 @@ const Projects = () => {
                   
                   <motion.p 
                     className={`text-base mb-4 leading-relaxed flex-grow transition-colors duration-700 ${
-                      isDark ? 'text-blue-200' : 'text-amber-700'
+                      isDark ? 'text-blue-200' : 'text-black'
                     }`}
                     initial={{ y: 15, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -441,7 +441,7 @@ const Projects = () => {
                     className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium mb-6 w-fit transition-all duration-700 ${
                       isDark 
                         ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' 
-                        : 'bg-amber-100 text-amber-700 border border-amber-300'
+                        : 'bg-amber-100 text-black border border-amber-300'
                     }`}
                     initial={{ y: 15, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -550,7 +550,7 @@ const Projects = () => {
             <button 
               onClick={() => setModalOpen(false)}
               className={`float-right text-3xl font-light hover:rotate-90 transition-all duration-700 ${
-                isDark ? 'text-slate-300 hover:text-white' : 'text-amber-600 hover:text-amber-800'
+                isDark ? 'text-slate-300 hover:text-white' : 'text-black hover:text-black'
               }`}
             >
               ×
@@ -560,14 +560,14 @@ const Projects = () => {
               {/* Project Header */}
               <div>
                 <h2 className={`font-playfair text-4xl font-bold mb-4 transition-colors duration-700 ${
-                  isDark ? 'text-blue-100' : 'text-amber-800'
+                  isDark ? 'text-blue-100' : 'text-black'
                 }`}>
                   {selectedProject.title}
                 </h2>
                 <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-6 transition-all duration-700 ${
                   isDark 
                     ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' 
-                    : 'bg-amber-100 text-amber-700 border border-amber-300'
+                    : 'bg-amber-100 text-black border border-amber-300'
                 }`}>
                   {selectedProject.tech}
                 </div>
@@ -593,7 +593,7 @@ const Projects = () => {
                   />
                   <div 
                     className={`text-2xl font-semibold z-10 transition-colors duration-700 ${
-                      isDark ? 'text-slate-300' : 'text-amber-700'
+                      isDark ? 'text-slate-300' : 'text-black'
                     }`}
                   >
                     Project Preview
@@ -604,12 +604,12 @@ const Projects = () => {
               {/* Project Description */}
               <div>
                 <h3 className={`font-montserrat text-xl font-semibold mb-3 transition-colors duration-700 ${
-                  isDark ? 'text-blue-200' : 'text-amber-700'
+                  isDark ? 'text-blue-200' : 'text-black'
                 }`}>
                   About This Project
                 </h3>
                 <p className={`font-opensans text-lg leading-relaxed transition-colors duration-700 ${
-                  isDark ? 'text-blue-200' : 'text-amber-700'
+                  isDark ? 'text-blue-200' : 'text-black'
                 }`}>
                   {selectedProject.fullDesc}
                 </p>
@@ -618,7 +618,7 @@ const Projects = () => {
               {/* Technologies Used */}
               <div>
                 <h3 className={`font-montserrat text-xl font-semibold mb-4 transition-colors duration-700 ${
-                  isDark ? 'text-blue-200' : 'text-amber-700'
+                  isDark ? 'text-blue-200' : 'text-black'
                 }`}>
                   Technologies Used
                 </h3>
@@ -629,7 +629,7 @@ const Projects = () => {
                       className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-700 ${
                         isDark 
                           ? 'bg-slate-800/60 text-slate-300 border border-slate-700/50' 
-                          : 'bg-amber-100/80 text-amber-700 border border-amber-200/60'
+                          : 'bg-amber-100/80 text-black border border-amber-200/60'
                       }`}
                     >
                       {tech}
@@ -641,7 +641,7 @@ const Projects = () => {
               {/* Key Features */}
               <div>
                 <h3 className={`font-montserrat text-xl font-semibold mb-4 transition-colors duration-700 ${
-                  isDark ? 'text-blue-200' : 'text-amber-700'
+                  isDark ? 'text-blue-200' : 'text-black'
                 }`}>
                   Key Features
                 </h3>
@@ -659,7 +659,7 @@ const Projects = () => {
                           : 'bg-gradient-to-r from-amber-500 to-orange-500'
                       }`} />
                       <span className={`text-sm transition-colors duration-700 ${
-                        isDark ? 'text-slate-300' : 'text-amber-700'
+                        isDark ? 'text-slate-300' : 'text-black'
                       }`}>
                         {feature}
                       </span>
@@ -732,7 +732,7 @@ const Projects = () => {
                   className={`flex-1 text-center font-semibold px-6 py-3 rounded-full border transition-all duration-700 ${
                     isDark
                       ? 'border-slate-600 text-slate-300 hover:bg-slate-800/50 hover:border-slate-500'
-                      : 'border-amber-300 text-amber-700 hover:bg-amber-50 hover:border-amber-400'
+                      : 'border-amber-300 text-black hover:bg-amber-50 hover:border-amber-400'
                   }`}
                 >
                   View Source Code

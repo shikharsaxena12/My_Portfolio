@@ -185,7 +185,7 @@ const AdminDashboard = () => {
               }}
               className="p-3"
             />
-            <span className={`p-3 ${isDark ? 'text-white' : 'text-gray-800'}`}>{skill.level}%</span>
+            <span className={`p-3 ${isDark ? 'text-white' : 'text-black'}`}>{skill.level}%</span>
           </div>
         </div>
       ))}
@@ -269,7 +269,7 @@ const AdminDashboard = () => {
     <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className="container mx-auto px-6 py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className={`text-4xl font-bold ${isDark ? 'text-white' : 'text-gray-800'}`}>
+          <h1 className={`text-4xl font-bold ${isDark ? 'text-white' : 'text-black'}`}>
             Owner Dashboard
           </h1>
           <div className="flex gap-4">
@@ -284,7 +284,7 @@ const AdminDashboard = () => {
               onClick={() => navigate('/portfolio')}
               className={`p-3 rounded-lg ${isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-200'}`}
             >
-              <X size={24} className={isDark ? 'text-gray-400' : 'text-gray-600'} />
+              <X size={24} className={isDark ? 'text-gray-400' : 'text-black'} />
             </button>
           </div>
         </div>

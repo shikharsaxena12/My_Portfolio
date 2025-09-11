@@ -31,7 +31,7 @@ const About = () => {
     const interval = setInterval(() => {
       setActiveCard((prev) => {
         const nextCard = (prev + 1) % CARD_COUNT;
-        return Number.isInteger(nextCard) && nextCard >= 0 && nextCard < CARD_COUNT ? nextCard : 0;
+        return nextCard;
       });
     }, INTERVAL_DELAY);
     
@@ -62,13 +62,13 @@ const About = () => {
       title: "Full Stack Developer",
       company: "Tech Corp",
       period: "2022-Present",
-      color: isDark ? "text-blue-400" : "text-amber-600"
+      color: isDark ? "text-blue-400" : "text-black"
     },
     {
       title: "Frontend Developer", 
       company: "StartupXYZ",
       period: "2021-2022",
-      color: isDark ? "text-blue-400" : "text-amber-600"
+      color: isDark ? "text-blue-400" : "text-black"
     }
   ];
 
@@ -77,13 +77,13 @@ const About = () => {
       title: "Computer Science",
       company: "University of Tech",
       period: "2018-2022",
-      color: isDark ? "text-green-400" : "text-orange-600"
+      color: isDark ? "text-green-400" : "text-black"
     },
     {
       title: "Web Development Bootcamp",
       company: "CodeAcademy",
       period: "2021",
-      color: isDark ? "text-green-400" : "text-orange-600"
+      color: isDark ? "text-green-400" : "text-black"
     }
   ];
 
@@ -92,13 +92,13 @@ const About = () => {
       title: "Best Developer Award",
       company: "Tech Corp",
       period: "2023",
-      color: isDark ? "text-yellow-400" : "text-rose-600"
+      color: isDark ? "text-yellow-400" : "text-black"
     },
     {
       title: "Open Source Contributor",
       company: "GitHub",
       period: "2022-Present",
-      color: isDark ? "text-yellow-400" : "text-rose-600"
+      color: isDark ? "text-yellow-400" : "text-black"
     }
   ];
 
@@ -190,7 +190,7 @@ const About = () => {
             {/* Subtitle */}
             <motion.h2 
               className={`font-montserrat text-2xl md:text-3xl font-light mb-6 transition-all duration-700 ${
-                isDark ? 'text-gray-200' : 'text-gray-700'
+                isDark ? 'text-gray-200' : 'text-black'
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -202,7 +202,7 @@ const About = () => {
             {/* Description */}
             <motion.p 
               className={`font-opensans text-lg leading-relaxed mb-8 transition-all duration-700 ${
-                isDark ? 'text-gray-300' : 'text-gray-600'
+                isDark ? 'text-gray-300' : 'text-black'
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -248,12 +248,12 @@ const About = () => {
                     transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                   />
                   <div className={`text-3xl md:text-4xl font-bold mb-2 relative z-10 transition-all duration-700 ${
-                    isDark ? 'text-white' : 'text-gray-800'
+                    isDark ? 'text-white' : 'text-black'
                   }`}>
                     {stat.number}
                   </div>
                   <div className={`text-sm font-medium relative z-10 transition-all duration-700 ${
-                    isDark ? 'text-gray-200' : 'text-gray-700'
+                    isDark ? 'text-gray-200' : 'text-black'
                   }`}>
                     {stat.label}
                   </div>
@@ -265,7 +265,7 @@ const About = () => {
             <motion.button
               onClick={() => navigate('/')}
               className={`relative overflow-hidden font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-2 group backdrop-blur-xl border shadow-2xl transition-all duration-500 ${
-                isDark ? 'text-white border-white/30' : 'text-gray-800 border-gray-800/30'
+                isDark ? 'text-white border-white/30' : 'text-black border-gray-800/30'
               }`}
               style={{
                 background: isDark 
@@ -357,7 +357,7 @@ const About = () => {
                     transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                   />
                   <h2 className={`font-raleway text-2xl font-bold mb-6 relative z-10 transition-all duration-700 ${
-                    isDark ? 'text-white' : 'text-gray-800'
+                    isDark ? 'text-white' : 'text-black'
                   }`}>
                     Experience
                   </h2>
@@ -367,7 +367,7 @@ const About = () => {
                         isDark ? 'bg-gray-700/30' : 'bg-white/40'
                       }`}>
                         <h3 className={`font-poppins font-bold mb-1 transition-all duration-700 ${
-                          isDark ? 'text-white' : 'text-gray-800'
+                          isDark ? 'text-white' : 'text-black'
                         }`}>
                           {exp.title}
                         </h3>
@@ -375,7 +375,7 @@ const About = () => {
                           {exp.company}
                         </p>
                         <p className={`text-xs transition-all duration-700 ${
-                          isDark ? 'text-gray-400' : 'text-gray-500'
+                          isDark ? 'text-gray-400' : 'text-black'
                         }`}>
                           {exp.period}
                         </p>
@@ -412,7 +412,7 @@ const About = () => {
                     transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                   />
                   <h2 className={`text-2xl font-bold mb-6 relative z-10 transition-all duration-700 ${
-                    isDark ? 'text-white' : 'text-gray-800'
+                    isDark ? 'text-white' : 'text-black'
                   }`}>
                     Education
                   </h2>
@@ -422,7 +422,7 @@ const About = () => {
                         isDark ? 'bg-gray-700/30' : 'bg-white/40'
                       }`}>
                         <h3 className={`font-bold mb-1 transition-all duration-700 ${
-                          isDark ? 'text-white' : 'text-gray-800'
+                          isDark ? 'text-white' : 'text-black'
                         }`}>
                           {edu.title}
                         </h3>
@@ -430,7 +430,7 @@ const About = () => {
                           {edu.company}
                         </p>
                         <p className={`text-xs transition-all duration-700 ${
-                          isDark ? 'text-gray-400' : 'text-gray-500'
+                          isDark ? 'text-gray-400' : 'text-black'
                         }`}>
                           {edu.period}
                         </p>
@@ -467,7 +467,7 @@ const About = () => {
                     transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                   />
                   <h2 className={`text-2xl font-bold mb-6 relative z-10 transition-all duration-700 ${
-                    isDark ? 'text-white' : 'text-gray-800'
+                    isDark ? 'text-white' : 'text-black'
                   }`}>
                     Achievements
                   </h2>
@@ -477,7 +477,7 @@ const About = () => {
                         isDark ? 'bg-gray-700/30' : 'bg-white/40'
                       }`}>
                         <h3 className={`font-bold mb-1 transition-all duration-700 ${
-                          isDark ? 'text-white' : 'text-gray-800'
+                          isDark ? 'text-white' : 'text-black'
                         }`}>
                           {ach.title}
                         </h3>
@@ -485,7 +485,7 @@ const About = () => {
                           {ach.company}
                         </p>
                         <p className={`text-xs transition-all duration-700 ${
-                          isDark ? 'text-gray-400' : 'text-gray-500'
+                          isDark ? 'text-gray-400' : 'text-black'
                         }`}>
                           {ach.period}
                         </p>
@@ -534,7 +534,7 @@ const About = () => {
               <button 
                 onClick={() => setModalOpen(false)}
                 className={`float-right text-3xl font-light hover:rotate-90 transition-transform duration-300 ${
-                  isDark ? 'text-slate-300 hover:text-white' : 'text-slate-600 hover:text-slate-800'
+                  isDark ? 'text-slate-300 hover:text-white' : 'text-black hover:text-black'
                 }`}
               >
                 ×
@@ -543,7 +543,7 @@ const About = () => {
               {modalContent === 0 && (
                 <div>
                   <h2 className={`text-3xl font-bold mb-6 transition-all duration-700 ${
-                    isDark ? 'text-white' : 'text-gray-800'
+                    isDark ? 'text-white' : 'text-black'
                   }`}>
                     {labels.experienceDetails}
                   </h2>
@@ -552,7 +552,7 @@ const About = () => {
                       isDark ? 'bg-gray-700/30' : 'bg-white/40'
                     }`}>
                       <h3 className={`text-xl font-bold mb-2 transition-all duration-700 ${
-                        isDark ? 'text-white' : 'text-gray-800'
+                        isDark ? 'text-white' : 'text-black'
                       }`}>
                         {exp.title}
                       </h3>
@@ -560,12 +560,12 @@ const About = () => {
                         {exp.company}
                       </p>
                       <p className={`text-sm mb-4 transition-all duration-700 ${
-                        isDark ? 'text-gray-400' : 'text-gray-500'
+                        isDark ? 'text-gray-400' : 'text-black'
                       }`}>
                         {exp.period}
                       </p>
                       <ul className={`list-disc list-inside space-y-1 text-sm transition-all duration-700 ${
-                        isDark ? 'text-gray-300' : 'text-gray-600'
+                        isDark ? 'text-gray-300' : 'text-black'
                       }`}>
                         <li>Led development of 5+ major projects</li>
                         <li>Mentored junior developers</li>
@@ -580,7 +580,7 @@ const About = () => {
               {modalContent === 1 && (
                 <div>
                   <h2 className={`text-3xl font-bold mb-6 transition-all duration-700 ${
-                    isDark ? 'text-white' : 'text-gray-800'
+                    isDark ? 'text-white' : 'text-black'
                   }`}>
                     {labels.educationDetails}
                   </h2>
@@ -589,7 +589,7 @@ const About = () => {
                       isDark ? 'bg-gray-700/30' : 'bg-white/40'
                     }`}>
                       <h3 className={`text-xl font-bold mb-2 transition-all duration-700 ${
-                        isDark ? 'text-white' : 'text-gray-800'
+                        isDark ? 'text-white' : 'text-black'
                       }`}>
                         {edu.title}
                       </h3>
@@ -597,12 +597,12 @@ const About = () => {
                         {edu.company}
                       </p>
                       <p className={`text-sm mb-4 transition-all duration-700 ${
-                        isDark ? 'text-gray-400' : 'text-gray-500'
+                        isDark ? 'text-gray-400' : 'text-black'
                       }`}>
                         {edu.period}
                       </p>
                       <ul className={`list-disc list-inside space-y-1 text-sm transition-all duration-700 ${
-                        isDark ? 'text-gray-300' : 'text-gray-600'
+                        isDark ? 'text-gray-300' : 'text-black'
                       }`}>
                         <li>GPA: 3.8/4.0</li>
                         <li>Data Structures & Algorithms</li>
@@ -617,7 +617,7 @@ const About = () => {
               {modalContent === 2 && (
                 <div>
                   <h2 className={`text-3xl font-bold mb-6 transition-all duration-700 ${
-                    isDark ? 'text-white' : 'text-gray-800'
+                    isDark ? 'text-white' : 'text-black'
                   }`}>
                     {labels.achievementDetails}
                   </h2>
@@ -626,7 +626,7 @@ const About = () => {
                       isDark ? 'bg-gray-700/30' : 'bg-white/40'
                     }`}>
                       <h3 className={`text-xl font-bold mb-2 transition-all duration-700 ${
-                        isDark ? 'text-white' : 'text-gray-800'
+                        isDark ? 'text-white' : 'text-black'
                       }`}>
                         {ach.title}
                       </h3>
@@ -634,12 +634,12 @@ const About = () => {
                         {ach.company}
                       </p>
                       <p className={`text-sm mb-4 transition-all duration-700 ${
-                        isDark ? 'text-gray-400' : 'text-gray-500'
+                        isDark ? 'text-gray-400' : 'text-black'
                       }`}>
                         {ach.period}
                       </p>
                       <ul className={`list-disc list-inside space-y-1 text-sm transition-all duration-700 ${
-                        isDark ? 'text-gray-300' : 'text-gray-600'
+                        isDark ? 'text-gray-300' : 'text-black'
                       }`}>
                         <li>{labels.recognizedPerformance}</li>
                         <li>{labels.githubContributions}</li>

@@ -133,21 +133,21 @@ const Certificates = () => {
                     <div className={`relative h-20 p-3 flex items-center justify-center transition-all duration-700 ${
                       isDark ? 'bg-gradient-to-br from-indigo-600/20 to-purple-600/20' : 'bg-gradient-to-br from-amber-100/60 to-orange-100/60'
                     }`}>
-                      <Award size={24} className={`transition-all duration-700 ${isDark ? 'text-yellow-500' : 'text-amber-600'}`} />
+                      <Award size={24} className={`transition-all duration-700 ${isDark ? 'text-yellow-500' : 'text-black'}`} />
                     </div>
                     <div className="p-3 flex flex-col flex-1">
                       <h3 className={`text-sm font-bold mb-1 line-clamp-2 transition-all duration-700 ${
-                        isDark ? 'text-white' : 'text-slate-800'
+                        isDark ? 'text-white' : 'text-black'
                       }`}>
                         {cert.title}
                       </h3>
                       <div className={`text-xs font-medium mb-2 transition-all duration-700 ${
-                        isDark ? 'text-indigo-400' : 'text-amber-600'
+                        isDark ? 'text-indigo-400' : 'text-black'
                       }`}>
                         {cert.issuer}
                       </div>
                       <div className={`text-xs mt-auto transition-all duration-700 ${
-                        isDark ? 'text-slate-400' : 'text-slate-500'
+                        isDark ? 'text-slate-400' : 'text-black'
                       }`}>
                         {cert.date}
                       </div>
@@ -199,21 +199,21 @@ const Certificates = () => {
                     <div className={`relative h-20 p-3 flex items-center justify-center transition-all duration-700 ${
                       isDark ? 'bg-gradient-to-br from-purple-600/20 to-pink-600/20' : 'bg-gradient-to-br from-orange-100/60 to-rose-100/60'
                     }`}>
-                      <Award size={24} className={`transition-all duration-700 ${isDark ? 'text-yellow-500' : 'text-orange-600'}`} />
+                      <Award size={24} className={`transition-all duration-700 ${isDark ? 'text-yellow-500' : 'text-black'}`} />
                     </div>
                     <div className="p-3 flex flex-col flex-1">
                       <h3 className={`text-sm font-bold mb-1 line-clamp-2 transition-all duration-700 ${
-                        isDark ? 'text-white' : 'text-slate-800'
+                        isDark ? 'text-white' : 'text-black'
                       }`}>
                         {cert.title}
                       </h3>
                       <div className={`text-xs font-medium mb-2 transition-all duration-700 ${
-                        isDark ? 'text-purple-400' : 'text-orange-600'
+                        isDark ? 'text-purple-400' : 'text-black'
                       }`}>
                         {cert.issuer}
                       </div>
                       <div className={`text-xs mt-auto transition-all duration-700 ${
-                        isDark ? 'text-slate-400' : 'text-slate-500'
+                        isDark ? 'text-slate-400' : 'text-black'
                       }`}>
                         {cert.date}
                       </div>
@@ -250,7 +250,7 @@ const Certificates = () => {
             {/* Subtitle */}
             <motion.h2 
               className={`font-montserrat text-2xl md:text-3xl font-light mb-6 transition-all duration-700 ${
-                isDark ? 'text-gray-200' : 'text-gray-700'
+                isDark ? 'text-gray-200' : 'text-black'
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -262,7 +262,7 @@ const Certificates = () => {
             {/* Description */}
             <motion.p 
               className={`font-opensans text-lg leading-relaxed mb-6 transition-all duration-700 ${
-                isDark ? 'text-gray-300' : 'text-gray-600'
+                isDark ? 'text-gray-300' : 'text-black'
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -274,7 +274,7 @@ const Certificates = () => {
             {/* Additional Content */}
             <motion.div 
               className={`font-opensans space-y-4 mb-8 text-base leading-relaxed transition-all duration-700 ${
-                isDark ? 'text-gray-300' : 'text-gray-600'
+                isDark ? 'text-gray-300' : 'text-black'
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -332,12 +332,12 @@ const Certificates = () => {
                     transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                   />
                   <div className={`text-3xl md:text-4xl font-bold mb-2 relative z-10 transition-all duration-700 ${
-                    isDark ? 'text-white' : 'text-gray-800'
+                    isDark ? 'text-white' : 'text-black'
                   }`}>
                     {stat.number}
                   </div>
                   <div className={`text-sm font-medium relative z-10 transition-all duration-700 ${
-                    isDark ? 'text-gray-200' : 'text-gray-700'
+                    isDark ? 'text-gray-200' : 'text-black'
                   }`}>
                     {stat.label}
                   </div>
@@ -383,7 +383,7 @@ const Certificates = () => {
             <button 
               onClick={() => setModalOpen(false)}
               className={`float-right text-3xl font-light hover:rotate-90 transition-transform duration-300 ${
-                isDark ? 'text-slate-300 hover:text-white' : 'text-slate-600 hover:text-slate-800'
+                isDark ? 'text-slate-300 hover:text-white' : 'text-black hover:text-black'
               }`}
             >
               ×
@@ -393,14 +393,14 @@ const Certificates = () => {
               {/* Certificate Header */}
               <div>
                 <h2 className={`font-playfair text-4xl font-bold mb-4 transition-all duration-700 ${
-                  isDark ? 'text-white' : 'text-slate-800'
+                  isDark ? 'text-white' : 'text-black'
                 }`}>
                   {selectedCertificate.title}
                 </h2>
                 <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-6 transition-all duration-700 ${
                   isDark 
                     ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30' 
-                    : 'bg-amber-50 text-amber-700 border border-amber-200'
+                    : 'bg-amber-50 text-black border border-amber-200'
                 }`}>
                   {selectedCertificate.issuer}
                 </div>
@@ -423,19 +423,19 @@ const Certificates = () => {
                         : 'radial-gradient(circle at 25% 35%, rgba(251, 191, 36, 0.4) 0%, transparent 50%), radial-gradient(circle at 75% 65%, rgba(249, 115, 22, 0.4) 0%, transparent 50%)'
                     }}
                   />
-                  <Award size={80} className={`z-10 transition-all duration-700 ${isDark ? 'text-yellow-500' : 'text-amber-600'}`} />
+                  <Award size={80} className={`z-10 transition-all duration-700 ${isDark ? 'text-yellow-500' : 'text-black'}`} />
                 </div>
               </div>
 
               {/* Certificate Description */}
               <div>
                 <h3 className={`font-montserrat text-xl font-semibold mb-3 transition-all duration-700 ${
-                  isDark ? 'text-slate-200' : 'text-slate-700'
+                  isDark ? 'text-slate-200' : 'text-black'
                 }`}>
                   About This Certificate
                 </h3>
                 <p className={`font-opensans text-lg leading-relaxed transition-all duration-700 ${
-                  isDark ? 'text-slate-300' : 'text-slate-600'
+                  isDark ? 'text-slate-300' : 'text-black'
                 }`}>
                   {selectedCertificate.description}
                 </p>
@@ -444,7 +444,7 @@ const Certificates = () => {
               {/* Certificate Details */}
               <div>
                 <h3 className={`font-montserrat text-xl font-semibold mb-4 transition-all duration-700 ${
-                  isDark ? 'text-slate-200' : 'text-slate-700'
+                  isDark ? 'text-slate-200' : 'text-black'
                 }`}>
                   Certificate Details
                 </h3>
@@ -452,9 +452,9 @@ const Certificates = () => {
                   <div className={`p-4 rounded-xl transition-all duration-700 ${
                     isDark ? 'bg-slate-800/50' : 'bg-amber-50/80'
                   }`}>
-                    <div className={`text-sm font-medium mb-1 transition-all duration-700 ${isDark ? 'text-indigo-500' : 'text-amber-600'}`}>Issued By</div>
+                    <div className={`text-sm font-medium mb-1 transition-all duration-700 ${isDark ? 'text-indigo-500' : 'text-black'}`}>Issued By</div>
                     <div className={`font-semibold transition-all duration-700 ${
-                      isDark ? 'text-slate-200' : 'text-slate-700'
+                      isDark ? 'text-slate-200' : 'text-black'
                     }`}>
                       {selectedCertificate.issuer}
                     </div>
@@ -462,9 +462,9 @@ const Certificates = () => {
                   <div className={`p-4 rounded-xl transition-all duration-700 ${
                     isDark ? 'bg-slate-800/50' : 'bg-amber-50/80'
                   }`}>
-                    <div className={`text-sm font-medium mb-1 transition-all duration-700 ${isDark ? 'text-indigo-500' : 'text-amber-600'}`}>Date Earned</div>
+                    <div className={`text-sm font-medium mb-1 transition-all duration-700 ${isDark ? 'text-indigo-500' : 'text-black'}`}>Date Earned</div>
                     <div className={`font-semibold text-sm transition-all duration-700 ${
-                      isDark ? 'text-slate-200' : 'text-slate-700'
+                      isDark ? 'text-slate-200' : 'text-black'
                     }`}>
                       {selectedCertificate.date}
                     </div>
@@ -472,9 +472,9 @@ const Certificates = () => {
                   <div className={`p-4 rounded-xl transition-all duration-700 ${
                     isDark ? 'bg-slate-800/50' : 'bg-amber-50/80'
                   }`}>
-                    <div className={`text-sm font-medium mb-1 transition-all duration-700 ${isDark ? 'text-indigo-500' : 'text-amber-600'}`}>Certificate Type</div>
+                    <div className={`text-sm font-medium mb-1 transition-all duration-700 ${isDark ? 'text-indigo-500' : 'text-black'}`}>Certificate Type</div>
                     <div className={`font-semibold transition-all duration-700 ${
-                      isDark ? 'text-slate-200' : 'text-slate-700'
+                      isDark ? 'text-slate-200' : 'text-black'
                     }`}>
                       Professional Certification
                     </div>
@@ -482,9 +482,9 @@ const Certificates = () => {
                   <div className={`p-4 rounded-xl transition-all duration-700 ${
                     isDark ? 'bg-slate-800/50' : 'bg-amber-50/80'
                   }`}>
-                    <div className={`text-sm font-medium mb-1 transition-all duration-700 ${isDark ? 'text-indigo-500' : 'text-amber-600'}`}>Validity</div>
+                    <div className={`text-sm font-medium mb-1 transition-all duration-700 ${isDark ? 'text-indigo-500' : 'text-black'}`}>Validity</div>
                     <div className={`font-semibold transition-all duration-700 ${
-                      isDark ? 'text-slate-200' : 'text-slate-700'
+                      isDark ? 'text-slate-200' : 'text-black'
                     }`}>
                       Lifetime
                     </div>

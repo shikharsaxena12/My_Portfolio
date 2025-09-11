@@ -35,9 +35,9 @@ const LandingPage = () => {
             transition={{ duration: 1, ease: "easeOut" }}
           >
             <h1 className="font-oswald text-6xl md:text-8xl lg:text-9xl font-black leading-tight mb-8">
-              <span className={`drop-shadow-2xl transition-all duration-700 ${isDark ? 'text-white shadow-black/50' : 'text-gray-800 shadow-white/80'}`}>Shikhar</span>
+              <span className={`drop-shadow-2xl transition-all duration-700 ${isDark ? 'text-white shadow-black/50' : 'text-black shadow-white/80'}`}>Shikhar</span>
               <br />
-              <span className={`drop-shadow-2xl transition-all duration-700 ${isDark ? 'text-white shadow-black/50' : 'text-gray-800 shadow-white/80'}`}>Portfolio's</span>
+              <span className={`drop-shadow-2xl transition-all duration-700 ${isDark ? 'text-white shadow-black/50' : 'text-black shadow-white/80'}`}>Portfolio's</span>
               <br />
  
             </h1>
@@ -60,7 +60,7 @@ const LandingPage = () => {
           >
             <Link to="/portfolio">
               <motion.button
-                className={`relative overflow-hidden font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-3 group backdrop-blur-xl border shadow-2xl transition-all duration-500 ${isDark ? 'text-white border-white/30' : 'text-gray-800 border-gray-800/30'}`}
+                className={`relative overflow-hidden font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-3 group backdrop-blur-xl border shadow-2xl transition-all duration-500 ${isDark ? 'text-white border-white/30' : 'text-black border-gray-800/30'}`}
                 style={{
                   background: isDark ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(168, 85, 247, 0.8), rgba(236, 72, 153, 0.8))' : 'linear-gradient(135deg, rgba(251, 191, 36, 0.8), rgba(249, 115, 22, 0.8), rgba(244, 63, 94, 0.8))'
                 }}
@@ -107,7 +107,7 @@ const LandingPage = () => {
             
             <Link to="/contact">
               <motion.button
-                className={`relative overflow-hidden font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-3 group backdrop-blur-xl border shadow-2xl transition-all duration-500 ${isDark ? 'text-white border-white/30' : 'text-gray-800 border-gray-800/30'}`}
+                className={`relative overflow-hidden font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-3 group backdrop-blur-xl border shadow-2xl transition-all duration-500 ${isDark ? 'text-white border-white/30' : 'text-black border-gray-800/30'}`}
                 style={{
                   background: isDark ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(168, 85, 247, 0.8), rgba(236, 72, 153, 0.8))' : 'linear-gradient(135deg, rgba(251, 191, 36, 0.8), rgba(249, 115, 22, 0.8), rgba(244, 63, 94, 0.8))'
                 }}

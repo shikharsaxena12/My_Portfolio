@@ -103,7 +103,7 @@ const Testimonials = () => {
                 <motion.p 
                   key={`text-${testimonials[currentIndex]?.id}`}
                   className={`text-lg mb-6 leading-relaxed transition-colors duration-700 ${
-                    isDark ? 'text-blue-100' : 'text-amber-900'
+                    isDark ? 'text-blue-100' : 'text-black'
                   }`}
                   initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -133,12 +133,12 @@ const Testimonials = () => {
                   </div>
                   <div>
                     <h4 className={`font-bold transition-colors duration-700 ${
-                      isDark ? 'text-blue-100' : 'text-amber-900'
+                      isDark ? 'text-blue-100' : 'text-black'
                     }`}>
                       {testimonials[currentIndex]?.name}
                     </h4>
                     <p className={`text-sm transition-colors duration-700 ${
-                      isDark ? 'text-blue-300' : 'text-amber-700'
+                      isDark ? 'text-blue-300' : 'text-black'
                     }`}>
                       {testimonials[currentIndex]?.role} at {testimonials[currentIndex]?.company}
                     </p>
@@ -172,7 +172,7 @@ const Testimonials = () => {
 
             <motion.p 
               className={`font-opensans text-lg mb-8 leading-relaxed transition-colors duration-700 ${
-                isDark ? 'text-blue-100' : 'text-amber-800'
+                isDark ? 'text-blue-100' : 'text-black'
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -214,17 +214,17 @@ const Testimonials = () => {
 
               <div className="mb-6 relative z-10 flex justify-between items-start">
                 <div>
-                  <h3 className={`font-roboto text-xl font-bold mb-2 transition-all duration-700 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                  <h3 className={`font-roboto text-xl font-bold mb-2 transition-all duration-700 ${isDark ? 'text-white' : 'text-black'}`}>
                     Share Your Experience
                   </h3>
-                  <p className={`font-opensans text-xs transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                  <p className={`font-opensans text-xs transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-black'}`}>
                     Tell us about your experience
                   </p>
                 </div>
                 
                 <motion.button
                   type="submit"
-                  className={`relative overflow-hidden font-semibold px-4 py-2 rounded-full flex items-center justify-center gap-2 group backdrop-blur-xl border shadow-lg relative z-10 transition-all duration-500 text-sm pointer-events-auto ${isDark ? 'text-white border-white/30' : 'text-gray-800 border-gray-800/30'}`}
+                  className={`relative overflow-hidden font-semibold px-4 py-2 rounded-full flex items-center justify-center gap-2 group backdrop-blur-xl border shadow-lg relative z-10 transition-all duration-500 text-sm pointer-events-auto ${isDark ? 'text-white border-white/30' : 'text-black border-gray-800/30'}`}
                   style={{
                     background: isDark 
                       ? 'linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(168, 85, 247, 0.8), rgba(236, 72, 153, 0.8))' 
@@ -283,7 +283,7 @@ const Testimonials = () => {
                   className={`font-opensans w-full p-3 rounded-lg border transition-all duration-700 backdrop-blur-sm text-sm ${
                     isDark 
                       ? 'bg-slate-800/50 border-slate-600 text-white placeholder-gray-400' 
-                      : 'bg-white/70 border-amber-200 text-gray-800 placeholder-gray-500'
+                      : 'bg-white/70 border-amber-200 text-black placeholder-gray-500'
                   } focus:outline-none ${
                     isDark ? 'focus:border-blue-500' : 'focus:border-amber-500'
                   }`}
@@ -298,7 +298,7 @@ const Testimonials = () => {
                   className={`font-opensans w-full p-3 rounded-lg border transition-all duration-700 backdrop-blur-sm text-sm ${
                     isDark 
                       ? 'bg-slate-800/50 border-slate-600 text-white placeholder-gray-400' 
-                      : 'bg-white/70 border-amber-200 text-gray-800 placeholder-gray-500'
+                      : 'bg-white/70 border-amber-200 text-black placeholder-gray-500'
                   } focus:outline-none ${
                     isDark ? 'focus:border-blue-500' : 'focus:border-amber-500'
                   }`}
@@ -314,7 +314,7 @@ const Testimonials = () => {
                 className={`font-opensans w-full p-3 rounded-lg border transition-all duration-700 backdrop-blur-sm mb-3 text-sm relative z-10 ${
                   isDark 
                     ? 'bg-slate-800/50 border-slate-600 text-white placeholder-gray-400' 
-                    : 'bg-white/70 border-amber-200 text-gray-800 placeholder-gray-500'
+                    : 'bg-white/70 border-amber-200 text-black placeholder-gray-500'
                 } focus:outline-none ${
                   isDark ? 'focus:border-blue-500' : 'focus:border-amber-500'
                 }`}
@@ -323,14 +323,14 @@ const Testimonials = () => {
 
               <div className="flex items-center gap-2 mb-3 relative z-10">
                 <span className={`text-sm transition-colors duration-700 ${
-                  isDark ? 'text-gray-300' : 'text-gray-600'
+                  isDark ? 'text-gray-300' : 'text-black'
                 }`}>Rating:</span>
                 {[1,2,3,4,5].map((star) => (
                   <button
                     key={star}
                     type="button"
                     onClick={() => setFormData({...formData, rating: star})}
-                    className={`${star <= formData.rating ? 'text-yellow-400' : isDark ? 'text-slate-600' : 'text-gray-400'}`}
+                    className={`${star <= formData.rating ? 'text-yellow-400' : isDark ? 'text-black' : 'text-gray-400'}`}
                   >
                     <Star className="w-5 h-5 fill-current" />
                   </button>
@@ -345,7 +345,7 @@ const Testimonials = () => {
                 className={`font-opensans w-full p-3 rounded-lg border transition-all duration-700 resize-none backdrop-blur-sm mb-4 text-sm relative z-10 ${
                   isDark 
                     ? 'bg-slate-800/50 border-slate-600 text-white placeholder-gray-400' 
-                    : 'bg-white/70 border-amber-200 text-gray-800 placeholder-gray-500'
+                    : 'bg-white/70 border-amber-200 text-black placeholder-gray-500'
                 } focus:outline-none ${
                   isDark ? 'focus:border-blue-500' : 'focus:border-amber-500'
                 }`}

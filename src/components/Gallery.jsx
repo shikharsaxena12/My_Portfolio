@@ -191,7 +191,7 @@ const Gallery = () => {
           
           <motion.div 
             className={`text-xl font-semibold z-10 transition-colors duration-700 ${
-              isDark ? 'text-slate-300' : 'text-amber-700'
+              isDark ? 'text-slate-300' : 'text-black'
             }`}
             animate={{ 
               scale: [1, 1.01, 1],
@@ -231,9 +231,9 @@ const Gallery = () => {
             whileHover={{ scale: 1.1, rotate: 5 }}
           >
             {item.type === 'video' ? (
-              <Video size={18} className={isDark ? 'text-blue-400' : 'text-amber-600'} />
+              <Video size={18} className={isDark ? 'text-blue-400' : 'text-black'} />
             ) : (
-              <Image size={18} className={isDark ? 'text-emerald-400' : 'text-orange-600'} />
+              <Image size={18} className={isDark ? 'text-emerald-400' : 'text-black'} />
             )}
           </motion.div>
         </div>
@@ -248,7 +248,7 @@ const Gallery = () => {
       >
         <motion.h3 
           className={`font-roboto text-2xl font-bold mb-4 transition-colors duration-700 ${
-            isDark ? 'text-blue-100' : 'text-amber-800'
+            isDark ? 'text-blue-100' : 'text-black'
           }`}
           initial={{ y: 15, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -261,7 +261,7 @@ const Gallery = () => {
           className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium mb-6 w-fit transition-all duration-700 ${
             isDark 
               ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' 
-              : 'bg-amber-100 text-amber-700 border border-amber-300'
+              : 'bg-amber-100 text-black border border-amber-300'
           }`}
           initial={{ y: 15, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -357,13 +357,13 @@ const Gallery = () => {
               </h1>
               
               <h2 className={`font-montserrat text-xl md:text-2xl font-light mb-8 transition-colors duration-700 ${
-                isDark ? 'text-blue-100' : 'text-amber-800'
+                isDark ? 'text-blue-100' : 'text-black'
               }`}>
                 Visual Portfolio & Creative Showcase
               </h2>
               
               <div className={`font-opensans text-lg leading-relaxed space-y-6 transition-colors duration-700 ${
-                isDark ? 'text-blue-200' : 'text-amber-700'
+                isDark ? 'text-blue-200' : 'text-black'
               }`}>
                 <p>
                   {labels.galleryDescription}
@@ -432,7 +432,7 @@ const Gallery = () => {
                 className={`absolute top-4 right-4 z-20 p-2 rounded-full backdrop-blur-xl border transition-all duration-700 ${
                   isDark 
                     ? 'bg-black/50 text-white hover:bg-black/70 border-white/20' 
-                    : 'bg-white/50 text-amber-800 hover:bg-white/70 border-amber-300/30'
+                    : 'bg-white/50 text-black hover:bg-white/70 border-amber-300/30'
                 }`}
               >
                 <X size={20} />
@@ -442,7 +442,7 @@ const Gallery = () => {
                 isDark ? 'bg-gray-900/50' : 'bg-amber-100/50'
               }`}>
                 <span className={`text-lg transition-colors duration-700 ${
-                  isDark ? 'text-white' : 'text-amber-800'
+                  isDark ? 'text-white' : 'text-black'
                 }`}>
                   {selectedMedia.type === 'video' ? 'Video Player' : 'Full Size Image'}
                 </span>
@@ -450,12 +450,12 @@ const Gallery = () => {
               
               <div className="relative p-6 z-10">
                 <h2 className={`font-playfair text-2xl font-bold mb-2 transition-colors duration-700 ${
-                  isDark ? 'text-white' : 'text-amber-800'
+                  isDark ? 'text-white' : 'text-black'
                 }`}>
                   {selectedMedia.title}
                 </h2>
                 <p className={`font-opensans transition-colors duration-700 ${
-                  isDark ? 'text-gray-300' : 'text-amber-700'
+                  isDark ? 'text-gray-300' : 'text-black'
                 }`}>
                   {selectedMedia.category} • {selectedMedia.type === 'video' ? 'Video content' : 'Image content'}
                 </p>

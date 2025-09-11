@@ -116,7 +116,7 @@ const Skills = () => {
                     </>
                   )}
                   <span className={`relative z-10 ${
-                    isDark ? 'text-white' : 'text-gray-800'
+                    isDark ? 'text-white' : 'text-black'
                   }`}>Tech Skills</span>
                 </motion.button>
                 <motion.button
@@ -169,7 +169,7 @@ const Skills = () => {
                     </>
                   )}
                   <span className={`relative z-10 ${
-                    isDark ? 'text-white' : 'text-gray-800'
+                    isDark ? 'text-white' : 'text-black'
                   }`}>Soft Skills</span>
                 </motion.button>
               </div>
@@ -179,12 +179,12 @@ const Skills = () => {
                   <div key={skill.name} className="space-y-2">
                     <div className="flex justify-between">
                       <span className={`font-poppins font-medium transition-all duration-700 ${
-                        isDark ? 'text-white' : 'text-gray-800'
+                        isDark ? 'text-white' : 'text-black'
                       }`}>
                         {skill.name}
                       </span>
                       <span className={`text-sm transition-all duration-700 ${
-                        isDark ? 'text-gray-200' : 'text-gray-700'
+                        isDark ? 'text-gray-200' : 'text-black'
                       }`}>
                         {skill.level}%
                       </span>
@@ -221,30 +221,30 @@ const Skills = () => {
             </h1>
             
             <h2 className={`font-montserrat text-2xl md:text-3xl font-light mb-6 transition-all duration-700 ${
-              isDark ? 'text-gray-200' : 'text-gray-700'
+              isDark ? 'text-gray-200' : 'text-black'
             }`}>
               Technical Expertise & Professional Skills
             </h2>
             
             <p className={`font-opensans text-lg leading-relaxed mb-8 transition-all duration-700 ${
-              isDark ? 'text-gray-300' : 'text-gray-600'
+              isDark ? 'text-gray-300' : 'text-black'
             }`}>
               I specialize in modern web development technologies and frameworks. 
               My expertise spans across frontend and backend development, with a 
               strong focus on creating scalable and efficient applications.
             </p>
             
-            <p className={`text-lg leading-relaxed transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className={`text-lg leading-relaxed transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-black'}`}>
               With years of experience in JavaScript ecosystem, I build responsive 
               user interfaces and robust server-side applications. I'm passionate 
               about clean code, best practices, and continuous learning.
             </p>
             
             <div className="space-y-4">
-              <h3 className={`text-xl font-semibold transition-all duration-700 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+              <h3 className={`text-xl font-semibold transition-all duration-700 ${isDark ? 'text-white' : 'text-black'}`}>
                 {labels.whatIDo}
               </h3>
-              <ul className={`space-y-2 transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <ul className={`space-y-2 transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-black'}`}>
                 <li>• Full Stack Web Development</li>
                 <li>• React & Modern JavaScript</li>
                 <li>• API Design & Development</li>

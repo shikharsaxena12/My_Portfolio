@@ -137,10 +137,10 @@ const Contact = () => {
                 />
 
                 <div className="mb-6 relative z-10">
-                  <h3 className={`font-roboto text-xl font-bold mb-2 transition-all duration-700 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                  <h3 className={`font-roboto text-xl font-bold mb-2 transition-all duration-700 ${isDark ? 'text-white' : 'text-black'}`}>
                     Send Message
                   </h3>
-                  <p className={`font-opensans text-xs transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                  <p className={`font-opensans text-xs transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-black'}`}>
                     Let's start a conversation
                   </p>
                 </div>
@@ -154,7 +154,7 @@ const Contact = () => {
                       className={`font-opensans w-full p-3 rounded-lg border transition-all duration-700 backdrop-blur-sm text-sm ${
                         isDark 
                           ? 'bg-slate-800/50 border-slate-600 text-white placeholder-gray-400' 
-                          : 'bg-white/70 border-amber-200 text-gray-800 placeholder-gray-500'
+                          : 'bg-white/70 border-amber-200 text-black placeholder-gray-500'
                       } focus:outline-none ${
                         isDark ? 'focus:border-blue-500' : 'focus:border-amber-500'
                       }`}
@@ -174,7 +174,7 @@ const Contact = () => {
                   className={`font-opensans w-full p-3 rounded-lg border transition-all duration-700 backdrop-blur-sm mb-3 text-sm ${
                     isDark 
                       ? 'bg-slate-800/50 border-slate-600 text-white placeholder-gray-400' 
-                      : 'bg-white/70 border-amber-200 text-gray-800 placeholder-gray-500'
+                      : 'bg-white/70 border-amber-200 text-black placeholder-gray-500'
                   } focus:outline-none ${
                     isDark ? 'focus:border-blue-500' : 'focus:border-amber-500'
                   }`}
@@ -192,7 +192,7 @@ const Contact = () => {
                   className={`font-opensans w-full p-3 rounded-lg border transition-all duration-700 resize-none backdrop-blur-sm mb-4 text-sm ${
                     isDark 
                       ? 'bg-slate-800/50 border-slate-600 text-white placeholder-gray-400' 
-                      : 'bg-white/70 border-amber-200 text-gray-800 placeholder-gray-500'
+                      : 'bg-white/70 border-amber-200 text-black placeholder-gray-500'
                   } focus:outline-none ${
                     isDark ? 'focus:border-blue-500' : 'focus:border-amber-500'
                   }`}
@@ -207,7 +207,7 @@ const Contact = () => {
                 <motion.button
                   type="submit"
                   className={`relative overflow-hidden font-semibold px-6 py-3 rounded-full flex items-center justify-center gap-3 w-full group backdrop-blur-xl border shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed relative z-10 transition-all duration-500 ${
-                    isDark ? 'text-white border-white/30' : 'text-gray-800 border-gray-800/30'
+                    isDark ? 'text-white border-white/30' : 'text-black border-gray-800/30'
                   }`}
                   style={{
                     background: isDark 
@@ -292,7 +292,7 @@ const Contact = () => {
                 
                 {/* Social Links */}
                 <motion.div className="mt-6">
-                  <h3 className={`font-medium mb-3 text-sm transition-all duration-700 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                  <h3 className={`font-medium mb-3 text-sm transition-all duration-700 ${isDark ? 'text-white' : 'text-black'}`}>
                     Connect with me
                   </h3>
                   <div className="flex gap-3">
@@ -333,7 +333,7 @@ const Contact = () => {
               </motion.h1>
               
               <motion.h2 
-                className={`font-montserrat text-xl md:text-2xl font-light mb-8 transition-all duration-700 ${isDark ? 'text-gray-200' : 'text-gray-700'}`}
+                className={`font-montserrat text-xl md:text-2xl font-light mb-8 transition-all duration-700 ${isDark ? 'text-gray-200' : 'text-black'}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
@@ -342,7 +342,7 @@ const Contact = () => {
               </motion.h2>
               
               <motion.p 
-                className={`font-opensans text-lg leading-relaxed mb-8 transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}
+                className={`font-opensans text-lg leading-relaxed mb-8 transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-black'}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
@@ -350,7 +350,7 @@ const Contact = () => {
                 {labels.description}
               </motion.p>
               
-              <div className={`font-opensans text-base leading-relaxed space-y-4 transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+              <div className={`font-opensans text-base leading-relaxed space-y-4 transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-black'}`}>
                 <p>
                   Ready to bring your vision to life? I'm passionate about creating innovative solutions that make a difference.
                   Whether you're looking to build a stunning web application, need technical consultation, or want to collaborate on an exciting project, I'd love to hear from you.
@@ -406,10 +406,10 @@ const Contact = () => {
                           <Icon className="text-white" size={16} />
                         </div>
                         <div>
-                          <h3 className={`font-medium text-sm transition-all duration-700 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                          <h3 className={`font-medium text-sm transition-all duration-700 ${isDark ? 'text-white' : 'text-black'}`}>
                             {contact.title}
                           </h3>
-                          <p className={`text-xs transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                          <p className={`text-xs transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-black'}`}>
                             {contact.info}
                           </p>
                         </div>

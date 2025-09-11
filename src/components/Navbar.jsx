@@ -114,8 +114,8 @@ const Navbar = () => {
                   
                   <span className={`relative z-10 text-xs font-medium transition-colors duration-700 ${
                     isActive(item.path)
-                      ? isDark ? 'text-blue-300' : 'text-amber-700'
-                      : isDark ? 'text-blue-200 hover:text-blue-100' : 'text-amber-600 hover:text-amber-800'
+                      ? isDark ? 'text-blue-300' : 'text-black'
+                      : isDark ? 'text-blue-200 hover:text-blue-100' : 'text-black hover:text-black'
                   }`}>
                     {item.label}
                   </span>
@@ -180,7 +180,7 @@ const Navbar = () => {
                     transition={{ duration: 0.3 }}
                     className="relative z-10"
                   >
-                    <Moon size={16} className="text-slate-600" />
+                    <Moon size={16} className="text-black" />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -189,7 +189,7 @@ const Navbar = () => {
             {/* Mobile Menu Button */}
             <motion.button
               className={`lg:hidden p-2 rounded-full transition-all duration-700 ${
-                isDark ? 'text-blue-200 hover:text-blue-100' : 'text-amber-700 hover:text-amber-800'
+                isDark ? 'text-blue-200 hover:text-blue-100' : 'text-black hover:text-black'
               }`}
               onClick={() => setIsOpen(!isOpen)}
               whileHover={{ 
@@ -296,8 +296,8 @@ const Navbar = () => {
                     
                     <span className={`font-medium transition-colors duration-700 relative z-10 ${
                       isActive(item.path)
-                        ? isDark ? 'text-blue-300' : 'text-amber-700'
-                        : isDark ? 'text-blue-200' : 'text-amber-600'
+                        ? isDark ? 'text-blue-300' : 'text-black'
+                        : isDark ? 'text-blue-200' : 'text-black'
                     }`}>
                       {item.label}
                     </span>
