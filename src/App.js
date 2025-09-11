@@ -2,6 +2,7 @@ import React, { Suspense, useState, useRef, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
+import { ContentProvider } from './contexts/ContentContext';
 import './index.css';
 
 // Lazy load components
@@ -15,7 +16,7 @@ const Gallery = lazy(() => import('./components/Gallery'));
 const Certificates = lazy(() => import('./components/Certificates'));
 const Testimonials = lazy(() => import('./components/Testimonials'));
 const OwnerLogin = lazy(() => import('./components/OwnerLogin'));
-const OwnerDashboard = lazy(() => import('./components/OwnerDashboard'));
+const ContentManagement = lazy(() => import('./components/ContentManagementDashboard'));
 
 const Logo = () => {
   const location = useLocation();
@@ -35,7 +36,7 @@ const Logo = () => {
     
     clickTimer.current = setTimeout(() => {
       if (clickCount + 1 === 1) {
-        navigate('/');
+    navigate('/');
       } else if (clickCount + 1 === 3) {
         navigate('/owner');
       }
@@ -91,27 +92,29 @@ const LoadingSpinner = () => {
 function App() {
   return (
     <ThemeProvider>
-      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <div className="App">
-          <Logo />
-          <Suspense fallback={<LoadingSpinner />}>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/portfolio" element={<Portfolio />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/skills" element={<Skills />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/certificates" element={<Certificates />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/testimonials" element={<Testimonials />} />
-              <Route path="/contact" element={<Contact />} />
+      <ContentProvider>
+        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <div className="App">
+            <Logo />
+            <Suspense fallback={<LoadingSpinner />}>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/portfolio" element={<Portfolio />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/skills" element={<Skills />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/certificates" element={<Certificates />} />
+                <Route path="/gallery" element={<Gallery />} />
+                <Route path="/testimonials" element={<Testimonials />} />
+                <Route path="/contact" element={<Contact />} />
               <Route path="/owner" element={<OwnerLogin />} />
-              <Route path="/owner/dashboard" element={<OwnerDashboard />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </Suspense>
-        </div>
-      </Router>
+              <Route path="/content-management" element={<ContentManagement />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Suspense>
+          </div>
+        </Router>
+      </ContentProvider>
     </ThemeProvider>
   );
 }
