@@ -15,7 +15,7 @@ const OwnerLogin = () => {
     const ownerPassword = process.env.REACT_APP_OWNER_PASSWORD;
     
     if (credentials.username === ownerEmail && credentials.password === ownerPassword) {
-      navigate('/owner/dashboard');
+      navigate('/content-management');
     } else {
       alert('Invalid credentials');
     }

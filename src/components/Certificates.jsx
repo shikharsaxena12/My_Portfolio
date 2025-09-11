@@ -2,17 +2,16 @@ import React, { useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Award, ExternalLink } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
+import { useContent } from '../contexts/ContentContext';
 import Navbar from './Navbar';
 import { HomeBackground } from '../portfolio_animation';
 
 const Certificates = () => {
   const { isDark = false } = useTheme() || {};
-  const [isHovered, setIsHovered] = React.useState(false);
+  const { content } = useContent();
+  const [currentIndex, setCurrentIndex] = React.useState(0);
   const [modalOpen, setModalOpen] = React.useState(false);
   const [selectedCertificate, setSelectedCertificate] = React.useState(null);
-  
-  const handleHoverStart = useCallback(() => setIsHovered(true), []);
-  const handleHoverEnd = useCallback(() => setIsHovered(false), []);
   
   const openModal = (cert) => {
     setSelectedCertificate(cert);
@@ -20,60 +19,20 @@ const Certificates = () => {
   };
 
   const labels = {
-    myCertificates: 'My Certificates',
-    certificatesDescription: 'A showcase of my professional certifications and achievements that demonstrate my commitment to continuous learning and expertise across various technologies. These credentials validate my skills in modern web development, cloud computing, and software engineering best practices.'
+    myCertificates: content?.certificatesPage?.title || 'My Certificates',
+    certificatesDescription: content?.certificatesPage?.description || 'A showcase of my professional certifications and achievements that demonstrate my commitment to continuous learning and expertise across various technologies. These credentials validate my skills in modern web development, cloud computing, and software engineering best practices.'
   };
 
-  const certificates = useMemo(() => [
-    {
-      id: 1,
-      title: 'React Developer Certification',
-      issuer: 'Meta',
-      date: 'March 15, 2023',
-      description: 'Advanced React development and best practices',
-      image: '/api/placeholder/300/200'
-    },
-    {
-      id: 2,
-      title: 'Full Stack Web Development',
-      issuer: 'freeCodeCamp',
-      date: 'August 22, 2023',
-      description: 'Complete full-stack development certification',
-      image: '/api/placeholder/300/200'
-    },
-    {
-      id: 3,
-      title: 'JavaScript Algorithms',
-      issuer: 'freeCodeCamp',
-      date: 'November 10, 2022',
-      description: 'Data structures and algorithms in JavaScript',
-      image: '/api/placeholder/300/200'
-    },
-    {
-      id: 4,
-      title: 'AWS Cloud Practitioner',
-      issuer: 'Amazon Web Services',
-      date: 'June 5, 2023',
-      description: 'Cloud computing fundamentals and AWS services',
-      image: '/api/placeholder/300/200'
-    },
-    {
-      id: 5,
-      title: 'Node.js Development',
-      issuer: 'MongoDB University',
-      date: 'September 18, 2022',
-      description: 'Backend development with Node.js and MongoDB',
-      image: '/api/placeholder/300/200'
-    },
-    {
-      id: 6,
-      title: 'UI/UX Design',
-      issuer: 'Google',
-      date: 'December 3, 2023',
-      description: 'User experience design principles and practices',
-      image: '/api/placeholder/300/200'
+  const certificates = useMemo(() => content?.certificates || [], [content?.certificates]);
+  
+  React.useEffect(() => {
+    if (certificates.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % certificates.length);
+      }, 3000);
+      return () => clearInterval(interval);
     }
-  ], []);
+  }, [certificates.length]);
 
   return (
     <div className={`h-screen overflow-hidden transition-all duration-1000 ${isDark ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300'}`}>
@@ -83,102 +42,66 @@ const Certificates = () => {
       <div className="relative z-10 h-full flex">
         {/* Left Side - Full Height Moving Certificate Strips */}
         <motion.div
-          className="w-1/2 lg:w-1/2 relative overflow-hidden"
+          className="w-1/2 lg:w-1/2 relative overflow-hidden flex items-center justify-center"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <div className="relative w-full h-full flex justify-center items-center">
-            <div className="relative w-full max-w-md h-full overflow-hidden">
-              {/* First Column */}
-              <motion.div 
-                className="absolute left-0 flex flex-col gap-4"
-                animate={{ y: isHovered ? undefined : [-600, 0] }}
-                transition={{
-                  duration: 15,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-                onHoverStart={handleHoverStart}
-                onHoverEnd={handleHoverEnd}
-              >
-                {[...certificates.slice(0, 3), ...certificates.slice(0, 3), ...certificates.slice(0, 3)].map((cert, index) => (
+          <div className="relative w-96 h-96" style={{ perspective: '2000px' }}>
+            {certificates.length > 0 ? (
+              certificates.map((cert, index) => {
+                const angle = (index * 360) / certificates.length;
+                const isActive = index === currentIndex;
+                return (
                   <motion.div
-                    key={`col1-${index}`}
-                    className={`font-inter group relative rounded-xl overflow-hidden shadow-lg flex-shrink-0 w-52 h-64 flex flex-col cursor-pointer backdrop-blur-xl transition-all duration-700 ${
+                    key={cert.id}
+                    className={`font-inter group absolute rounded-2xl overflow-hidden shadow-2xl cursor-pointer backdrop-blur-xl border ${
                       isDark 
                         ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
                         : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
-                    } border`}
-                    whileHover={{ scale: 1.05, x: 10 }}
+                    }`}
+                    initial={{ 
+                      rotateY: angle,
+                      rotateX: -15,
+                      z: -500,
+                      scale: 0.4,
+                      opacity: 0
+                    }}
+                    animate={{
+                      rotateY: angle - (currentIndex * 360 / certificates.length),
+                      rotateX: isActive ? [0, 15, -10, 5, 0] : -15,
+                      z: isActive ? 200 : -500,
+                      scale: isActive ? 1.3 : 0.4,
+                      opacity: isActive ? 1 : 0,
+                      y: isActive ? [0, -30, 10, -15, 0] : 50,
+                      rotateZ: isActive ? [0, 3, -2, 1, 0] : 0
+                    }}
+                    transition={{
+                      duration: 1.8,
+                      ease: [0.25, 0.46, 0.45, 0.94],
+                      rotateX: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                      y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                      rotateZ: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                    whileHover={{
+                      scale: isActive ? 1.4 : 0.5,
+                      rotateZ: isActive ? 8 : 0,
+                      rotateX: isActive ? 20 : -15,
+                      z: isActive ? 300 : -400,
+                      transition: { duration: 0.4, ease: "easeOut" }
+                    }}
                     onClick={() => openModal(cert)}
+                    style={{
+                      width: '260px',
+                      height: '340px',
+                      transformStyle: 'preserve-3d',
+                      left: '50%',
+                      top: '50%',
+                      marginLeft: '-130px',
+                      marginTop: '-170px'
+                    }}
                   >
-                    <motion.div
-                      className="absolute inset-0 opacity-60"
-                      animate={{
-                        background: isDark ? [
-                          'linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))',
-                          'linear-gradient(225deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3))',
-                          'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))',
-                          'linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))'
-                        ] : [
-                          'linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))',
-                          'linear-gradient(225deg, rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4))',
-                          'linear-gradient(315deg, rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))',
-                          'linear-gradient(45deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))'
-                        ]
-                      }}
-                      transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                    />
-                    <div className={`relative h-20 p-3 flex items-center justify-center transition-all duration-700 ${
-                      isDark ? 'bg-gradient-to-br from-indigo-600/20 to-purple-600/20' : 'bg-gradient-to-br from-amber-100/60 to-orange-100/60'
-                    }`}>
-                      <Award size={24} className={`transition-all duration-700 ${isDark ? 'text-yellow-500' : 'text-black'}`} />
-                    </div>
-                    <div className="p-3 flex flex-col flex-1">
-                      <h3 className={`text-sm font-bold mb-1 line-clamp-2 transition-all duration-700 ${
-                        isDark ? 'text-white' : 'text-black'
-                      }`}>
-                        {cert.title}
-                      </h3>
-                      <div className={`text-xs font-medium mb-2 transition-all duration-700 ${
-                        isDark ? 'text-indigo-400' : 'text-black'
-                      }`}>
-                        {cert.issuer}
-                      </div>
-                      <div className={`text-xs mt-auto transition-all duration-700 ${
-                        isDark ? 'text-slate-400' : 'text-black'
-                      }`}>
-                        {cert.date}
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
 
-              {/* Second Column */}
-              <motion.div 
-                className="absolute right-0 flex flex-col gap-4"
-                animate={{ y: isHovered ? undefined : [0, -600] }}
-                transition={{
-                  duration: 15,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-                onHoverStart={handleHoverStart}
-                onHoverEnd={handleHoverEnd}
-              >
-                {[...certificates.slice(3, 6), ...certificates.slice(3, 6), ...certificates.slice(3, 6)].map((cert, index) => (
-                  <motion.div
-                    key={`col2-${index}`}
-                    className={`font-poppins group relative rounded-xl overflow-hidden shadow-lg flex-shrink-0 w-52 h-64 flex flex-col cursor-pointer backdrop-blur-xl transition-all duration-700 ${
-                      isDark 
-                        ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
-                        : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
-                    } border`}
-                    whileHover={{ scale: 1.05, x: -10 }}
-                    onClick={() => openModal(cert)}
-                  >
                     <motion.div
                       className="absolute inset-0 opacity-60"
                       animate={{
@@ -196,32 +119,76 @@ const Certificates = () => {
                       }}
                       transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                     />
-                    <div className={`relative h-20 p-3 flex items-center justify-center transition-all duration-700 ${
-                      isDark ? 'bg-gradient-to-br from-purple-600/20 to-pink-600/20' : 'bg-gradient-to-br from-orange-100/60 to-rose-100/60'
+                  <div className={`relative h-40 overflow-hidden transition-all duration-700 ${
+                    cert?.image 
+                      ? (isDark ? 'bg-slate-800' : 'bg-white') 
+                      : (isDark ? 'bg-gradient-to-br from-indigo-600/20 to-purple-600/20' : 'bg-gradient-to-br from-amber-100/60 to-orange-100/60')
+                  }`}>
+                    {cert?.image ? (
+                      <img 
+                        src={cert.image} 
+                        alt={cert?.title || 'Certificate'} 
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Award size={48} className={`transition-all duration-700 ${isDark ? 'text-yellow-500' : 'text-orange-600'}`} />
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-4 flex flex-col flex-1 relative z-10">
+                    <h3 className={`text-base font-bold mb-1 line-clamp-2 transition-all duration-700 ${
+                      isDark ? 'text-white' : 'text-gray-800'
                     }`}>
-                      <Award size={24} className={`transition-all duration-700 ${isDark ? 'text-yellow-500' : 'text-black'}`} />
+                      {cert?.title || 'Certificate Title'}
+                    </h3>
+                    <div className={`text-xs font-medium mb-1 transition-all duration-700 ${
+                      isDark ? 'text-indigo-400' : 'text-orange-600'
+                    }`}>
+                      {cert?.issuer || 'Issuer'}
                     </div>
-                    <div className="p-3 flex flex-col flex-1">
-                      <h3 className={`text-sm font-bold mb-1 line-clamp-2 transition-all duration-700 ${
-                        isDark ? 'text-white' : 'text-black'
-                      }`}>
-                        {cert.title}
-                      </h3>
-                      <div className={`text-xs font-medium mb-2 transition-all duration-700 ${
-                        isDark ? 'text-purple-400' : 'text-black'
-                      }`}>
-                        {cert.issuer}
-                      </div>
-                      <div className={`text-xs mt-auto transition-all duration-700 ${
-                        isDark ? 'text-slate-400' : 'text-black'
-                      }`}>
-                        {cert.date}
-                      </div>
+                    <div className={`text-xs mb-3 transition-all duration-700 ${
+                      isDark ? 'text-slate-400' : 'text-gray-600'
+                    }`}>
+                      {cert?.date || 'Date'}
                     </div>
+                    <div className={`text-xs text-center mt-auto px-2 py-1 rounded-full transition-all duration-700 ${
+                      isDark ? 'bg-blue-500/20 text-blue-300' : 'bg-orange-500/20 text-orange-700'
+                    }`}>
+                      View Details
+                    </div>
+                  </div>
                   </motion.div>
-                ))}
+                );
+              })
+            ) : (
+              <motion.div
+                className={`w-64 h-80 rounded-2xl overflow-hidden shadow-lg backdrop-blur-xl transition-all duration-700 ${
+                  isDark 
+                    ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
+                    : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
+                } border`}
+                animate={{ 
+                  y: [0, -10, 0]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <div className="flex items-center justify-center h-full">
+                  <div className={`text-center transition-colors duration-700 ${
+                    isDark ? 'text-blue-200' : 'text-gray-700'
+                  }`}>
+                    <Award size={48} className={`mx-auto mb-4 ${isDark ? 'text-yellow-500' : 'text-orange-600'}`} />
+                    <div className="text-xl font-bold mb-2">No Certificates Available</div>
+                    <div className="text-sm opacity-70">Certificates will appear here when loaded</div>
+                  </div>
+                </div>
               </motion.div>
-            </div>
+            )}
+
           </div>
         </motion.div>
 
@@ -256,7 +223,7 @@ const Certificates = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              Professional Certifications & Achievements
+              {content?.certificatesPage?.subtitle || 'Professional Certifications & Achievements'}
             </motion.h2>
 
             {/* Description */}
@@ -268,7 +235,10 @@ const Certificates = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              {labels.certificatesDescription}
+              {certificates.length > 0 
+                ? labels.certificatesDescription
+                : "This section will showcase my professional certifications and achievements when they are loaded from the dashboard. These credentials will demonstrate my commitment to continuous learning and expertise across various technologies."
+              }
             </motion.p>
 
             {/* Additional Content */}
@@ -280,16 +250,28 @@ const Certificates = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
             >
-              <p>
-                These certifications represent my dedication to staying current with 
-                industry standards and emerging technologies. Each credential validates 
-                my expertise and commitment to delivering high-quality solutions.
-              </p>
-              <p>
-                From cloud computing to modern web frameworks, these achievements 
-                demonstrate my comprehensive understanding of the full development 
-                lifecycle and best practices in software engineering.
-              </p>
+              {certificates.length > 0 ? (
+                <>
+                  <p>
+                    {content?.certificatesPage?.additionalContent1 || 'These certifications represent my dedication to staying current with industry standards and emerging technologies. Each credential validates my expertise and commitment to delivering high-quality solutions.'}
+                  </p>
+                  <p>
+                    {content?.certificatesPage?.additionalContent2 || 'From cloud computing to modern web frameworks, these achievements demonstrate my comprehensive understanding of the full development lifecycle and best practices in software engineering.'}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p>
+                    Once certificates are added through the dashboard, they will appear here 
+                    with detailed information about each credential and achievement.
+                  </p>
+                  <p>
+                    The certificates will validate skills in modern web development, cloud 
+                    computing, and software engineering best practices, demonstrating 
+                    commitment to professional growth.
+                  </p>
+                </>
+              )}
             </motion.div>
 
             {/* Stats */}
@@ -300,9 +282,9 @@ const Certificates = () => {
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               {[
-                { number: "6+", label: "Certificates" },
-                { number: "4+", label: "Platforms" },
-                { number: "100%", label: "Verified" }
+                { number: `${certificates.length || 0}+`, label: "Certificates" },
+                { number: `${certificates.length > 0 ? new Set(certificates.map(cert => cert.issuer)).size : 0}+`, label: "Platforms" },
+                { number: certificates.length > 0 ? "100%" : "0%", label: "Verified" }
               ].map((stat, index) => (
                 <motion.div
                   key={index}
@@ -395,14 +377,14 @@ const Certificates = () => {
                 <h2 className={`font-playfair text-4xl font-bold mb-4 transition-all duration-700 ${
                   isDark ? 'text-white' : 'text-black'
                 }`}>
-                  {selectedCertificate.title}
+                  {selectedCertificate?.title || 'Certificate Title'}
                 </h2>
                 <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-6 transition-all duration-700 ${
                   isDark 
                     ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30' 
                     : 'bg-amber-50 text-black border border-amber-200'
                 }`}>
-                  {selectedCertificate.issuer}
+                  {selectedCertificate?.issuer || 'Issuer'}
                 </div>
               </div>
 
@@ -415,15 +397,25 @@ const Certificates = () => {
                       : 'bg-gradient-to-br from-amber-50/95 via-orange-50/90 to-rose-50/95'
                   }`}
                 >
-                  <div
-                    className="absolute inset-0 opacity-20"
-                    style={{
-                      backgroundImage: isDark
-                        ? 'radial-gradient(circle at 25% 35%, rgba(99, 102, 241, 0.6) 0%, transparent 50%), radial-gradient(circle at 75% 65%, rgba(168, 85, 247, 0.6) 0%, transparent 50%)'
-                        : 'radial-gradient(circle at 25% 35%, rgba(251, 191, 36, 0.4) 0%, transparent 50%), radial-gradient(circle at 75% 65%, rgba(249, 115, 22, 0.4) 0%, transparent 50%)'
-                    }}
-                  />
-                  <Award size={80} className={`z-10 transition-all duration-700 ${isDark ? 'text-yellow-500' : 'text-black'}`} />
+                  {selectedCertificate?.image ? (
+                    <img 
+                      src={selectedCertificate.image} 
+                      alt={selectedCertificate?.title || 'Certificate'} 
+                      className="w-full h-full object-contain bg-white"
+                    />
+                  ) : (
+                    <>
+                      <div
+                        className="absolute inset-0 opacity-20"
+                        style={{
+                          backgroundImage: isDark
+                            ? 'radial-gradient(circle at 25% 35%, rgba(99, 102, 241, 0.6) 0%, transparent 50%), radial-gradient(circle at 75% 65%, rgba(168, 85, 247, 0.6) 0%, transparent 50%)'
+                            : 'radial-gradient(circle at 25% 35%, rgba(251, 191, 36, 0.4) 0%, transparent 50%), radial-gradient(circle at 75% 65%, rgba(249, 115, 22, 0.4) 0%, transparent 50%)'
+                        }}
+                      />
+                      <Award size={80} className={`z-10 transition-all duration-700 ${isDark ? 'text-yellow-500' : 'text-black'}`} />
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -437,7 +429,7 @@ const Certificates = () => {
                 <p className={`font-opensans text-lg leading-relaxed transition-all duration-700 ${
                   isDark ? 'text-slate-300' : 'text-black'
                 }`}>
-                  {selectedCertificate.description}
+                  {selectedCertificate?.description || 'Certificate description'}
                 </p>
               </div>
 
@@ -456,7 +448,7 @@ const Certificates = () => {
                     <div className={`font-semibold transition-all duration-700 ${
                       isDark ? 'text-slate-200' : 'text-black'
                     }`}>
-                      {selectedCertificate.issuer}
+                      {selectedCertificate?.issuer || 'Issuer'}
                     </div>
                   </div>
                   <div className={`p-4 rounded-xl transition-all duration-700 ${
@@ -466,7 +458,7 @@ const Certificates = () => {
                     <div className={`font-semibold text-sm transition-all duration-700 ${
                       isDark ? 'text-slate-200' : 'text-black'
                     }`}>
-                      {selectedCertificate.date}
+                      {selectedCertificate?.date || 'Date'}
                     </div>
                   </div>
                   <div className={`p-4 rounded-xl transition-all duration-700 ${

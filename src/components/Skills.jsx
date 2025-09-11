@@ -1,11 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
+import { useContent } from '../contexts/ContentContext';
 import Navbar from './Navbar';
 import { HomeBackground } from '../portfolio_animation';
 
 const Skills = () => {
   const { isDark = false } = useTheme() || {};
+  const { content } = useContent();
   const [activeTab, setActiveTab] = useState('tech');
 
   const labels = {
@@ -13,23 +15,8 @@ const Skills = () => {
     whatIDo: 'What I Do'
   };
 
-  const techSkills = useMemo(() => [
-    { name: 'React', level: 90 },
-    { name: 'JavaScript', level: 85 },
-    { name: 'Node.js', level: 80 },
-    { name: 'Python', level: 75 },
-    { name: 'MongoDB', level: 70 },
-    { name: 'TypeScript', level: 85 }
-  ], []);
-
-  const softSkills = useMemo(() => [
-    { name: 'Leadership', level: 88 },
-    { name: 'Communication', level: 85 },
-    { name: 'Problem Solving', level: 92 },
-    { name: 'Team Work', level: 90 },
-    { name: 'Creativity', level: 87 },
-    { name: 'Adaptability', level: 83 }
-  ], []);
+  const techSkills = useMemo(() => content?.skills?.technical || [], [content?.skills?.technical]);
+  const softSkills = useMemo(() => content?.skills?.soft || [], [content?.skills?.soft]);
 
   return (
     <div className={`h-screen overflow-hidden transition-all duration-1000 ${isDark ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300'}`}>

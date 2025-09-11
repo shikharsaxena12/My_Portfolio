@@ -2,21 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Hide scrollbar globally */
-html {
-  overflow: hidden;
+/* Enable scrolling */
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
-body {
-  overflow: hidden;
-}
-
-/* Hide scrollbar for webkit browsers */
+/* Custom Scrollbar Styles */
 ::-webkit-scrollbar {
-  display: none;
+  width: 8px;
 }
 
-/* Hide scrollbar for Firefox */
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #3B82F6, #8B5CF6);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #2563EB, #7C3AED);
+  transform: scale(1.1);
+}
+
+/* Firefox scrollbar */
 html {
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: #3B82F6 rgba(0, 0, 0, 0.1);
+}
+
+/* Dark theme scrollbar */
+.dark ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #60A5FA, #A78BFA);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #3B82F6, #8B5CF6);
 }

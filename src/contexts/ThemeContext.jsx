@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { applyThemeSettings, getThemeMode } from '../utils/themeUtils';
 
 const ThemeContext = createContext();
 
@@ -17,7 +18,14 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     try {
       const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
+      const savedContent = localStorage.getItem('portfolioContent');
+      
+      if (savedContent) {
+        const content = JSON.parse(savedContent);
+        const defaultMode = getThemeMode(content.theme);
+        setIsDark(defaultMode === 'dark');
+        applyThemeSettings(content.theme);
+      } else if (savedTheme) {
         setIsDark(savedTheme === 'dark');
       } else if (window.matchMedia) {
         setIsDark(window.matchMedia('(prefers-color-scheme: dark)').matches);

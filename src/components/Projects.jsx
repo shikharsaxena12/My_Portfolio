@@ -2,16 +2,17 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
+import { useContent } from '../contexts/ContentContext';
 import Navbar from './Navbar';
 import { HomeBackground } from '../portfolio_animation';
 
 const Projects = () => {
   const { isDark = false } = useTheme() || {};
+  const { content } = useContent();
   const [currentProject, setCurrentProject] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
-
 
   const labels = {
     myProjects: 'My Projects',
@@ -19,77 +20,10 @@ const Projects = () => {
     viewProject: 'View Project'
   };
 
-  const projects = useMemo(() => [
-    { 
-      title: 'E-Commerce Platform', 
-      tech: 'React, Node.js, MongoDB', 
-      desc: 'Full-stack shopping platform',
-      fullDesc: 'A comprehensive e-commerce solution with user authentication, payment integration, inventory management, and admin dashboard.',
-      features: ['User Authentication & Authorization', 'Payment Gateway Integration', 'Real-time Inventory Management', 'Admin Dashboard', 'Order Tracking System'],
-      techStack: ['React', 'Node.js', 'MongoDB', 'Express', 'JWT', 'Stripe API'],
-      image: '/api/placeholder/600/400',
-      github: 'https://github.com/username/ecommerce',
-      live: 'https://ecommerce-demo.com'
-    },
-    { 
-      title: 'Task Management App', 
-      tech: 'Vue.js, Firebase, Vuex', 
-      desc: 'Collaborative task tracker',
-      fullDesc: 'A collaborative task management application with real-time updates, team collaboration features, and project analytics.',
-      features: ['Real-time Collaboration', 'Project Analytics', 'Task Prioritization', 'Team Management', 'Progress Tracking'],
-      techStack: ['Vue.js', 'Firebase', 'Vuex', 'Vue Router', 'Chart.js', 'Tailwind CSS'],
-      image: '/api/placeholder/600/400',
-      github: 'https://github.com/username/taskmanager',
-      live: 'https://taskmanager-demo.com'
-    },
-    { 
-      title: 'Portfolio Website', 
-      tech: 'React, Tailwind, Framer Motion', 
-      desc: 'Personal portfolio site',
-      fullDesc: 'A modern, responsive portfolio website with stunning animations, dark/light theme, and optimized performance.',
-      features: ['Responsive Design', '3D Animations', 'Dark/Light Theme', 'Performance Optimized', 'SEO Friendly'],
-      techStack: ['React', 'Tailwind CSS', 'Framer Motion', 'React Router', 'Lucide Icons', 'Vite'],
-      image: '/api/placeholder/600/400',
-      github: 'https://github.com/username/portfolio',
-      live: 'https://portfolio-demo.com'
-    },
-    { 
-      title: 'Chat Application', 
-      tech: 'Socket.io, Express, React', 
-      desc: 'Real-time messaging app',
-      fullDesc: 'A real-time chat application with private messaging, group chats, file sharing, and emoji support.',
-      features: ['Real-time Messaging', 'Group Chats', 'File Sharing', 'Emoji Support', 'Message History'],
-      techStack: ['React', 'Socket.io', 'Express', 'Node.js', 'MongoDB', 'Multer'],
-      image: '/api/placeholder/600/400',
-      github: 'https://github.com/username/chatapp',
-      live: 'https://chatapp-demo.com'
-    },
-    { 
-      title: 'Weather Dashboard', 
-      tech: 'JavaScript, API, Chart.js', 
-      desc: 'Weather forecast app',
-      fullDesc: 'A comprehensive weather dashboard with detailed forecasts, interactive charts, and location-based weather data.',
-      features: ['7-day Forecast', 'Interactive Charts', 'Location Search', 'Weather Alerts', 'Historical Data'],
-      techStack: ['JavaScript', 'Chart.js', 'OpenWeather API', 'HTML5', 'CSS3', 'Local Storage'],
-      image: '/api/placeholder/600/400',
-      github: 'https://github.com/username/weather',
-      live: 'https://weather-demo.com'
-    },
-    { 
-      title: 'Blog Platform', 
-      tech: 'Next.js, MongoDB, Prisma', 
-      desc: 'Content management system',
-      fullDesc: 'A full-featured blog platform with content management, user authentication, commenting system, and SEO optimization.',
-      features: ['Content Management', 'User Authentication', 'Comment System', 'SEO Optimization', 'Analytics Dashboard'],
-      techStack: ['Next.js', 'MongoDB', 'Prisma', 'NextAuth.js', 'Tailwind CSS', 'Vercel'],
-      image: '/api/placeholder/600/400',
-      github: 'https://github.com/username/blog',
-      live: 'https://blog-demo.com'
-    }
-  ], []);
+  const projects = useMemo(() => content?.projects || [], [content?.projects]);
 
   useEffect(() => {
-    if (!isHovered) {
+    if (!isHovered && projects.length > 0) {
       const interval = setInterval(() => {
         setCurrentProject((prev) => (prev + 1) % projects.length);
       }, 3000);
@@ -246,8 +180,9 @@ const Projects = () => {
             <div className="relative w-96 h-[550px]" style={{ perspective: '1000px' }}>
               
               <AnimatePresence mode="wait">
+                {projects.length > 0 ? (
                 <motion.div
-                  key={projects[currentProject].title}
+                  key={projects[currentProject]?.title || currentProject}
                 className={`font-poppins group absolute inset-0 rounded-3xl overflow-hidden backdrop-blur-xl border cursor-pointer relative transition-all duration-700 ${
                   isDark 
                     ? 'bg-gradient-to-br from-blue-900/30 via-purple-900/30 to-pink-900/30 border-blue-400/20' 
@@ -255,7 +190,7 @@ const Projects = () => {
                 }`}
                 onHoverStart={() => setIsHovered(true)}
                 onHoverEnd={() => setIsHovered(false)}
-                onClick={() => openModal(projects[currentProject])}
+                onClick={() => projects[currentProject] && openModal(projects[currentProject])}
                 initial={{ 
                   rotateY: 90, 
                   rotateX: 15,
@@ -336,7 +271,7 @@ const Projects = () => {
                 {/* Premium Image Frame */}
                 <div className="relative h-72 overflow-hidden rounded-t-3xl">
                   <motion.div 
-                    className={`w-full h-full flex items-center justify-center relative transition-all duration-700 ${
+                    className={`w-full h-full flex items-center justify-center relative transition-all duration-700 overflow-hidden ${
                       isDark 
                         ? 'bg-gradient-to-br from-slate-800/95 via-slate-700/90 to-slate-800/95' 
                         : 'bg-gradient-to-br from-amber-50/95 via-orange-50/90 to-rose-50/95'
@@ -381,18 +316,26 @@ const Projects = () => {
                       transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                     />
                     
-                    <motion.div 
-                      className={`text-xl font-semibold z-10 transition-colors duration-700 ${
-                        isDark ? 'text-slate-300' : 'text-black'
-                      }`}
-                      animate={{ 
-                        scale: [1, 1.01, 1],
-                        opacity: [0.9, 1, 0.9]
-                      }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                      Project Preview
-                    </motion.div>
+                    {projects[currentProject]?.image ? (
+                      <img 
+                        src={projects[currentProject].image} 
+                        alt={projects[currentProject]?.title || 'Project'} 
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <motion.div 
+                        className={`text-xl font-semibold z-10 transition-colors duration-700 ${
+                          isDark ? 'text-slate-300' : 'text-black'
+                        }`}
+                        animate={{ 
+                          scale: [1, 1.01, 1],
+                          opacity: [0.9, 1, 0.9]
+                        }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        Project Preview
+                      </motion.div>
+                    )}
                   </motion.div>
                   
                   {/* Refined hover overlay */}
@@ -423,7 +366,7 @@ const Projects = () => {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
                   >
-                    {projects[currentProject].title}
+                    {projects[currentProject]?.title || 'Project Title'}
                   </motion.h3>
                   
                   <motion.p 
@@ -434,7 +377,7 @@ const Projects = () => {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
                   >
-                    {projects[currentProject].desc}
+                    {projects[currentProject]?.description || projects[currentProject]?.desc || 'Project description'}
                   </motion.p>
                   
                   <motion.div 
@@ -447,7 +390,7 @@ const Projects = () => {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
                   >
-                    {projects[currentProject].tech}
+                    {projects[currentProject]?.tech || 'Technology'}
                   </motion.div>
                   
                   <motion.button 
@@ -476,7 +419,9 @@ const Projects = () => {
                     }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      openModal(projects[currentProject]);
+                      if (projects[currentProject]) {
+                        openModal(projects[currentProject]);
+                      }
                     }}
                   >
                     <motion.div
@@ -509,6 +454,27 @@ const Projects = () => {
                   </motion.button>
                 </motion.div>
                 </motion.div>
+                ) : (
+                  <motion.div
+                    className={`font-poppins absolute inset-0 rounded-3xl overflow-hidden backdrop-blur-xl border cursor-pointer relative transition-all duration-700 ${
+                      isDark 
+                        ? 'bg-gradient-to-br from-blue-900/30 via-purple-900/30 to-pink-900/30 border-blue-400/20' 
+                        : 'bg-gradient-to-br from-amber-100/60 via-orange-100/60 to-rose-100/60 border-amber-300/30'
+                    }`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <div className="flex items-center justify-center h-full">
+                      <div className={`text-center transition-colors duration-700 ${
+                        isDark ? 'text-blue-200' : 'text-black'
+                      }`}>
+                        <div className="text-2xl font-bold mb-2">No Projects Available</div>
+                        <div className="text-sm opacity-70">Projects will appear here when loaded</div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
               </AnimatePresence>
             </div>
           </motion.div>
@@ -582,22 +548,32 @@ const Projects = () => {
                       : 'bg-gradient-to-br from-amber-50/95 via-orange-50/90 to-rose-50/95'
                   }`}
                 >
-                  {/* Same background pattern as card */}
-                  <div
-                    className="absolute inset-0 opacity-20"
-                    style={{
-                      backgroundImage: isDark
-                        ? 'radial-gradient(circle at 25% 35%, rgba(59, 130, 246, 0.6) 0%, transparent 50%), radial-gradient(circle at 75% 65%, rgba(147, 51, 234, 0.6) 0%, transparent 50%)'
-                        : 'radial-gradient(circle at 25% 35%, rgba(245, 158, 11, 0.6) 0%, transparent 50%), radial-gradient(circle at 75% 65%, rgba(249, 115, 22, 0.6) 0%, transparent 50%)'
-                    }}
-                  />
-                  <div 
-                    className={`text-2xl font-semibold z-10 transition-colors duration-700 ${
-                      isDark ? 'text-slate-300' : 'text-black'
-                    }`}
-                  >
-                    Project Preview
-                  </div>
+                  {selectedProject?.image ? (
+                    <img 
+                      src={selectedProject.image} 
+                      alt={selectedProject.title} 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <>
+                      {/* Same background pattern as card */}
+                      <div
+                        className="absolute inset-0 opacity-20"
+                        style={{
+                          backgroundImage: isDark
+                            ? 'radial-gradient(circle at 25% 35%, rgba(59, 130, 246, 0.6) 0%, transparent 50%), radial-gradient(circle at 75% 65%, rgba(147, 51, 234, 0.6) 0%, transparent 50%)'
+                            : 'radial-gradient(circle at 25% 35%, rgba(245, 158, 11, 0.6) 0%, transparent 50%), radial-gradient(circle at 75% 65%, rgba(249, 115, 22, 0.6) 0%, transparent 50%)'
+                        }}
+                      />
+                      <div 
+                        className={`text-2xl font-semibold z-10 transition-colors duration-700 ${
+                          isDark ? 'text-slate-300' : 'text-black'
+                        }`}
+                      >
+                        Project Preview
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -611,7 +587,7 @@ const Projects = () => {
                 <p className={`font-opensans text-lg leading-relaxed transition-colors duration-700 ${
                   isDark ? 'text-blue-200' : 'text-black'
                 }`}>
-                  {selectedProject.fullDesc}
+                  {selectedProject.fullDescription || selectedProject.fullDesc}
                 </p>
               </div>
 
@@ -623,7 +599,7 @@ const Projects = () => {
                   Technologies Used
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {selectedProject.techStack.map((tech, index) => (
+                  {(selectedProject.techStack || selectedProject.tech?.split(', ') || []).map((tech, index) => (
                     <span 
                       key={index}
                       className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-700 ${

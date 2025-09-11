@@ -98,10 +98,115 @@ const Contact = () => {
       >
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Side - Contact Form */}
+          {/* Left Side - Main Text & Info */}
+          <div className="space-y-8">
+            <div className="sticky top-32">
+              <motion.h1 
+                className="font-playfair text-4xl md:text-5xl font-bold mb-6"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <span className={`bg-clip-text text-transparent transition-all duration-700 ${
+                  isDark ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600'
+                }`}>
+                  {labels.contactMe}
+                </span>
+              </motion.h1>
+              
+              <motion.h2 
+                className={`font-montserrat text-xl md:text-2xl font-light mb-8 transition-all duration-700 ${isDark ? 'text-gray-200' : 'text-black'}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                {labels.subtitle}
+              </motion.h2>
+              
+              <motion.p 
+                className={`font-opensans text-lg leading-relaxed mb-8 transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-black'}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
+                {labels.description}
+              </motion.p>
+              
+              <div className={`font-opensans text-base leading-relaxed space-y-4 transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-black'}`}>
+                <p>
+                  Ready to bring your vision to life? I'm passionate about creating innovative solutions that make a difference.
+                  Whether you're looking to build a stunning web application, need technical consultation, or want to collaborate on an exciting project, I'd love to hear from you.
+                  Let's connect and explore how we can work together to create something extraordinary.
+                </p>
+              </div>
+              
+              {/* Contact Info Cards */}
+              <motion.div className="grid grid-cols-1 gap-3 mt-6">
+                {contactInfo.map((contact, index) => {
+                  const Icon = contact.icon;
+                  return (
+                    <motion.div 
+                      key={index} 
+                      className={`group relative p-3 rounded-full backdrop-blur-xl border cursor-pointer overflow-hidden transition-all duration-700 ${
+                        isDark 
+                          ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
+                          : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
+                      }`}
+                      whileHover={{ 
+                        scale: 1.02, 
+                        y: -5,
+                        boxShadow: isDark
+                          ? '0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(99, 102, 241, 0.2)'
+                          : '0 20px 40px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(251, 191, 36, 0.3)'
+                      }}
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      {/* Animated glassmorphism overlay */}
+                      <motion.div
+                        className="absolute inset-0 opacity-60"
+                        animate={{
+                          background: isDark ? [
+                            'linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))',
+                            'linear-gradient(225deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3))',
+                            'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))',
+                            'linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))'
+                          ] : [
+                            'linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))',
+                            'linear-gradient(225deg, rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4))',
+                            'linear-gradient(315deg, rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))',
+                            'linear-gradient(45deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))'
+                          ]
+                        }}
+                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                      />
+                      <div className="flex items-center gap-3 relative z-10">
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-700 ${
+                          isDark ? 'bg-gradient-to-r from-blue-500 to-purple-500' : 'bg-gradient-to-r from-amber-500 to-orange-500'
+                        }`}>
+                          <Icon className="text-white" size={16} />
+                        </div>
+                        <div>
+                          <h3 className={`font-medium text-sm transition-all duration-700 ${isDark ? 'text-white' : 'text-black'}`}>
+                            {contact.title}
+                          </h3>
+                          <p className={`text-xs transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-black'}`}>
+                            {contact.info}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Right Side - Contact Form */}
           <motion.div
             className="flex items-start justify-center pt-0"
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
@@ -316,110 +421,7 @@ const Contact = () => {
             </div>
           </motion.div>
 
-          {/* Right Side - Main Text & Info */}
-          <div className="space-y-8">
-            <div className="sticky top-32">
-              <motion.h1 
-                className="font-playfair text-4xl md:text-5xl font-bold mb-6"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                <span className={`bg-clip-text text-transparent transition-all duration-700 ${
-                  isDark ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600'
-                }`}>
-                  {labels.contactMe}
-                </span>
-              </motion.h1>
-              
-              <motion.h2 
-                className={`font-montserrat text-xl md:text-2xl font-light mb-8 transition-all duration-700 ${isDark ? 'text-gray-200' : 'text-black'}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                {labels.subtitle}
-              </motion.h2>
-              
-              <motion.p 
-                className={`font-opensans text-lg leading-relaxed mb-8 transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-black'}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                {labels.description}
-              </motion.p>
-              
-              <div className={`font-opensans text-base leading-relaxed space-y-4 transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-black'}`}>
-                <p>
-                  Ready to bring your vision to life? I'm passionate about creating innovative solutions that make a difference.
-                  Whether you're looking to build a stunning web application, need technical consultation, or want to collaborate on an exciting project, I'd love to hear from you.
-                  Let's connect and explore how we can work together to create something extraordinary.
-                </p>
-              </div>
-              
-              {/* Contact Info Cards */}
-              <motion.div className="grid grid-cols-1 gap-3 mt-6">
-                {contactInfo.map((contact, index) => {
-                  const Icon = contact.icon;
-                  return (
-                    <motion.div 
-                      key={index} 
-                      className={`group relative p-3 rounded-full backdrop-blur-xl border cursor-pointer overflow-hidden transition-all duration-700 ${
-                        isDark 
-                          ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
-                          : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
-                      }`}
-                      whileHover={{ 
-                        scale: 1.02, 
-                        y: -5,
-                        boxShadow: isDark
-                          ? '0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(99, 102, 241, 0.2)'
-                          : '0 20px 40px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(251, 191, 36, 0.3)'
-                      }}
-                      initial={{ opacity: 0, x: 30 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      {/* Animated glassmorphism overlay */}
-                      <motion.div
-                        className="absolute inset-0 opacity-60"
-                        animate={{
-                          background: isDark ? [
-                            'linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))',
-                            'linear-gradient(225deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3))',
-                            'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))',
-                            'linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))'
-                          ] : [
-                            'linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))',
-                            'linear-gradient(225deg, rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4))',
-                            'linear-gradient(315deg, rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))',
-                            'linear-gradient(45deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))'
-                          ]
-                        }}
-                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                      />
-                      <div className="flex items-center gap-3 relative z-10">
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-700 ${
-                          isDark ? 'bg-gradient-to-r from-blue-500 to-purple-500' : 'bg-gradient-to-r from-amber-500 to-orange-500'
-                        }`}>
-                          <Icon className="text-white" size={16} />
-                        </div>
-                        <div>
-                          <h3 className={`font-medium text-sm transition-all duration-700 ${isDark ? 'text-white' : 'text-black'}`}>
-                            {contact.title}
-                          </h3>
-                          <p className={`text-xs transition-all duration-700 ${isDark ? 'text-gray-300' : 'text-black'}`}>
-                            {contact.info}
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            </div>
-          </div>
+
         </div>
       </motion.div>
     </div>
