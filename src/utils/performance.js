@@ -20,7 +20,7 @@ export const lazyLoadImage = (img) => {
         observer.unobserve(image);
       }
     });
-  });
+  }, { rootMargin: '50px' });
   
   if (img) imageObserver.observe(img);
 };
@@ -38,30 +38,66 @@ export const debounce = (func, wait) => {
   };
 };
 
-// Throttle function for scroll events
+// Throttle function for mouse/scroll events
 export const throttle = (func, limit) => {
   let inThrottle;
-  return function() {
-    const args = arguments;
-    const context = this;
+  return function(...args) {
     if (!inThrottle) {
-      func.apply(context, args);
+      func.apply(this, args);
       inThrottle = true;
       setTimeout(() => inThrottle = false, limit);
     }
   };
 };
 
+// Optimize animations for better performance
+export const optimizeAnimation = (element) => {
+  if (element) {
+    element.style.willChange = 'transform';
+    element.style.backfaceVisibility = 'hidden';
+    element.style.perspective = '1000px';
+  }
+};
+
+// Reduce motion for users who prefer it
+export const respectsReducedMotion = () => {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
+
 // Preload critical resources
 export const preloadCriticalResources = () => {
-  // Preload critical images
   preloadImage('/Elegant Cursive Script_ Shikhar.png');
   
-  // Preload fonts if any
-  const fontPreload = document.createElement('link');
-  fontPreload.rel = 'preload';
-  fontPreload.as = 'font';
-  fontPreload.type = 'font/woff2';
-  fontPreload.crossOrigin = 'anonymous';
-  // Add your font URLs here
+  // Enable GPU acceleration for better performance
+  const style = document.createElement('style');
+  style.textContent = `
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .gpu-accelerated {
+      transform: translateZ(0);
+      will-change: transform;
+    }
+  `;
+  document.head.appendChild(style);
+};
+
+// Initialize performance optimizations
+export const initPerformanceOptimizations = () => {
+  // Preload critical resources
+  preloadCriticalResources();
+  
+  // Add performance observer if supported
+  if ('PerformanceObserver' in window) {
+    const observer = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      entries.forEach((entry) => {
+        if (entry.entryType === 'measure') {
+          console.log(`Performance: ${entry.name} took ${entry.duration}ms`);
+        }
+      });
+    });
+    observer.observe({ entryTypes: ['measure'] });
+  }
 };

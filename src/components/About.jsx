@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
+import { useContent } from '../contexts/ContentContext';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import { HomeBackground } from '../portfolio_animation';
@@ -12,6 +13,7 @@ const About = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const { isDark = false } = useTheme() || {};
+  const { content } = useContent();
   const navigate = useNavigate();
 
   const labels = {
@@ -23,20 +25,6 @@ const About = () => {
     openSourceProjects: 'Contributed to 10+ open source projects',
     techSpeaker: 'Speaker at tech conferences'
   };
-
-  useEffect(() => {
-    const CARD_COUNT = 3;
-    const INTERVAL_DELAY = 3000;
-    
-    const interval = setInterval(() => {
-      setActiveCard((prev) => {
-        const nextCard = (prev + 1) % CARD_COUNT;
-        return nextCard;
-      });
-    }, INTERVAL_DELAY);
-    
-    return () => clearInterval(interval);
-  }, []);
 
   const openModal = (type) => {
     setModalContent(type);
@@ -51,56 +39,45 @@ const About = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const stats = [
-    { number: "50+", label: "Projects" },
-    { number: "3+", label: "Years Exp" },
-    { number: "100%", label: "Dedication" }
-  ];
+  const stats = content.about?.stats || [];
+  const experiences = (content.about?.experiences || []).map(exp => ({
+    ...exp,
+    color: isDark ? "text-blue-400" : "text-black"
+  }));
+  const education = (content.about?.education || []).map(edu => ({
+    ...edu,
+    color: isDark ? "text-green-400" : "text-black"
+  }));
+  const achievements = (content.about?.achievements || []).map(ach => ({
+    ...ach,
+    color: isDark ? "text-yellow-400" : "text-black"
+  }));
 
-  const experiences = [
-    {
-      title: "Full Stack Developer",
-      company: "Tech Corp",
-      period: "2022-Present",
-      color: isDark ? "text-blue-400" : "text-black"
-    },
-    {
-      title: "Frontend Developer", 
-      company: "StartupXYZ",
-      period: "2021-2022",
-      color: isDark ? "text-blue-400" : "text-black"
+  useEffect(() => {
+    const availableCards = [];
+    if (experiences.length > 0) availableCards.push(0);
+    if (education.length > 0) availableCards.push(1);
+    if (achievements.length > 0) availableCards.push(2);
+    
+    // Set initial active card to first available
+    if (availableCards.length > 0 && !availableCards.includes(activeCard)) {
+      setActiveCard(availableCards[0]);
     }
-  ];
-
-  const education = [
-    {
-      title: "Computer Science",
-      company: "University of Tech",
-      period: "2018-2022",
-      color: isDark ? "text-green-400" : "text-black"
-    },
-    {
-      title: "Web Development Bootcamp",
-      company: "CodeAcademy",
-      period: "2021",
-      color: isDark ? "text-green-400" : "text-black"
-    }
-  ];
-
-  const achievements = [
-    {
-      title: "Best Developer Award",
-      company: "Tech Corp",
-      period: "2023",
-      color: isDark ? "text-yellow-400" : "text-black"
-    },
-    {
-      title: "Open Source Contributor",
-      company: "GitHub",
-      period: "2022-Present",
-      color: isDark ? "text-yellow-400" : "text-black"
-    }
-  ];
+    
+    if (availableCards.length <= 1) return;
+    
+    const INTERVAL_DELAY = 3000;
+    
+    const interval = setInterval(() => {
+      setActiveCard((prev) => {
+        const currentIndex = availableCards.indexOf(prev);
+        const nextIndex = (currentIndex + 1) % availableCards.length;
+        return availableCards[nextIndex];
+      });
+    }, INTERVAL_DELAY);
+    
+    return () => clearInterval(interval);
+  }, [experiences.length, education.length, achievements.length, activeCard]);
 
   const FloatingParticle = React.memo(({ delay, duration, x, y }) => (
     <motion.div
@@ -165,101 +142,126 @@ const About = () => {
       <Navbar />
       
       <div className="relative z-10 container mx-auto px-6 pt-32 pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left Side - About Content */}
-          <motion.div 
-            className="space-y-8"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            {/* About Me Title */}
-            <motion.h1 
-              className="font-playfair text-5xl md:text-6xl font-bold mb-6"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <span className={`bg-clip-text text-transparent transition-all duration-700 ${
-                isDark ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600'
-              }`}>
-                About Me
-              </span>
-            </motion.h1>
-
-            {/* Subtitle */}
-            <motion.h2 
-              className={`font-montserrat text-2xl md:text-3xl font-light mb-6 transition-all duration-700 ${
-                isDark ? 'text-gray-200' : 'text-black'
-              }`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              Full Stack Developer & AI Engineer
-            </motion.h2>
-
-            {/* Description */}
-            <motion.p 
-              className={`font-opensans text-lg leading-relaxed mb-8 transition-all duration-700 ${
-                isDark ? 'text-gray-300' : 'text-black'
-              }`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
-              I create innovative digital solutions that bridge cutting-edge technology 
-              with exceptional user experiences.
-            </motion.p>
-
-            {/* Stats */}
+        {(!content.about?.title && !content.about?.subtitle && !content.about?.description && stats.length === 0) && 
+         (experiences.length === 0 && education.length === 0 && achievements.length === 0) ? (
+          <div className={`text-center py-32 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            <h1 className={`text-6xl font-bold mb-6 ${isDark ? 'text-white' : 'text-black'}`}>
+              About Page is Coming Soon
+            </h1>
+            <p className="text-2xl">
+              We're working hard to bring you an amazing about experience!
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            {/* Left Side - About Content */}
             <motion.div 
-              className="grid grid-cols-3 gap-6 mb-8"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
+              className="space-y-8"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={index}
-                  className={`font-inter text-center p-6 rounded-2xl backdrop-blur-xl border shadow-lg relative overflow-hidden transition-all duration-700 ${
-                    isDark 
-                      ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
-                      : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
-                  }`}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  transition={{ type: "spring", damping: 15, stiffness: 300 }}
+              {!content.about?.title && !content.about?.subtitle && !content.about?.description && stats.length === 0 ? (
+                <div className={`text-center py-16 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <h3 className={`text-2xl font-bold mb-4 ${isDark ? 'text-white' : 'text-black'}`}>
+                    Sorry, No Content Available
+                  </h3>
+                  <p className="text-lg">
+                    About content will appear here when loaded.
+                  </p>
+                </div>
+              ) : (
+              <>
+                {/* About Me Title */}
+                <motion.h1 
+                  className="font-playfair text-5xl md:text-6xl font-bold mb-6"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                  <motion.div
-                    className="absolute inset-0 opacity-60"
-                    animate={{
-                      background: isDark ? [
-                        'linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))',
-                        'linear-gradient(225deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3))',
-                        'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))',
-                        'linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))'
-                      ] : [
-                        'linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))',
-                        'linear-gradient(225deg, rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4))',
-                        'linear-gradient(315deg, rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))',
-                        'linear-gradient(45deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))'
-                      ]
-                    }}
-                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  />
-                  <div className={`text-3xl md:text-4xl font-bold mb-2 relative z-10 transition-all duration-700 ${
-                    isDark ? 'text-white' : 'text-black'
+                  <span className={`bg-clip-text text-transparent transition-all duration-700 ${
+                    isDark ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600'
                   }`}>
-                    {stat.number}
-                  </div>
-                  <div className={`text-sm font-medium relative z-10 transition-all duration-700 ${
+                    {content.about?.title || 'About Me'}
+                  </span>
+                </motion.h1>
+
+                {/* Subtitle */}
+                <motion.h2 
+                  className={`font-montserrat text-2xl md:text-3xl font-light mb-6 transition-all duration-700 ${
                     isDark ? 'text-gray-200' : 'text-black'
-                  }`}>
-                    {stat.label}
-                  </div>
+                  }`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                >
+                  {content.about?.subtitle || 'Full Stack Developer & AI Engineer'}
+                </motion.h2>
+
+                {/* Description */}
+                <motion.p 
+                  className={`font-opensans text-lg leading-relaxed mb-8 transition-all duration-700 ${
+                    isDark ? 'text-gray-300' : 'text-black'
+                  }`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
+                >
+                  {content.about?.description || 'I create innovative digital solutions that bridge cutting-edge technology with exceptional user experiences.'}
+                </motion.p>
+
+
+
+                {/* Stats */}
+                <motion.div 
+                  className="grid grid-cols-3 gap-6 mb-8"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.8 }}
+                >
+                  {stats.map((stat, index) => (
+                    <motion.div
+                      key={index}
+                      className={`font-inter text-center p-6 rounded-2xl backdrop-blur-xl border shadow-lg relative overflow-hidden transition-all duration-700 ${
+                        isDark 
+                          ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
+                          : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
+                      }`}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                      transition={{ type: "spring", damping: 15, stiffness: 300 }}
+                    >
+                      <motion.div
+                        className="absolute inset-0 opacity-60"
+                        animate={{
+                          background: isDark ? [
+                            'linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))',
+                            'linear-gradient(225deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3))',
+                            'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3))',
+                            'linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3))'
+                          ] : [
+                            'linear-gradient(135deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))',
+                            'linear-gradient(225deg, rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4))',
+                            'linear-gradient(315deg, rgba(244, 63, 94, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))',
+                            'linear-gradient(45deg, rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))'
+                          ]
+                        }}
+                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                      />
+                      <div className={`text-3xl md:text-4xl font-bold mb-2 relative z-10 transition-all duration-700 ${
+                        isDark ? 'text-white' : 'text-black'
+                      }`}>
+                        {stat.number}
+                      </div>
+                      <div className={`text-sm font-medium relative z-10 transition-all duration-700 ${
+                        isDark ? 'text-gray-200' : 'text-black'
+                      }`}>
+                        {stat.label}
+                      </div>
+                    </motion.div>
+                  ))}
                 </motion.div>
-              ))}
-            </motion.div>
+              </>
+            )}
 
             {/* Back to Home Button */}
             <motion.button
@@ -330,15 +332,36 @@ const About = () => {
           >
             {/* Card Container */}
             <div className="relative">
-              {activeCard === 0 && (
-                <div
-                  className={`font-poppins relative p-8 rounded-3xl backdrop-blur-xl border cursor-pointer overflow-hidden transition-all duration-700 ${
-                    isDark 
-                      ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
-                      : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
-                  }`}
-                  onClick={() => openModal(0)}
-                >
+              {experiences.length === 0 && education.length === 0 && achievements.length === 0 ? (
+                <div className={`font-poppins relative p-8 rounded-3xl backdrop-blur-xl border overflow-hidden transition-all duration-700 ${
+                  isDark 
+                    ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
+                    : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
+                }`}>
+                  <div className="text-center">
+                    <h2 className={`text-2xl font-bold mb-4 transition-all duration-700 ${
+                      isDark ? 'text-white' : 'text-black'
+                    }`}>
+                      Sorry, No Content Available
+                    </h2>
+                    <p className={`text-lg transition-all duration-700 ${
+                      isDark ? 'text-gray-300' : 'text-black'
+                    }`}>
+                      About me card will appear here when loaded, as i Know to want to know more about me.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {activeCard === 0 && experiences.length > 0 && (
+                    <div
+                      className={`font-poppins relative p-8 rounded-3xl backdrop-blur-xl border cursor-pointer overflow-hidden transition-all duration-700 ${
+                        isDark 
+                          ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-white/20' 
+                          : 'bg-gradient-to-br from-amber-100/40 via-orange-100/40 to-rose-100/40 border-amber-200/60'
+                      }`}
+                      onClick={() => openModal(0)}
+                    >
                   <motion.div
                     className="absolute inset-0 opacity-60"
                     animate={{
@@ -361,31 +384,52 @@ const About = () => {
                   }`}>
                     Experience
                   </h2>
-                  <div className="space-y-4 relative z-10">
-                    {experiences.map((exp, index) => (
-                      <div key={index} className={`p-4 rounded-xl transition-all duration-700 ${
-                        isDark ? 'bg-gray-700/30' : 'bg-white/40'
-                      }`}>
-                        <h3 className={`font-poppins font-bold mb-1 transition-all duration-700 ${
-                          isDark ? 'text-white' : 'text-black'
+                  <div className="h-48 overflow-hidden relative z-10">
+                    <motion.div 
+                      className="space-y-4"
+                      animate={experiences.length > 2 ? {
+                        y: [0, -(experiences.length - 2) * 120, 0, 0]
+                      } : {}}
+                      transition={{
+                        duration: experiences.length * 4,
+                        repeat: experiences.length > 2 ? Infinity : 0,
+                        ease: "easeInOut",
+                        times: [0, 0.7, 0.8, 1]
+                      }}
+                    >
+                      {experiences.map((exp, index) => (
+                        <div key={index} className={`p-4 rounded-xl transition-all duration-700 ${
+                          isDark ? 'bg-gray-700/30' : 'bg-white/40'
                         }`}>
-                          {exp.title}
-                        </h3>
-                        <p className={`text-sm ${exp.color}`}>
-                          {exp.company}
-                        </p>
-                        <p className={`text-xs transition-all duration-700 ${
-                          isDark ? 'text-gray-400' : 'text-black'
-                        }`}>
-                          {exp.period}
-                        </p>
-                      </div>
-                    ))}
+                          <h3 className={`font-poppins font-bold mb-1 transition-all duration-700 ${
+                            isDark ? 'text-white' : 'text-black'
+                          }`}>
+                            {exp.title}
+                          </h3>
+                          <p className={`text-sm ${exp.color}`}>
+                            {exp.company}
+                          </p>
+                          <p className={`text-xs transition-all duration-700 ${
+                            isDark ? 'text-gray-400' : 'text-black'
+                          }`}>
+                            {exp.period}
+                          </p>
+                        </div>
+                      ))}
+
+                    </motion.div>
+                  </div>
+                  <div className="absolute bottom-4 right-4 z-20">
+                    <p className={`text-xs font-medium px-2 py-1 rounded-full ${
+                      isDark ? 'bg-blue-500/30 text-blue-300' : 'bg-orange-200/70 text-orange-700'
+                    }`}>
+                      Click me
+                    </p>
                   </div>
                 </div>
               )}
 
-              {activeCard === 1 && (
+              {activeCard === 1 && education.length > 0 && (
                 <div
                   className={`font-inter relative p-8 rounded-3xl backdrop-blur-xl border cursor-pointer overflow-hidden transition-all duration-700 ${
                     isDark 
@@ -416,31 +460,51 @@ const About = () => {
                   }`}>
                     Education
                   </h2>
-                  <div className="space-y-4 relative z-10">
-                    {education.map((edu, index) => (
-                      <div key={index} className={`p-4 rounded-xl transition-all duration-700 ${
-                        isDark ? 'bg-gray-700/30' : 'bg-white/40'
-                      }`}>
-                        <h3 className={`font-bold mb-1 transition-all duration-700 ${
-                          isDark ? 'text-white' : 'text-black'
+                  <div className="h-48 overflow-hidden relative z-10">
+                    <motion.div 
+                      className="space-y-4"
+                      animate={education.length > 2 ? {
+                        y: [0, -(education.length - 2) * 120, 0, 0]
+                      } : {}}
+                      transition={{
+                        duration: education.length * 4,
+                        repeat: education.length > 2 ? Infinity : 0,
+                        ease: "easeInOut",
+                        times: [0, 0.7, 0.8, 1]
+                      }}
+                    >
+                      {education.map((edu, index) => (
+                        <div key={index} className={`p-4 rounded-xl transition-all duration-700 ${
+                          isDark ? 'bg-gray-700/30' : 'bg-white/40'
                         }`}>
-                          {edu.title}
-                        </h3>
-                        <p className={`text-sm ${edu.color}`}>
-                          {edu.company}
-                        </p>
-                        <p className={`text-xs transition-all duration-700 ${
-                          isDark ? 'text-gray-400' : 'text-black'
-                        }`}>
-                          {edu.period}
-                        </p>
-                      </div>
-                    ))}
+                          <h3 className={`font-bold mb-1 transition-all duration-700 ${
+                            isDark ? 'text-white' : 'text-black'
+                          }`}>
+                            {edu.title}
+                          </h3>
+                          <p className={`text-sm ${edu.color}`}>
+                            {edu.company}
+                          </p>
+                          <p className={`text-xs transition-all duration-700 ${
+                            isDark ? 'text-gray-400' : 'text-black'
+                          }`}>
+                            {edu.period}
+                          </p>
+                        </div>
+                      ))}
+                    </motion.div>
+                  </div>
+                  <div className="absolute bottom-4 right-4 z-20">
+                    <p className={`text-xs font-medium px-2 py-1 rounded-full ${
+                      isDark ? 'bg-green-500/30 text-green-300' : 'bg-green-200/70 text-green-700'
+                    }`}>
+                      Click me
+                    </p>
                   </div>
                 </div>
               )}
 
-              {activeCard === 2 && (
+              {activeCard === 2 && achievements.length > 0 && (
                 <div
                   className={`font-poppins relative p-8 rounded-3xl backdrop-blur-xl border cursor-pointer overflow-hidden transition-all duration-700 ${
                     isDark 
@@ -471,33 +535,55 @@ const About = () => {
                   }`}>
                     Achievements
                   </h2>
-                  <div className="space-y-4 relative z-10">
-                    {achievements.map((ach, index) => (
-                      <div key={index} className={`p-4 rounded-xl transition-all duration-700 ${
-                        isDark ? 'bg-gray-700/30' : 'bg-white/40'
-                      }`}>
-                        <h3 className={`font-bold mb-1 transition-all duration-700 ${
-                          isDark ? 'text-white' : 'text-black'
+                  <div className="h-48 overflow-hidden relative z-10">
+                    <motion.div 
+                      className="space-y-4"
+                      animate={achievements.length > 2 ? {
+                        y: [0, -(achievements.length - 2) * 120, 0, 0]
+                      } : {}}
+                      transition={{
+                        duration: achievements.length * 4,
+                        repeat: achievements.length > 2 ? Infinity : 0,
+                        ease: "easeInOut",
+                        times: [0, 0.7, 0.8, 1]
+                      }}
+                    >
+                      {achievements.map((ach, index) => (
+                        <div key={index} className={`p-4 rounded-xl transition-all duration-700 ${
+                          isDark ? 'bg-gray-700/30' : 'bg-white/40'
                         }`}>
-                          {ach.title}
-                        </h3>
-                        <p className={`text-sm ${ach.color}`}>
-                          {ach.company}
-                        </p>
-                        <p className={`text-xs transition-all duration-700 ${
-                          isDark ? 'text-gray-400' : 'text-black'
-                        }`}>
-                          {ach.period}
-                        </p>
-                      </div>
-                    ))}
+                          <h3 className={`font-bold mb-1 transition-all duration-700 ${
+                            isDark ? 'text-white' : 'text-black'
+                          }`}>
+                            {ach.title}
+                          </h3>
+                          <p className={`text-sm ${ach.color}`}>
+                            {ach.company}
+                          </p>
+                          <p className={`text-xs transition-all duration-700 ${
+                            isDark ? 'text-gray-400' : 'text-black'
+                          }`}>
+                            {ach.period}
+                          </p>
+                        </div>
+                      ))}
+                    </motion.div>
+                  </div>
+                  <div className="absolute bottom-4 right-4 z-20">
+                    <p className={`text-xs font-medium px-2 py-1 rounded-full ${
+                      isDark ? 'bg-yellow-500/30 text-yellow-300' : 'bg-yellow-200/70 text-yellow-700'
+                    }`}>
+                      Click me
+                    </p>
                   </div>
                 </div>
               )}
+                </>
+              )}
             </div>
-          </motion.div>
-        </div>
-
+            </motion.div>
+          </div>
+        )}
       </div>
 
       {/* Modal - Outside main container */}
@@ -567,10 +653,9 @@ const About = () => {
                       <ul className={`list-disc list-inside space-y-1 text-sm transition-all duration-700 ${
                         isDark ? 'text-gray-300' : 'text-black'
                       }`}>
-                        <li>Led development of 5+ major projects</li>
-                        <li>Mentored junior developers</li>
-                        <li>Implemented CI/CD pipelines</li>
-                        <li>Improved application performance by 40%</li>
+                        {(exp.details || []).map((detail, i) => (
+                          <li key={i}>{detail}</li>
+                        ))}
                       </ul>
                     </div>
                   ))}
@@ -604,10 +689,9 @@ const About = () => {
                       <ul className={`list-disc list-inside space-y-1 text-sm transition-all duration-700 ${
                         isDark ? 'text-gray-300' : 'text-black'
                       }`}>
-                        <li>GPA: 3.8/4.0</li>
-                        <li>Data Structures & Algorithms</li>
-                        <li>Software Engineering</li>
-                        <li>Database Management Systems</li>
+                        {(edu.details || []).map((detail, i) => (
+                          <li key={i}>{detail}</li>
+                        ))}
                       </ul>
                     </div>
                   ))}
@@ -641,10 +725,9 @@ const About = () => {
                       <ul className={`list-disc list-inside space-y-1 text-sm transition-all duration-700 ${
                         isDark ? 'text-gray-300' : 'text-black'
                       }`}>
-                        <li>{labels.recognizedPerformance}</li>
-                        <li>{labels.githubContributions}</li>
-                        <li>{labels.openSourceProjects}</li>
-                        <li>{labels.techSpeaker}</li>
+                        {(ach.details || []).map((detail, i) => (
+                          <li key={i}>{detail}</li>
+                        ))}
                       </ul>
                     </div>
                   ))}

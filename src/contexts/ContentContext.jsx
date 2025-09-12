@@ -26,6 +26,7 @@ const defaultContent = {
       contrast: 100,
       saturation: 100
     },
+    resume: null,
     resumeLabel: 'View My Resume',
     contactLabel: 'Get In Touch'
   },
@@ -221,11 +222,11 @@ export const ContentProvider = ({ children }) => {
 
   // Update specific field in a section
   const updateField = (section, field, value) => {
-    if (section === 'socialMedia') {
-      // Handle socialMedia as a direct array
+    if (section === 'socialMedia' && typeof field !== 'string') {
+      // Handle socialMedia as a direct array when field is actually the array
       const newContent = {
         ...content,
-        socialMedia: field // field is actually the new array value
+        socialMedia: field
       };
       saveContent(newContent);
     } else {

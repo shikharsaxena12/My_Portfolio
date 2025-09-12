@@ -21,11 +21,18 @@ const ContentManagementDashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState('grid');
+  const [localContent, setLocalContent] = useState(content);
+
+  // Sync localContent with global content
+  useEffect(() => {
+    setLocalContent(content);
+  }, [content]);
 
   const saveContent = async () => {
     setIsLoading(true);
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
+      saveToContext(localContent);
       setHasChanges(false);
     } catch (error) {
       console.error('Error saving content:', error);
@@ -34,9 +41,15 @@ const ContentManagementDashboard = () => {
     }
   };
 
-  // Update content and mark as changed
+  // Update local content and mark as changed
   const updateContent = (section, field, value) => {
-    updateField(section, field, value);
+    setLocalContent(prev => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        [field]: value
+      }
+    }));
     setHasChanges(true);
   };
 
@@ -46,7 +59,17 @@ const ContentManagementDashboard = () => {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
+        // Reset all image settings to default when new image is uploaded
         updateContent(section, field, e.target.result);
+        updateContent(section, 'imageSettings', {
+          scale: 100,
+          rotation: 0,
+          brightness: 100,
+          contrast: 100,
+          saturation: 100,
+          positionX: 50,
+          positionY: 50
+        });
       };
       reader.readAsDataURL(file);
     }
@@ -357,9 +380,930 @@ const ContentManagementDashboard = () => {
     </div>
   );
 
+  const renderHomeTab = () => (
+    <div className="space-y-6">
+      <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        Home Page Management
+      </h3>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Basic Information */}
+        <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-700/50' : 'bg-gray-50/50'}`}>
+          <h4 className={`text-lg font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Basic Information</h4>
+          <div className="space-y-4">
+            <div>
+              <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Name</label>
+              <input
+                type="text"
+                placeholder="Your name"
+                value={localContent.home?.name || ''}
+                onChange={(e) => updateContent('home', 'name', e.target.value)}
+                className={`w-full px-4 py-3 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+              />
+            </div>
+            <div>
+              <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Title</label>
+              <input
+                type="text"
+                placeholder="e.g., Full Stack Developer"
+                value={localContent.home?.title || ''}
+                onChange={(e) => updateContent('home', 'title', e.target.value)}
+                className={`w-full px-4 py-3 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+              />
+            </div>
+            <div>
+              <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Description</label>
+              <textarea
+                placeholder="Brief description..."
+                value={localContent.home?.description || ''}
+                onChange={(e) => updateContent('home', 'description', e.target.value)}
+                rows={4}
+                className={`w-full px-4 py-3 rounded-lg border resize-none ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Profile Image */}
+        <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-700/50' : 'bg-gray-50/50'}`}>
+          <h4 className={`text-lg font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Profile Image</h4>
+          <div className="space-y-4">
+            <div className="flex gap-2">
+              <input type="file" accept="image/*" onChange={(e) => handleImageUpload('home', 'image', e)} className="hidden" id="imageUpload" />
+              <label htmlFor="imageUpload" className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg border cursor-pointer ${isDark ? 'bg-gray-800 border-gray-600 text-white hover:bg-gray-700' : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-50'}`}>
+                <Upload size={16} /> Upload Image
+              </label>
+              {localContent.home?.image && (
+                <button onClick={() => updateContent('home', 'image', '')} className="p-3 text-red-500 hover:bg-red-500/10 rounded-lg">
+                  <Trash2 size={16} />
+                </button>
+              )}
+            </div>
+            
+            {localContent.home?.image ? (
+              <div className="space-y-3">
+                <div className={`w-96 h-[28rem] rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm relative ${isDark ? 'bg-gray-800 border border-gray-700' : 'bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 border border-orange-200/60'}`}>
+                  <img src={localContent.home.image} alt="Preview" className="w-full h-full object-cover" style={{
+                    transform: `scale(${(localContent.home?.imageSettings?.scale || 100) / 100}) rotate(${localContent.home?.imageSettings?.rotation || 0}deg) translate(${((localContent.home?.imageSettings?.positionX || 50) - 50) * 2}%, ${((localContent.home?.imageSettings?.positionY || 50) - 50) * 2}%)`,
+                    filter: `brightness(${localContent.home?.imageSettings?.brightness || 100}%) contrast(${localContent.home?.imageSettings?.contrast || 100}%) saturate(${localContent.home?.imageSettings?.saturation || 100}%)`
+                  }} />
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  {[
+                    { key: 'scale', label: 'Scale', min: 50, max: 200, unit: '%' },
+                    { key: 'rotation', label: 'Rotate', min: -180, max: 180, unit: '°' },
+                    { key: 'brightness', label: 'Bright', min: 50, max: 150, unit: '%' },
+                    { key: 'contrast', label: 'Contrast', min: 50, max: 150, unit: '%' },
+                    { key: 'saturation', label: 'Saturate', min: 0, max: 200, unit: '%' },
+                    { key: 'positionX', label: 'Pos X', min: 0, max: 100, unit: '%' },
+                    { key: 'positionY', label: 'Pos Y', min: 0, max: 100, unit: '%' }
+                  ].map(control => (
+                    <div key={control.key}>
+                      <label className={`block font-medium mb-1 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{control.label}</label>
+                      <input 
+                        type="range" 
+                        min={control.min} 
+                        max={control.max} 
+                        value={localContent.home?.imageSettings?.[control.key] || (control.key === 'scale' || control.key === 'brightness' || control.key === 'contrast' ? 100 : control.key === 'positionX' || control.key === 'positionY' ? 50 : 0)} 
+                        onChange={(e) => updateContent('home', 'imageSettings', { ...localContent.home?.imageSettings, [control.key]: parseInt(e.target.value) })} 
+                        className="w-full" 
+                      />
+                      <span className={`text-xs ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                        {localContent.home?.imageSettings?.[control.key] || (control.key === 'scale' || control.key === 'brightness' || control.key === 'contrast' ? 100 : control.key === 'positionX' || control.key === 'positionY' ? 50 : 0)}{control.unit}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className={`w-96 h-[28rem] rounded-3xl border-2 border-dashed shadow-2xl backdrop-blur-sm flex items-center justify-center ${isDark ? 'border-gray-600 bg-gray-800/30' : 'border-gray-300 bg-gray-50/30'}`}>
+                <div className="text-center">
+                  <Image size={48} className={`mx-auto mb-4 ${isDark ? 'text-gray-500' : 'text-gray-400'}`} />
+                  <p className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>No image uploaded</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Resume Section */}
+      <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-700/50' : 'bg-gray-50/50'}`}>
+        <h4 className={`text-lg font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Resume</h4>
+        <div className="space-y-4">
+          <div className="flex gap-2">
+            <input type="file" accept=".pdf,.doc,.docx" onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                  updateContent('home', 'resume', { name: file.name, data: e.target.result, type: file.type });
+                };
+                reader.readAsDataURL(file);
+              }
+            }} className="hidden" id="resumeUpload" />
+            <label htmlFor="resumeUpload" className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg border cursor-pointer ${isDark ? 'bg-gray-800 border-gray-600 text-white hover:bg-gray-700' : 'bg-white border-gray-300 text-gray-900 hover:bg-gray-50'}`}>
+              <Upload size={16} /> Upload Resume (PDF)
+            </label>
+            {localContent.home?.resume && (
+              <button onClick={() => updateContent('home', 'resume', null)} className="p-3 text-red-500 hover:bg-red-500/10 rounded-lg">
+                <Trash2 size={16} />
+              </button>
+            )}
+          </div>
+          
+          {localContent.home?.resume ? (
+            <div className={`p-4 rounded-lg border ${isDark ? 'bg-gray-800/50 border-gray-600' : 'bg-white/50 border-gray-300'}`}>
+              <p className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>📄 {localContent.home.resume.name}</p>
+            </div>
+          ) : (
+            <div className={`p-6 rounded-lg border-2 border-dashed text-center ${isDark ? 'border-gray-600 bg-gray-800/30' : 'border-gray-300 bg-gray-50/30'}`}>
+              <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>No resume uploaded</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderProjectsTab = () => (
+    <div className="space-y-6">
+      <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        Projects Management
+      </h3>
+      
+      <div className="flex justify-between items-center mb-4">
+        <h4 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Projects</h4>
+        <button
+          onClick={() => {
+            const newProject = {
+              title: '',
+              description: '',
+              fullDescription: '',
+              tech: '',
+              image: '',
+              github: '',
+              live: '',
+              features: [],
+              techStack: []
+            };
+            addNewItem('projects', newProject);
+          }}
+          className={`p-2 rounded-lg ${isDark ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white`}
+        >
+          <Plus size={16} />
+        </button>
+      </div>
+      
+      <div className="space-y-4">
+        {(localContent.projects || []).map((project, index) => (
+          <div key={project.id || index} className={`p-6 rounded-xl border ${isDark ? 'bg-gray-800/50 border-gray-600' : 'bg-white/50 border-gray-300'}`}>
+            <div className="flex justify-end mb-4">
+              <button
+                onClick={() => removeArrayItem('projects', project.id)}
+                className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <input
+                type="text"
+                placeholder="Project Title"
+                value={project.title || ''}
+                onChange={(e) => updateArrayItem('projects', project.id, 'title', e.target.value)}
+                className={`px-3 py-2 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+              />
+              <input
+                type="text"
+                placeholder="Tech Stack (e.g., React, Node.js)"
+                value={project.tech || ''}
+                onChange={(e) => updateArrayItem('projects', project.id, 'tech', e.target.value)}
+                className={`px-3 py-2 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+              />
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <input
+                type="url"
+                placeholder="GitHub URL"
+                value={project.github || ''}
+                onChange={(e) => updateArrayItem('projects', project.id, 'github', e.target.value)}
+                className={`px-3 py-2 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+              />
+              <input
+                type="url"
+                placeholder="Live Demo URL"
+                value={project.live || ''}
+                onChange={(e) => updateArrayItem('projects', project.id, 'live', e.target.value)}
+                className={`px-3 py-2 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+              />
+            </div>
+            
+            <textarea
+              placeholder="Short Description"
+              value={project.description || ''}
+              onChange={(e) => updateArrayItem('projects', project.id, 'description', e.target.value)}
+              rows={2}
+              className={`w-full px-3 py-2 rounded-lg border mb-4 resize-none ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+            />
+            
+            <textarea
+              placeholder="Full Description"
+              value={project.fullDescription || ''}
+              onChange={(e) => updateArrayItem('projects', project.id, 'fullDescription', e.target.value)}
+              rows={3}
+              className={`w-full px-3 py-2 rounded-lg border resize-none ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderCertificatesTab = () => (
+    <div className="space-y-6">
+      <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        Certificates Management
+      </h3>
+      
+      <div className="flex justify-between items-center mb-4">
+        <h4 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Certificates</h4>
+        <button
+          onClick={() => {
+            const newCertificate = {
+              title: '',
+              issuer: '',
+              date: '',
+              description: '',
+              image: ''
+            };
+            addNewItem('certificates', newCertificate);
+          }}
+          className={`p-2 rounded-lg ${isDark ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white`}
+        >
+          <Plus size={16} />
+        </button>
+      </div>
+      
+      <div className="space-y-4">
+        {(localContent.certificates || []).map((cert, index) => (
+          <div key={cert.id || index} className={`p-6 rounded-xl border ${isDark ? 'bg-gray-800/50 border-gray-600' : 'bg-white/50 border-gray-300'}`}>
+            <div className="flex justify-end mb-4">
+              <button
+                onClick={() => removeArrayItem('certificates', cert.id)}
+                className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <input
+                type="text"
+                placeholder="Certificate Title"
+                value={cert.title || ''}
+                onChange={(e) => updateArrayItem('certificates', cert.id, 'title', e.target.value)}
+                className={`px-3 py-2 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+              />
+              <input
+                type="text"
+                placeholder="Issuer (e.g., Google, Microsoft)"
+                value={cert.issuer || ''}
+                onChange={(e) => updateArrayItem('certificates', cert.id, 'issuer', e.target.value)}
+                className={`px-3 py-2 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+              />
+            </div>
+            
+            <div className="mb-4">
+              <input
+                type="date"
+                value={cert.date || ''}
+                onChange={(e) => updateArrayItem('certificates', cert.id, 'date', e.target.value)}
+                className={`w-full px-3 py-2 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+              />
+            </div>
+            
+            <textarea
+              placeholder="Certificate Description"
+              value={cert.description || ''}
+              onChange={(e) => updateArrayItem('certificates', cert.id, 'description', e.target.value)}
+              rows={3}
+              className={`w-full px-3 py-2 rounded-lg border resize-none ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+            />
+            
+            <div className="mt-4">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                      updateArrayItem('certificates', cert.id, 'image', e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+                className={`w-full px-3 py-2 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+              />
+              {cert.image && (
+                <div className="mt-2">
+                  <img src={cert.image} alt="Certificate" className="w-32 h-24 object-cover rounded-lg" />
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderSkillsTab = () => (
+    <div className="space-y-6">
+      <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        Skills Management
+      </h3>
+      
+      {/* Skills Right Box Content */}
+      <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-700/50' : 'bg-gray-50/50'}`}>
+        <h4 className={`text-lg font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Skills Page Right Box Content</h4>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div>
+            <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Main Title</label>
+            <input
+              type="text"
+              placeholder="My Skills"
+              value={localContent.skillsContent?.title || ''}
+              onChange={(e) => updateContent('skillsContent', 'title', e.target.value)}
+              className={`w-full px-3 py-2 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+            />
+          </div>
+          <div>
+            <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Subtitle</label>
+            <input
+              type="text"
+              placeholder="Technical Expertise & Professional Skills"
+              value={localContent.skillsContent?.subtitle || ''}
+              onChange={(e) => updateContent('skillsContent', 'subtitle', e.target.value)}
+              className={`w-full px-3 py-2 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+            />
+          </div>
+          <div className="lg:col-span-2">
+            <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>First Description</label>
+            <textarea
+              placeholder="I specialize in modern web development technologies and frameworks..."
+              value={localContent.skillsContent?.description1 || ''}
+              onChange={(e) => updateContent('skillsContent', 'description1', e.target.value)}
+              rows={3}
+              className={`w-full px-3 py-2 rounded-lg border resize-none ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+            />
+          </div>
+          <div className="lg:col-span-2">
+            <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Second Description</label>
+            <textarea
+              placeholder="With years of experience in JavaScript ecosystem..."
+              value={localContent.skillsContent?.description2 || ''}
+              onChange={(e) => updateContent('skillsContent', 'description2', e.target.value)}
+              rows={3}
+              className={`w-full px-3 py-2 rounded-lg border resize-none ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+            />
+          </div>
+          <div className="lg:col-span-2">
+            <div className="flex justify-between items-center mb-3">
+              <label className={`block text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>"What I Do" List</label>
+              <button
+                onClick={() => {
+                  const currentList = localContent.skillsContent?.whatIDo || [];
+                  updateContent('skillsContent', 'whatIDo', [...currentList, 'New Item']);
+                }}
+                className={`p-1 rounded ${isDark ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white`}
+              >
+                <Plus size={14} />
+              </button>
+            </div>
+            <div className="space-y-2">
+              {(localContent.skillsContent?.whatIDo || []).map((item, index) => (
+                <div key={index} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={item}
+                    onChange={(e) => {
+                      const newList = [...(localContent.skillsContent?.whatIDo || [])];
+                      newList[index] = e.target.value;
+                      updateContent('skillsContent', 'whatIDo', newList);
+                    }}
+                    className={`flex-1 px-3 py-2 rounded-lg border text-sm ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                  />
+                  <button
+                    onClick={() => {
+                      const newList = (localContent.skillsContent?.whatIDo || []).filter((_, i) => i !== index);
+                      updateContent('skillsContent', 'whatIDo', newList);
+                    }}
+                    className="p-2 text-red-500 hover:bg-red-500/10 rounded"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Technical Skills */}
+        <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-700/50' : 'bg-gray-50/50'}`}>
+          <div className="flex justify-between items-center mb-4">
+            <h4 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Technical Skills</h4>
+            <button
+              onClick={() => {
+                const newSkills = [...(localContent.skills?.technical || []), { name: '', level: 80 }];
+                updateContent('skills', 'technical', newSkills);
+              }}
+              className={`p-2 rounded-lg ${isDark ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white`}
+            >
+              <Plus size={16} />
+            </button>
+          </div>
+          <div className="space-y-4">
+            {(localContent.skills?.technical || []).map((skill, index) => (
+              <div key={index} className={`p-4 rounded-lg border ${isDark ? 'bg-gray-800/50 border-gray-600' : 'bg-white/50 border-gray-300'}`}>
+                <div className="flex justify-end mb-2">
+                  <button
+                    onClick={() => {
+                      const newSkills = (localContent.skills?.technical || []).filter((_, i) => i !== index);
+                      updateContent('skills', 'technical', newSkills);
+                    }}
+                    className="p-1 text-red-500 hover:bg-red-500/10 rounded"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    placeholder="Skill name (e.g., React, JavaScript)"
+                    value={skill.name || ''}
+                    onChange={(e) => {
+                      const newSkills = [...(localContent.skills?.technical || [])];
+                      newSkills[index] = { ...newSkills[index], name: e.target.value };
+                      updateContent('skills', 'technical', newSkills);
+                    }}
+                    className={`w-full px-3 py-2 rounded-lg border text-sm ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                  />
+                  <div>
+                    <label className={`block text-xs font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Proficiency Level</label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={skill.level || 80}
+                      onChange={(e) => {
+                        const newSkills = [...(localContent.skills?.technical || [])];
+                        newSkills[index] = { ...newSkills[index], level: parseInt(e.target.value) };
+                        updateContent('skills', 'technical', newSkills);
+                      }}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-xs mt-1">
+                      <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>Beginner</span>
+                      <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{skill.level || 80}%</span>
+                      <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>Expert</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Soft Skills */}
+        <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-700/50' : 'bg-gray-50/50'}`}>
+          <div className="flex justify-between items-center mb-4">
+            <h4 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Soft Skills</h4>
+            <button
+              onClick={() => {
+                const newSkills = [...(localContent.skills?.soft || []), { name: '', level: 80 }];
+                updateContent('skills', 'soft', newSkills);
+              }}
+              className={`p-2 rounded-lg ${isDark ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white`}
+            >
+              <Plus size={16} />
+            </button>
+          </div>
+          <div className="space-y-4">
+            {(localContent.skills?.soft || []).map((skill, index) => (
+              <div key={index} className={`p-4 rounded-lg border ${isDark ? 'bg-gray-800/50 border-gray-600' : 'bg-white/50 border-gray-300'}`}>
+                <div className="flex justify-end mb-2">
+                  <button
+                    onClick={() => {
+                      const newSkills = (localContent.skills?.soft || []).filter((_, i) => i !== index);
+                      updateContent('skills', 'soft', newSkills);
+                    }}
+                    className="p-1 text-red-500 hover:bg-red-500/10 rounded"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    placeholder="Skill name (e.g., Leadership, Communication)"
+                    value={skill.name || ''}
+                    onChange={(e) => {
+                      const newSkills = [...(localContent.skills?.soft || [])];
+                      newSkills[index] = { ...newSkills[index], name: e.target.value };
+                      updateContent('skills', 'soft', newSkills);
+                    }}
+                    className={`w-full px-3 py-2 rounded-lg border text-sm ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                  />
+                  <div>
+                    <label className={`block text-xs font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Proficiency Level</label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={skill.level || 80}
+                      onChange={(e) => {
+                        const newSkills = [...(localContent.skills?.soft || [])];
+                        newSkills[index] = { ...newSkills[index], level: parseInt(e.target.value) };
+                        updateContent('skills', 'soft', newSkills);
+                      }}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-xs mt-1">
+                      <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>Beginner</span>
+                      <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{skill.level || 80}%</span>
+                      <span className={isDark ? 'text-gray-400' : 'text-gray-600'}>Expert</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderAboutTab = () => (
+    <div className="space-y-6">
+      <h3 className={`text-2xl font-bold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+        About Page Management
+      </h3>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Basic Information */}
+        <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-700/50' : 'bg-gray-50/50'}`}>
+          <h4 className={`text-lg font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Basic Information</h4>
+          <div className="space-y-4">
+            <div>
+              <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Title</label>
+              <input
+                type="text"
+                value={localContent.about?.title || ''}
+                onChange={(e) => updateContent('about', 'title', e.target.value)}
+                className={`w-full px-4 py-3 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+              />
+            </div>
+            <div>
+              <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Subtitle</label>
+              <input
+                type="text"
+                value={localContent.about?.subtitle || ''}
+                onChange={(e) => updateContent('about', 'subtitle', e.target.value)}
+                className={`w-full px-4 py-3 rounded-lg border ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+              />
+            </div>
+            <div>
+              <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Description</label>
+              <textarea
+                value={localContent.about?.description || ''}
+                onChange={(e) => updateContent('about', 'description', e.target.value)}
+                rows={4}
+                className={`w-full px-4 py-3 rounded-lg border resize-none ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-700/50' : 'bg-gray-50/50'}`}>
+          <div className="flex justify-between items-center mb-4">
+            <h4 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Statistics</h4>
+            <button
+              onClick={() => {
+                const newStats = [...(localContent.about?.stats || []), { number: '', label: '' }];
+                updateContent('about', 'stats', newStats);
+              }}
+              className={`p-2 rounded-lg ${isDark ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white`}
+            >
+              <Plus size={16} />
+            </button>
+          </div>
+          <div className="space-y-4">
+            {(localContent.about?.stats || []).map((stat, index) => (
+              <div key={index} className={`p-3 rounded-lg border ${isDark ? 'bg-gray-800/50 border-gray-600' : 'bg-white/50 border-gray-300'}`}>
+                <div className="flex justify-end mb-2">
+                  <button
+                    onClick={() => {
+                      const newStats = (localContent.about?.stats || []).filter((_, i) => i !== index);
+                      updateContent('about', 'stats', newStats);
+                    }}
+                    className="p-1 text-red-500 hover:bg-red-500/10 rounded"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <input
+                    type="text"
+                    placeholder="Number"
+                    value={stat.number || ''}
+                    onChange={(e) => {
+                      const newStats = [...(localContent.about?.stats || [])];
+                      newStats[index] = { ...newStats[index], number: e.target.value };
+                      updateContent('about', 'stats', newStats);
+                    }}
+                    className={`px-3 py-2 rounded-lg border text-sm ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Label"
+                    value={stat.label || ''}
+                    onChange={(e) => {
+                      const newStats = [...(localContent.about?.stats || [])];
+                      newStats[index] = { ...newStats[index], label: e.target.value };
+                      updateContent('about', 'stats', newStats);
+                    }}
+                    className={`px-3 py-2 rounded-lg border text-sm ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Experience Section */}
+      <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-700/50' : 'bg-gray-50/50'}`}>
+        <div className="flex justify-between items-center mb-4">
+          <h4 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Experience</h4>
+          <button
+            onClick={() => {
+              const newExp = [...(localContent.about?.experiences || []), { title: '', company: '', period: '' }];
+              updateContent('about', 'experiences', newExp);
+            }}
+            className={`p-2 rounded-lg ${isDark ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white`}
+          >
+            <Plus size={16} />
+          </button>
+        </div>
+        <div className="space-y-4">
+          {(localContent.about?.experiences || []).map((exp, index) => (
+            <div key={index} className={`p-4 rounded-lg border ${isDark ? 'bg-gray-800/50 border-gray-600' : 'bg-white/50 border-gray-300'}`}>
+              <div className="flex justify-end mb-2">
+                <button
+                  onClick={() => {
+                    const newExp = (localContent.about?.experiences || []).filter((_, i) => i !== index);
+                    updateContent('about', 'experiences', newExp);
+                  }}
+                  className="p-1 text-red-500 hover:bg-red-500/10 rounded"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <input
+                  type="text"
+                  placeholder="Job Title"
+                  value={exp.title || ''}
+                  onChange={(e) => {
+                    const newExp = [...(localContent.about?.experiences || [])];
+                    newExp[index] = { ...newExp[index], title: e.target.value };
+                    updateContent('about', 'experiences', newExp);
+                  }}
+                  className={`px-3 py-2 rounded-lg border text-sm ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                />
+                <input
+                  type="text"
+                  placeholder="Company"
+                  value={exp.company || ''}
+                  onChange={(e) => {
+                    const newExp = [...(localContent.about?.experiences || [])];
+                    newExp[index] = { ...newExp[index], company: e.target.value };
+                    updateContent('about', 'experiences', newExp);
+                  }}
+                  className={`px-3 py-2 rounded-lg border text-sm ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                />
+                <input
+                  type="text"
+                  placeholder="Period"
+                  value={exp.period || ''}
+                  onChange={(e) => {
+                    const newExp = [...(localContent.about?.experiences || [])];
+                    newExp[index] = { ...newExp[index], period: e.target.value };
+                    updateContent('about', 'experiences', newExp);
+                  }}
+                  className={`px-3 py-2 rounded-lg border text-sm ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                />
+              </div>
+              <div className="mt-3">
+                <label className={`block text-xs font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Details (Press Enter for bullet points)</label>
+                <textarea
+                  placeholder="Enter details, press Enter for new bullet point"
+                  value={(exp.details || []).join('\n')}
+                  onChange={(e) => {
+                    const newExp = [...(localContent.about?.experiences || [])];
+                    newExp[index] = { ...newExp[index], details: e.target.value.split('\n') };
+                    updateContent('about', 'experiences', newExp);
+                  }}
+                  rows={3}
+                  className={`w-full px-3 py-2 rounded-lg border text-sm resize-none ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Education Section */}
+      <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-700/50' : 'bg-gray-50/50'}`}>
+        <div className="flex justify-between items-center mb-4">
+          <h4 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Education</h4>
+          <button
+            onClick={() => {
+              const newEdu = [...(localContent.about?.education || []), { title: '', company: '', period: '' }];
+              updateContent('about', 'education', newEdu);
+            }}
+            className={`p-2 rounded-lg ${isDark ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white`}
+          >
+            <Plus size={16} />
+          </button>
+        </div>
+        <div className="space-y-4">
+          {(localContent.about?.education || []).map((edu, index) => (
+            <div key={index} className={`p-4 rounded-lg border ${isDark ? 'bg-gray-800/50 border-gray-600' : 'bg-white/50 border-gray-300'}`}>
+              <div className="flex justify-end mb-2">
+                <button
+                  onClick={() => {
+                    const newEdu = (localContent.about?.education || []).filter((_, i) => i !== index);
+                    updateContent('about', 'education', newEdu);
+                  }}
+                  className="p-1 text-red-500 hover:bg-red-500/10 rounded"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <input
+                  type="text"
+                  placeholder="Degree/Course"
+                  value={edu.title || ''}
+                  onChange={(e) => {
+                    const newEdu = [...(localContent.about?.education || [])];
+                    newEdu[index] = { ...newEdu[index], title: e.target.value };
+                    updateContent('about', 'education', newEdu);
+                  }}
+                  className={`px-3 py-2 rounded-lg border text-sm ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                />
+                <input
+                  type="text"
+                  placeholder="Institution"
+                  value={edu.company || ''}
+                  onChange={(e) => {
+                    const newEdu = [...(localContent.about?.education || [])];
+                    newEdu[index] = { ...newEdu[index], company: e.target.value };
+                    updateContent('about', 'education', newEdu);
+                  }}
+                  className={`px-3 py-2 rounded-lg border text-sm ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                />
+                <input
+                  type="text"
+                  placeholder="Period"
+                  value={edu.period || ''}
+                  onChange={(e) => {
+                    const newEdu = [...(localContent.about?.education || [])];
+                    newEdu[index] = { ...newEdu[index], period: e.target.value };
+                    updateContent('about', 'education', newEdu);
+                  }}
+                  className={`px-3 py-2 rounded-lg border text-sm ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                />
+              </div>
+              <div className="mt-3">
+                <label className={`block text-xs font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Details (Press Enter for bullet points)</label>
+                <textarea
+                  placeholder="Enter details, press Enter for new bullet point"
+                  value={(edu.details || []).join('\n')}
+                  onChange={(e) => {
+                    const newEdu = [...(localContent.about?.education || [])];
+                    newEdu[index] = { ...newEdu[index], details: e.target.value.split('\n') };
+                    updateContent('about', 'education', newEdu);
+                  }}
+                  rows={3}
+                  className={`w-full px-3 py-2 rounded-lg border text-sm resize-none ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Achievements Section */}
+      <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-700/50' : 'bg-gray-50/50'}`}>
+        <div className="flex justify-between items-center mb-4">
+          <h4 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Achievements</h4>
+          <button
+            onClick={() => {
+              const newAch = [...(localContent.about?.achievements || []), { title: '', company: '', period: '' }];
+              updateContent('about', 'achievements', newAch);
+            }}
+            className={`p-2 rounded-lg ${isDark ? 'bg-green-600 hover:bg-green-700' : 'bg-green-500 hover:bg-green-600'} text-white`}
+          >
+            <Plus size={16} />
+          </button>
+        </div>
+        <div className="space-y-4">
+          {(localContent.about?.achievements || []).map((ach, index) => (
+            <div key={index} className={`p-4 rounded-lg border ${isDark ? 'bg-gray-800/50 border-gray-600' : 'bg-white/50 border-gray-300'}`}>
+              <div className="flex justify-end mb-2">
+                <button
+                  onClick={() => {
+                    const newAch = (localContent.about?.achievements || []).filter((_, i) => i !== index);
+                    updateContent('about', 'achievements', newAch);
+                  }}
+                  className="p-1 text-red-500 hover:bg-red-500/10 rounded"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <input
+                  type="text"
+                  placeholder="Achievement Title"
+                  value={ach.title || ''}
+                  onChange={(e) => {
+                    const newAch = [...(localContent.about?.achievements || [])];
+                    newAch[index] = { ...newAch[index], title: e.target.value };
+                    updateContent('about', 'achievements', newAch);
+                  }}
+                  className={`px-3 py-2 rounded-lg border text-sm ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                />
+                <input
+                  type="text"
+                  placeholder="Organization"
+                  value={ach.company || ''}
+                  onChange={(e) => {
+                    const newAch = [...(localContent.about?.achievements || [])];
+                    newAch[index] = { ...newAch[index], company: e.target.value };
+                    updateContent('about', 'achievements', newAch);
+                  }}
+                  className={`px-3 py-2 rounded-lg border text-sm ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                />
+                <input
+                  type="text"
+                  placeholder="Period"
+                  value={ach.period || ''}
+                  onChange={(e) => {
+                    const newAch = [...(localContent.about?.achievements || [])];
+                    newAch[index] = { ...newAch[index], period: e.target.value };
+                    updateContent('about', 'achievements', newAch);
+                  }}
+                  className={`px-3 py-2 rounded-lg border text-sm ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                />
+              </div>
+              <div className="mt-3">
+                <label className={`block text-xs font-medium mb-2 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>Details (Press Enter for bullet points)</label>
+                <textarea
+                  placeholder="Enter details, press Enter for new bullet point"
+                  value={(ach.details || []).join('\n')}
+                  onChange={(e) => {
+                    const newAch = [...(localContent.about?.achievements || [])];
+                    newAch[index] = { ...newAch[index], details: e.target.value.split('\n') };
+                    updateContent('about', 'achievements', newAch);
+                  }}
+                  rows={3}
+                  className={`w-full px-3 py-2 rounded-lg border text-sm resize-none ${isDark ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'}`}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   const renderTabContent = () => {
     switch(activeTab) {
       case 'dashboard': return renderDashboardTab();
+      case 'home': return renderHomeTab();
+      case 'skills': return renderSkillsTab();
+      case 'projects': return renderProjectsTab();
+      case 'certificates': return renderCertificatesTab();
+      case 'about': return renderAboutTab();
       default: return (
         <div className={`text-center py-16 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
           <motion.div
@@ -411,7 +1355,7 @@ const ContentManagementDashboard = () => {
                 ? 'from-white via-blue-200 to-purple-200' 
                 : 'from-gray-900 via-blue-600 to-purple-600'
             } bg-clip-text text-transparent`}>
-              Content Management Dashboard
+               Dashboard
             </h1>
             <p className={`text-lg ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
               Comprehensive portfolio content management system

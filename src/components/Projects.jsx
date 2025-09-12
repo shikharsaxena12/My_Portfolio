@@ -46,128 +46,151 @@ const Projects = () => {
       <Navbar />
       
       <div className="relative z-10 container mx-auto px-6 pt-32 pb-20 h-full flex items-center">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 min-h-[80vh]">
-          {/* Left Half - Written Text */}
-          <motion.div 
-            className="space-y-8"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            {/* Projects Title */}
-            <motion.h1 
-              className="font-playfair text-5xl md:text-6xl font-bold mb-6"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <span className={`bg-clip-text text-transparent transition-all duration-700 ${
-                isDark 
-                  ? 'bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400' 
-                  : 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600'
-              }`}>
-                {labels.myProjects}
-              </span>
-            </motion.h1>
-
-            {/* Subtitle */}
-            <motion.h2 
-              className={`font-montserrat text-2xl md:text-3xl font-light mb-6 transition-colors duration-700 ${
-                isDark ? 'text-blue-100' : 'text-black'
-              }`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              Creative Solutions & Technical Excellence
-            </motion.h2>
-
-            {/* Description */}
-            <motion.p 
-              className={`font-opensans text-lg leading-relaxed mb-6 transition-colors duration-700 ${
-                isDark ? 'text-blue-200' : 'text-black'
-              }`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
-              {labels.projectsDescription}
-            </motion.p>
-
-            {/* Additional Content */}
+        {projects.length === 0 ? (
+          <div className={`text-center py-32 w-full ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            <h1 className={`text-6xl font-bold mb-6 ${isDark ? 'text-white' : 'text-black'}`}>
+              Project Page is Coming Soon
+            </h1>
+            <p className="text-2xl">
+              We're working hard to bring you amazing projects!
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 min-h-[80vh]">
+            {/* Left Half - Written Text */}
             <motion.div 
-              className={`font-opensans space-y-4 mb-8 text-base leading-relaxed transition-colors duration-700 ${
-                isDark ? 'text-blue-200' : 'text-black'
-              }`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
+              className="space-y-8"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <p>
-                Each project showcases my ability to transform complex ideas into elegant, 
-                user-friendly solutions. From concept to deployment, I focus on creating 
-                applications that not only meet technical requirements but also deliver 
-                exceptional user experiences.
-              </p>
-              <p>
-                My development approach combines modern technologies with best practices, 
-                ensuring scalable, maintainable, and performant applications. I believe 
-                in writing clean, well-documented code that stands the test of time.
-              </p>
-            </motion.div>
-
-            {/* Stats */}
-            <motion.div 
-              className="grid grid-cols-3 gap-6 mb-8"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-            >
-              {[
-                { number: "20+", label: "Projects" },
-                { number: "5+", label: "Technologies" },
-                { number: "100%", label: "Quality" }
-              ].map((stat, index) => (
-                <motion.div
-                  key={index}
-                  className={`text-center p-6 rounded-2xl backdrop-blur-xl border shadow-lg relative overflow-hidden transition-all duration-700 ${
-                    isDark 
-                      ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-blue-400/20' 
-                      : 'bg-gradient-to-br from-amber-200/40 via-orange-200/40 to-rose-200/40 border-amber-300/30'
-                  }`}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  transition={{ type: "spring", damping: 15, stiffness: 300 }}
+              {projects.length === 0 ? (
+                <div className={`text-center py-16 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <h3 className={`text-2xl font-bold mb-4 ${isDark ? 'text-white' : 'text-black'}`}>
+                    Sorry, No Content Available
+                  </h3>
+                  <p className="text-lg">
+                    Project content will appear here when loaded.
+                  </p>
+                </div>
+              ) : (
+              <>
+                {/* Projects Title */}
+                <motion.h1 
+                  className="font-playfair text-5xl md:text-6xl font-bold mb-6"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                  <motion.div
-                    className="absolute inset-0 opacity-60"
-                    animate={{
-                      background: isDark ? [
-                        'linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(147, 51, 234, 0.3), rgba(236, 72, 153, 0.3))',
-                        'linear-gradient(225deg, rgba(147, 51, 234, 0.3), rgba(236, 72, 153, 0.3), rgba(59, 130, 246, 0.3))',
-                        'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(59, 130, 246, 0.3), rgba(147, 51, 234, 0.3))',
-                        'linear-gradient(45deg, rgba(59, 130, 246, 0.3), rgba(147, 51, 234, 0.3), rgba(236, 72, 153, 0.3))'
-                      ] : [
-                        'linear-gradient(135deg, rgba(245, 158, 11, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))',
-                        'linear-gradient(225deg, rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4), rgba(245, 158, 11, 0.4))',
-                        'linear-gradient(315deg, rgba(244, 63, 94, 0.4), rgba(245, 158, 11, 0.4), rgba(249, 115, 22, 0.4))',
-                        'linear-gradient(45deg, rgba(245, 158, 11, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))'
-                      ]
-                    }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "linear", repeatType: "loop" }}
-                  />
-                  <div className={`text-3xl md:text-4xl font-bold mb-2 relative z-10 transition-colors duration-700 ${
+                  <span className={`bg-clip-text text-transparent transition-all duration-700 ${
+                    isDark 
+                      ? 'bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400' 
+                      : 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600'
+                  }`}>
+                    {labels.myProjects}
+                  </span>
+                </motion.h1>
+
+                {/* Subtitle */}
+                <motion.h2 
+                  className={`font-montserrat text-2xl md:text-3xl font-light mb-6 transition-colors duration-700 ${
                     isDark ? 'text-blue-100' : 'text-black'
-                  }`}>
-                    {stat.number}
-                  </div>
-                  <div className={`text-sm font-medium relative z-10 transition-colors duration-700 ${
+                  }`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                >
+                  Creative Solutions & Technical Excellence
+                </motion.h2>
+
+                {/* Description */}
+                <motion.p 
+                  className={`font-opensans text-lg leading-relaxed mb-6 transition-colors duration-700 ${
                     isDark ? 'text-blue-200' : 'text-black'
-                  }`}>
-                    {stat.label}
-                  </div>
+                  }`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
+                >
+                  {labels.projectsDescription}
+                </motion.p>
+
+                {/* Additional Content */}
+                <motion.div 
+                  className={`font-opensans space-y-4 mb-8 text-base leading-relaxed transition-colors duration-700 ${
+                    isDark ? 'text-blue-200' : 'text-black'
+                  }`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.7 }}
+                >
+                  <p>
+                    Each project showcases my ability to transform complex ideas into elegant, 
+                    user-friendly solutions. From concept to deployment, I focus on creating 
+                    applications that not only meet technical requirements but also deliver 
+                    exceptional user experiences.
+                  </p>
+                  <p>
+                    My development approach combines modern technologies with best practices, 
+                    ensuring scalable, maintainable, and performant applications. I believe 
+                    in writing clean, well-documented code that stands the test of time.
+                  </p>
                 </motion.div>
-              ))}
-            </motion.div>
+
+                {/* Stats */}
+                <motion.div 
+                  className="grid grid-cols-3 gap-6 mb-8"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.8 }}
+                >
+                  {[
+                    { number: projects.length.toString(), label: "Projects" },
+                    { number: new Set(projects.flatMap(p => p.tech?.split(',').map(t => t.trim()) || [])).size.toString(), label: "Technologies" },
+                    { number: "100%", label: "Quality" }
+                  ].map((stat, index) => (
+                    <motion.div
+                      key={index}
+                      className={`text-center p-6 rounded-2xl backdrop-blur-xl border shadow-lg relative overflow-hidden transition-all duration-700 ${
+                        isDark 
+                          ? 'bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 border-blue-400/20' 
+                          : 'bg-gradient-to-br from-amber-200/40 via-orange-200/40 to-rose-200/40 border-amber-300/30'
+                      }`}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                      transition={{ type: "spring", damping: 15, stiffness: 300 }}
+                    >
+                      <motion.div
+                        className="absolute inset-0 opacity-60"
+                        animate={{
+                          background: isDark ? [
+                            'linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(147, 51, 234, 0.3), rgba(236, 72, 153, 0.3))',
+                            'linear-gradient(225deg, rgba(147, 51, 234, 0.3), rgba(236, 72, 153, 0.3), rgba(59, 130, 246, 0.3))',
+                            'linear-gradient(315deg, rgba(236, 72, 153, 0.3), rgba(59, 130, 246, 0.3), rgba(147, 51, 234, 0.3))',
+                            'linear-gradient(45deg, rgba(59, 130, 246, 0.3), rgba(147, 51, 234, 0.3), rgba(236, 72, 153, 0.3))'
+                          ] : [
+                            'linear-gradient(135deg, rgba(245, 158, 11, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))',
+                            'linear-gradient(225deg, rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4), rgba(245, 158, 11, 0.4))',
+                            'linear-gradient(315deg, rgba(244, 63, 94, 0.4), rgba(245, 158, 11, 0.4), rgba(249, 115, 22, 0.4))',
+                            'linear-gradient(45deg, rgba(245, 158, 11, 0.4), rgba(249, 115, 22, 0.4), rgba(244, 63, 94, 0.4))'
+                          ]
+                        }}
+                        transition={{ duration: 8, repeat: Infinity, ease: "linear", repeatType: "loop" }}
+                      />
+                      <div className={`text-3xl md:text-4xl font-bold mb-2 relative z-10 transition-colors duration-700 ${
+                        isDark ? 'text-blue-100' : 'text-black'
+                      }`}>
+                        {stat.number}
+                      </div>
+                      <div className={`text-sm font-medium relative z-10 transition-colors duration-700 ${
+                        isDark ? 'text-blue-200' : 'text-black'
+                      }`}>
+                        {stat.label}
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </>
+            )}
           </motion.div>
 
           {/* Right Half - Stunning Flip Card Animation */}
@@ -477,8 +500,9 @@ const Projects = () => {
                 )}
               </AnimatePresence>
             </div>
-          </motion.div>
-        </div>
+            </motion.div>
+          </div>
+        )}
       </div>
 
       {/* Project Detail Modal */}

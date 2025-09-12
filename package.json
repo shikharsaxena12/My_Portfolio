@@ -14,10 +14,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "start:fast": "FAST_REFRESH=false react-scripts start",
+    "build": "GENERATE_SOURCEMAP=false INLINE_RUNTIME_CHUNK=false react-scripts build",
     "build:analyze": "npm run build && npx webpack-bundle-analyzer build/static/js/*.js",
+    "build:profile": "npm run build -- --profile",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "optimize": "npm run build && npm run build:analyze"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.16",

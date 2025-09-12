@@ -12,6 +12,7 @@ const Certificates = () => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [modalOpen, setModalOpen] = React.useState(false);
   const [selectedCertificate, setSelectedCertificate] = React.useState(null);
+  const [isHovered, setIsHovered] = React.useState(false);
   
   const openModal = (cert) => {
     setSelectedCertificate(cert);
@@ -26,13 +27,13 @@ const Certificates = () => {
   const certificates = useMemo(() => content?.certificates || [], [content?.certificates]);
   
   React.useEffect(() => {
-    if (certificates.length > 1) {
+    if (certificates.length > 1 && !isHovered) {
       const interval = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % certificates.length);
       }, 3000);
       return () => clearInterval(interval);
     }
-  }, [certificates.length]);
+  }, [certificates.length, isHovered]);
 
   return (
     <div className={`h-screen overflow-hidden transition-all duration-1000 ${isDark ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600' : 'bg-gradient-to-br from-amber-100 via-orange-200 to-rose-300'}`}>
@@ -83,6 +84,8 @@ const Certificates = () => {
                       y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
                       rotateZ: { duration: 4, repeat: Infinity, ease: "easeInOut" }
                     }}
+                    onHoverStart={() => setIsHovered(true)}
+                    onHoverEnd={() => setIsHovered(false)}
                     whileHover={{
                       scale: isActive ? 1.4 : 0.5,
                       rotateZ: isActive ? 8 : 0,

@@ -1,0 +1,86 @@
+/* Performance Optimizations CSS */
+
+/* GPU Acceleration for animations */
+.gpu-accelerated,
+.motion-element {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Optimize blur effects */
+.blur-optimized {
+  filter: blur(8px);
+  transform: translateZ(0);
+}
+
+/* Reduce paint operations */
+.contain-layout {
+  contain: layout;
+}
+
+.contain-paint {
+  contain: paint;
+}
+
+.contain-strict {
+  contain: strict;
+}
+
+/* Optimize gradients */
+.gradient-optimized {
+  background-attachment: fixed;
+  will-change: background-position;
+}
+
+/* Smooth scrolling optimization */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Optimize font rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeSpeed;
+}
+
+/* Optimize images */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Optimize transforms */
+.transform-optimized {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* Critical path optimization */
+.critical-render {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 500px;
+}
+
+/* Intersection observer optimization */
+.lazy-load {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.lazy-load.loaded {
+  opacity: 1;
+}

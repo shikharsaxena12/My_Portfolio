@@ -1,8 +1,9 @@
-import React, { Suspense, useState, useRef, lazy } from 'react';
+import React, { Suspense, useState, useRef, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { ContentProvider } from './contexts/ContentContext';
+import { initPerformanceOptimizations } from './utils/performance';
 import './index.css';
 
 // Lazy load components
@@ -17,6 +18,7 @@ const Certificates = lazy(() => import('./components/Certificates'));
 const Testimonials = lazy(() => import('./components/Testimonials'));
 const OwnerLogin = lazy(() => import('./components/OwnerLogin'));
 const ContentManagement = lazy(() => import('./components/ContentManagementDashboard'));
+const PerformanceMonitor = lazy(() => import('./components/PerformanceMonitor'));
 
 const Logo = () => {
   const location = useLocation();
@@ -90,6 +92,11 @@ const LoadingSpinner = () => {
 };
 
 function App() {
+  useEffect(() => {
+    // Initialize performance optimizations on app start
+    initPerformanceOptimizations();
+  }, []);
+
   return (
     <ThemeProvider>
       <ContentProvider>
@@ -97,6 +104,7 @@ function App() {
           <div className="App">
             <Logo />
             <Suspense fallback={<LoadingSpinner />}>
+              <PerformanceMonitor />
               <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/portfolio" element={<Portfolio />} />
